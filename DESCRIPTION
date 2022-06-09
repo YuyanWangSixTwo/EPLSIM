@@ -1,11 +1,14 @@
 Package: EPISIM
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Partial Linear Single Index Models for environmental mixture analysis
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
+Author: Yuyan Wang
+Maintainer: Yuyan Wang <yuyan.wang@nyumc.org>
+Description: This packacge inlcudes a family of partila linear single index models for environmental mixture analyses.
+    More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: use_mit_license()
 Encoding: UTF-8
-LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports: splines,ggplot2
