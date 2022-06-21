@@ -1,7 +1,10 @@
+require("Rtools")
 require("PerformanceAnalytics")
 require("splines")
 require("ggplot2")
-load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")
+
+load("D:/github/EPISIM/data/nhanes.rda")
+# load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")
 ### example 1: nahanes data
 dat=nhanes
 names(dat)

@@ -13,6 +13,7 @@
 #' cut <- 0.02
 #' link_plot(index=index, link=link, cut=cut)
 link_plot <- function(index, link, cut){
+  cut <- 0.02
   link_plot = as.data.frame(cbind(index, link))
   link_plot = link_plot[order(link_plot[,1]),]
   m = floor(nrow(link_plot)*cut/2)
