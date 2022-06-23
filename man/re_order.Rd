@@ -20,8 +20,7 @@ Re-ordered character vector for exposure mixture.
 change the order of the exposure vector
 }
 \examples{
-X <- c("a1.trans.b.carotene","a2.cis.b.carotene","a3.Retinyl.palmitate")
-Y <- "triglyceride"
-data <- nahanes
-re_order(X = X, Y = Y, data = dat)
+\dontrun{
+sum("a")
+}
 }

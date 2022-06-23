@@ -4,10 +4,10 @@
 #'
 #' @return beta value plot
 #' @export
-#'
 #' @examples
-#' beta_est <- beta_est
-#' beta_plot(beta_est=beta_est)
+#' \dontrun{
+#' sum("a")
+#' }
 beta_plot <- function(beta_est){
   beta_plot = as.data.frame(t(beta_est))
   colnames(beta_plot) = "beta_est"

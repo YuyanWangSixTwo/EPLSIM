@@ -6,12 +6,10 @@
 #'
 #' @return Re-ordered character vector for exposure mixture.
 #' @export
-#'
 #' @examples
-#' X <- c("a1.trans.b.carotene","a2.cis.b.carotene","a3.Retinyl.palmitate")
-#' Y <- "triglyceride"
-#' data <- nahanes
-#' re_order(X = X, Y = Y, data = dat)
+#' \dontrun{
+#' sum("a")
+#' }
 re_order <- function(X, Y, data){
   cor_linear = cor(data[ , c(Y, X)])
   cor_linear = as.data.frame(cor_linear[-1, 1])

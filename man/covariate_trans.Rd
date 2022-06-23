@@ -20,8 +20,7 @@ updated covariate vector and data set.
 covariate vector Z transformation
 }
 \examples{
-Z_continuous <- c("age")
-Z_discrete <- c("SEX", "RACE")
-data <- nahanes
-covariate_trans(Z_continuous = Z_continuous, Z_discrete = Z_discrete, data = data)
+\dontrun{
+sum("a")
+}
 }

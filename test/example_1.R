@@ -2,6 +2,7 @@ require("Rtools")
 require("PerformanceAnalytics")
 require("splines")
 require("ggplot2")
+require("corrplot")
 
 # load("D:/github/EPLSIM/data/nhanes.rda")
 # load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")

@@ -16,6 +16,7 @@ beta value plot
 plot estimated single index beta value
 }
 \examples{
-beta_est <- beta_est
-beta_plot(beta_est=beta_est)
+\dontrun{
+sum("a")
+}
 }

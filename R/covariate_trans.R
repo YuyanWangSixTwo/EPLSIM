@@ -6,12 +6,10 @@
 #'
 #' @return updated covariate vector and data set.
 #' @export
-#'
 #' @examples
-#' Z_continuous <- c("age")
-#' Z_discrete <- c("SEX", "RACE")
-#' data <- nahanes
-#' covariate_trans(Z_continuous = Z_continuous, Z_discrete = Z_discrete, data = data)
+#' \dontrun{
+#' sum("a")
+#' }
 covariate_trans <- function(Z_continuous, Z_discrete, data){
   Z_c = paste(Z_continuous, ".c", sep="")
   data[,Z_c] = scale(data[,Z_continuous])

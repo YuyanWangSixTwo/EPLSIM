@@ -28,13 +28,7 @@ A list of model estimation and prediction results
 version 1: partial linear single index linear regression for scalar outcome
 }
 \examples{
-data <- nhanes
-Y <- "triglyceride"
-X <- c("a1.trans.b.carotene","a2.cis.b.carotene","a3.Retinyl.palmitate")
-Z <- "age"
-spline_num <- 5
-spline_degree <- 3
-initial_random_num <- 5
-plsi_lr_v1(data=data, Y=Y, X=X, Z=Z,
-spline_num=spline_num, spline_degree=spline_degree, initial_random_num=initial_random_num)
+\dontrun{
+sum("a")
+}
 }

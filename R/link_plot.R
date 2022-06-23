@@ -6,12 +6,10 @@
 #'
 #' @return Link function plot
 #' @export
-#'
 #' @examples
-#' index <- index
-#' link <- link
-#' cut <- 0.02
-#' link_plot(index=index, link=link, cut=cut)
+#' \dontrun{
+#' sum("a")
+#' }
 link_plot <- function(index, link, cut){
   cut <- 0.02
   link_plot = as.data.frame(cbind(index, link))

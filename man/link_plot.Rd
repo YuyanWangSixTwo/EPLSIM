@@ -20,8 +20,7 @@ Link function plot
 plot estimated single index link function
 }
 \examples{
-index <- index
-link <- link
-cut <- 0.02
-link_plot(index=index, link=link, cut=cut)
+\dontrun{
+sum("a")
+}
 }

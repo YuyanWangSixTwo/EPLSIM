@@ -10,17 +10,10 @@
 #'
 #' @return A list of model estimation and prediction results
 #' @export
-#'
 #' @examples
-#' data <- nhanes
-#' Y <- "triglyceride"
-#' X <- c("a1.trans.b.carotene","a2.cis.b.carotene","a3.Retinyl.palmitate")
-#' Z <- "age"
-#' spline_num <- 5
-#' spline_degree <- 3
-#' initial_random_num <- 5
-#' plsi_lr_v1(data=data, Y=Y, X=X, Z=Z,
-#' spline_num=spline_num, spline_degree=spline_degree, initial_random_num=initial_random_num)
+#' \dontrun{
+#' sum("a")
+#' }
 plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_num)
 {
   # data = dat; Y = Y; X = X; Z = Z
