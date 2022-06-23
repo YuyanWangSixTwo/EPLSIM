@@ -1,12 +1,12 @@
 Package: EPLSIM
 Type: Package
-Title: Partial Linear Single Index Models for environmental mixture analysis
+Title: Partial Linear Single Index Models for Environmental mixture analysis
 Version: 0.1.0
-Author: Yuyan Wang
+Author: Yuyan Wang <yuyan.wang@nyumc.org>
 Maintainer: Yuyan Wang <yuyan.wang@nyumc.org>
-Description: This packacge inlcudes a family of partila linear single index models for environmental mixture analyses.
-    More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: This packacge inlcudes a family of Partila Linear Single Index Models for Environmental mixture analyses (EPLSIM).
+    The family incudes models for scalar, binary, ordinal, Poisson, survival, and longitudinal outcomes.
+    The models can be applied for time-independent and time-dependent exposures.
 License: use_mit_license()
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
