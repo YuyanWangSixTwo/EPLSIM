@@ -35,5 +35,6 @@ Z <- "age"
 spline_num <- 5
 spline_degree <- 3
 initial_random_num <- 5
-plsi_lr_v1(data=data, Y=Y, X=X, Z=Z, spline_num=spline_num, spline_degree=spline_degree, initial_random_num=initial_random_num)
+plsi_lr_v1(data=data, Y=Y, X=X, Z=Z,
+spline_num=spline_num, spline_degree=spline_degree, initial_random_num=initial_random_num)
 }
