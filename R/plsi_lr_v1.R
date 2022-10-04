@@ -70,6 +70,9 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
 
   ### get beta SE
   beta_se <- sqrt(diag(solve(m_optim$hessian)))/sqrt(sum(m_optim$par^2))
+  beta_upper <- beta_estimate+1.96*beta_se
+  beta_lower <- beta_estimate-1.96*beta_se
+
 
 
 
