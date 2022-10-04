@@ -63,7 +63,7 @@ link <- model_1$link_estimated
 link_plot(index=index, link=link, cut=cut)
 
 ### beta plot
-beta_est <- model_1$beta_estimated
+beta_est <- model_1$beta_results
 beta_plot(beta_est=beta_est)
 
 

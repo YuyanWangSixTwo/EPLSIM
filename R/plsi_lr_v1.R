@@ -70,15 +70,15 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
 
   ### get beta SE
   beta_se <- sqrt(diag(solve(m_optim$hessian)))/sqrt(sum(m_optim$par^2))
-  beta_upper <- beta_estimate+1.96*beta_se
-  beta_lower <- beta_estimate-1.96*beta_se
+  beta_results <- as.data.frame(cbind(beta_estimate,beta_se))
+  beta_results$lower <- beta_results$beta_estimate + qnorm(0.025)*beta_results$beta_se
+  beta_results$upper <- beta_results$beta_estimate + qnorm(0.975)*beta_results$beta_se
+  beta_results$tvalue <- beta_results$beta_estimate/beta_results$beta_se
+  beta_results$pvalue <- ifelse(2*pnorm(-abs(beta_results$tvalue))<0.0001, "<.0001",
+                                format(round(2*pnorm(-abs(beta_results$tvalue)),4), nsmall = 4))
 
-
-
-
-
-
-  index_estimated <- as.vector(x %*% t(beta_estimated))
+  ### get link function estimate
+  index_estimated <- as.vector(x %*% as.vector(beta_estimate))
   link_bspline_estimated = ns(index_estimated, df = spline_num, intercept = TRUE)
   x_new_est = as.matrix(link_bspline_estimated)
   m1 = glm(y~-1+x_new_est+z)
@@ -87,7 +87,7 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
   alpha_estimated <- theta_estimated[(spline_num+1):(spline_num+z_length)]
   link_estimated <- as.vector(link_bspline_estimated %*% as.matrix(lambda_estimated))
 
-  list(beta_estimated=beta_estimated, model_statistics=model_statistics, beta_selected_initial=beta_selected_initial,
+  list(beta_results=beta_results, model_statistics=model_statistics, beta_selected_initial=beta_selected_initial,
        alpha_estimated=alpha_estimated, lambda_estimated=lambda_estimated,
        index_estimated=index_estimated, link_estimated=link_estimated, link_bspline_estimated=link_bspline_estimated)
 }
