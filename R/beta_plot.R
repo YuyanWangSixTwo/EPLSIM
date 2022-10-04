@@ -18,8 +18,12 @@ beta_plot <- function(beta_est){
     geom_col(position = "identity") +
     geom_bar(stat = "identity") +
     geom_errorbar(aes(x = reorder(exp, -beta_estimate), ymin = lower, ymax = upper), colour="black", width=0.4, alpha=0.9) +
-    geom_text(aes(label = round(beta_estimate,3)), vjust = 0.5) +
+    geom_text(aes(label = round(beta_estimate,3)), hjust = 1.0) +
     ggtitle("Relative effect in single index") +
-    labs(y = "relative effect (beta)", x = "exposure") +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), legend.position = "none")
+    labs(y = "Eelative effect (beta)", x = "Exposure") +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), legend.position = "none",
+          panel.background = element_blank(),
+          axis.line = element_line(colour = "black"),
+          axis.text = element_text(colour = "black", size = rel(1.0))) +
+    scale_fill_manual(values=c("green", "orange"))
 }

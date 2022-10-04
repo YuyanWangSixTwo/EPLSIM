@@ -69,13 +69,13 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
   beta_estimate <- m_optim$par*sign(m_optim$par[1])/sqrt(sum(m_optim$par^2))
 
   ### get beta SE
-  beta_se <- sqrt(diag(solve(m_optim$hessian)))/sqrt(sum(m_optim$par^2))
+  beta_se <- 10*sqrt(diag(solve(m_optim$hessian)))/sqrt(sum(m_optim$par^2))
   beta_results <- as.data.frame(cbind(beta_estimate,beta_se))
   beta_results$lower <- beta_results$beta_estimate + qnorm(0.025)*beta_results$beta_se
   beta_results$upper <- beta_results$beta_estimate + qnorm(0.975)*beta_results$beta_se
-  beta_results$tvalue <- beta_results$beta_estimate/beta_results$beta_se
-  beta_results$pvalue <- ifelse(2*pnorm(-abs(beta_results$tvalue))<0.0001, "<.0001",
-                                format(round(2*pnorm(-abs(beta_results$tvalue)),4), nsmall = 4))
+  # beta_results$tvalue <- beta_results$beta_estimate/beta_results$beta_se
+  # beta_results$pvalue <- ifelse(2*pnorm(-abs(beta_results$tvalue))<0.0001, "<.0001",
+  #                               format(round(2*pnorm(-abs(beta_results$tvalue)),4), nsmall = 4))
 
   ### get link function estimate
   index_estimated <- as.vector(x %*% as.vector(beta_estimate))
