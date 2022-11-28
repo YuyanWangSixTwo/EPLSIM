@@ -42,7 +42,7 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
     B_link = ns(u0, df = spline_num, intercept = TRUE)
     x_new = as.matrix(B_link)
     m1 = glm(y~-1+x_new+z)
-    Ln = -2*logLik(m1)
+    Ln = logLik(m1)
     Ln
   }
 
@@ -52,33 +52,37 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
   # rownames(plsi.lr.est.beta) = c("linear", paste("random_", 1:initial_random_num, sep=""))
   for (i in 1:nrow(initial_table)) {
     beta_0 = as.matrix(initial_table[i,1:x_length])
-    m2 = optim(par=beta_0, fn=fn, gr=NULL, hessian=TRUE)
-    initial_table[i, c("-2 log L")] = m2$value
-    initial_table[i, c("AIC")] =  m2$value + 2*(x_length+z_length+spline_num-1)
-    initial_table[i, c("BIC")] =  m2$value + (x_length+z_length+spline_num-1)*log(n)
+    m2 = optim(par=beta_0, fn=fn, gr=NULL, hessian=TRUE, control=list("fnscale"=-1,maxit=1000))
+    initial_table[i, c("-2 log L")] =-2* m2$value
+    initial_table[i, c("AIC")] =  -2*m2$value + 2*(x_length+z_length+spline_num-1)
+    initial_table[i, c("BIC")] =  -2*m2$value + (x_length+z_length+spline_num-1)*log(n)
     # beta_est = m2$par
     # plsi.lr.est.beta[i, ] = beta_est*sign(beta_est[1])/sqrt(sum(beta_est^2))
   }
 
   ### select the estimate with minimum BIC
   order_ob=order(initial_table$BIC)[1]
+  model_statistics=initial_table[order_ob,c("-2 log L","AIC","BIC")]
 
   ### get beta estimate
   beta_selected_initial <- initial_table[order_ob, 1:x_length]
-  m_optim <- optim(par=beta_selected_initial,fn=fn, gr=NULL, hessian=TRUE)
-  beta_estimate <- m_optim$par*sign(m_optim$par[1])/sqrt(sum(m_optim$par^2))
+  m_optim <- optim(par=beta_selected_initial,fn=fn, gr=NULL, hessian=TRUE, control=list("fnscale"=-1,maxit=1000))
+  beta_BeforeNorm_est <- m_optim$par
+  beta_BeforeNorm_sigma <-sqrt(diag(solve(-m_optim$hessian)))
+  beta_est <- beta_BeforeNorm_est*sign(beta_BeforeNorm_est[1])/sqrt(sum(beta_BeforeNorm_est^2))
+  beta_sigma <- beta_BeforeNorm_sigma/sqrt(sum(beta_BeforeNorm_est^2))
+  beta_results <- as.data.frame(cbind(beta_est,beta_sigma))
+  beta_results$lower <- beta_results$beta_est + qnorm(0.025)*beta_results$beta_sigma
+  beta_results$upper <- beta_results$beta_est + qnorm(0.975)*beta_results$beta_sigma
 
-  ### get beta SE
-  beta_se <- 10*sqrt(diag(solve(m_optim$hessian)))/sqrt(sum(m_optim$par^2))
-  beta_results <- as.data.frame(cbind(beta_estimate,beta_se))
-  beta_results$lower <- beta_results$beta_estimate + qnorm(0.025)*beta_results$beta_se
-  beta_results$upper <- beta_results$beta_estimate + qnorm(0.975)*beta_results$beta_se
-  # beta_results$tvalue <- beta_results$beta_estimate/beta_results$beta_se
-  # beta_results$pvalue <- ifelse(2*pnorm(-abs(beta_results$tvalue))<0.0001, "<.0001",
-  #                               format(round(2*pnorm(-abs(beta_results$tvalue)),4), nsmall = 4))
+  beta_results$tvalue <- beta_results$beta_est/beta_results$beta_sigma
+  beta_results$pvalue <- ifelse(2*pnorm(-abs(beta_results$tvalue))<0.0001, "<.0001",
+                                format(round(2*pnorm(-abs(beta_results$tvalue)),4), nsmall = 4))
+  beta_results$contri_pro <- format(round((beta_results$beta_est)^2, 3), nsmall = 3)
+  beta_results <- beta_results[order(beta_results$beta_est),]
 
   ### get link function estimate
-  index_estimated <- as.vector(x %*% as.vector(beta_estimate))
+  index_estimated <- as.vector(x %*% as.vector(beta_est))
   link_bspline_estimated = ns(index_estimated, df = spline_num, intercept = TRUE)
   x_new_est = as.matrix(link_bspline_estimated)
   m1 = glm(y~-1+x_new_est+z)

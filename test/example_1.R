@@ -4,9 +4,9 @@ require("splines")
 require("ggplot2")
 require("corrplot")
 
-load("D:/github/EPLSIM/data/nhanes.rda")
+# load("D:/github/EPLSIM/data/nhanes.rda")
 # load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")
-# load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
+load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
 ### example 1: nahanes data
 dat=nhanes
 names(dat)
@@ -39,6 +39,10 @@ corrplot::corrplot(cor_matrix_cut)
 X = c("log.a1.trans.b.carotene","log.a5.Retinol","log.a6.g.tocopherol","log.a7.a.Tocopherol",
     "log.a10.PCB99","log.a13.PCB156","log.a19.PCB206",
     "log.a20.3.3.4.4.5.pncb","log.a21.1.2.3.4.7.8.hxcdf","log.a22.2.3.4.6.7.8.hxcdf")
+
+# X = c("log.a7.a.Tocopherol","log.a6.g.tocopherol","log.a3.Retinyl.palmitate","log.a5.Retinol",
+#       "log.a20.3.3.4.4.5.pncb","log.a17.PCB194","log.a22.2.3.4.6.7.8.hxcdf","log.a1.trans.b.carotene")
+
 cor_matrix = cor(dat[,X])
 corrplot::corrplot(cor_matrix)
 cor_matrix_cut = cor_matrix>0.9
