@@ -78,7 +78,7 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
   beta_results$tvalue <- beta_results$beta_est/beta_results$beta_sigma
   beta_results$pvalue <- ifelse(2*pnorm(-abs(beta_results$tvalue))<0.0001, "<.0001",
                                 format(round(2*pnorm(-abs(beta_results$tvalue)),4), nsmall = 4))
-  beta_results$contri_pro <- format(round((beta_results$beta_est)^2, 3), nsmall = 3)
+  beta_results$contri_proportion <- format(round((beta_results$beta_est)^2, 3), nsmall = 3)
   beta_results <- beta_results[order(beta_results$beta_est),]
 
   ### get link function estimate

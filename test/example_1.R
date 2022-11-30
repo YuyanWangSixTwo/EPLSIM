@@ -4,9 +4,9 @@ require("splines")
 require("ggplot2")
 require("corrplot")
 
-# load("D:/github/EPLSIM/data/nhanes.rda")
+load("D:/github/EPLSIM/data/nhanes.rda")
 # load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")
-load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
+# load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
 ### example 1: nahanes data
 dat=nhanes
 names(dat)
@@ -61,13 +61,14 @@ X = re_order(X = X, Y = Y, data = dat)
 ### PLSI linear regression model
 model_1 = plsi_lr_v1(data = dat, Y = Y, X = X, Z = Z, spline_num = 5, spline_degree = 3, initial_random_num = 5)
 
+### beta plot
+beta_est <- model_1$beta_results
+beta_plot(beta_est=beta_est)
+
 ### link function plot
 index <- model_1$index_estimated
 link <- model_1$link_estimated
 link_plot(index=index, link=link, cut=cut)
 
-### beta plot
-beta_est <- model_1$beta_results
-beta_plot(beta_est=beta_est)
 
 
