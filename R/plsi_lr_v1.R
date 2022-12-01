@@ -16,7 +16,7 @@
 #' }
 plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_num)
 {
-  # data = dat; Y = Y; X = X; Z = Z
+  # data = dat; Y = Y; X = X; Z = Z ; spline_num = 5 ; spline_degree = 3 ; initial_random_num = 5
   y = data[,Y]; x = as.matrix(data[,X]); z = as.matrix(data[,Z])
   n = nrow(data); x_length = length(X); z_length = length(Z)
   m0 = glm(y~x+z, data = dat)
@@ -86,13 +86,24 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
   link_bspline_estimated = ns(index_estimated, df = spline_num, intercept = TRUE)
   x_new_est = as.matrix(link_bspline_estimated)
   m1 = glm(y~-1+x_new_est+z)
-  theta_estimated <- m1$coefficients
-  lambda_estimated <- theta_estimated[1:spline_num]
-  alpha_estimated <- theta_estimated[(spline_num+1):(spline_num+z_length)]
-  link_estimated <- as.vector(link_bspline_estimated %*% as.matrix(lambda_estimated))
+  y_new = y - as.vector(z %*% as.vector(m1$coefficients[(spline_num+1):(spline_num+z_length)]))
+  m2 = glm(y_new~-1+x_new_est)
+  lambda_estimated <- m2$coefficients
+  dat_link <- as.data.frame(cbind(y_new,x_new_est))
+  link_ci <- add_ci(dat_link, m2, alpha = 0.05, names = c("lwr", "upr"))
+  link_ci$index_est <- index_estimated
+  link_ci <- link_ci[,c("index_est","y_new","pred","lwr","upr")]
 
+  ### for partial linear coefficients
+  alpha_estimated <- as.data.frame(summary(m1)$coefficients)[(spline_num+1):(spline_num+z_length),]
+  alpha_estimated$lower <- alpha_estimated$Estimate + qnorm(0.025)*alpha_estimated$`Std. Error`
+  alpha_estimated$upper <- alpha_estimated$Estimate + qnorm(0.975)*alpha_estimated$`Std. Error`
+  alpha_estimated$pvalue <- ifelse(alpha_estimated$`Pr(>|t|)`<0.0001, "<.0001",
+                                   format(round(alpha_estimated$`Pr(>|t|)`,4), nsmall = 4))
+
+  ### output
   list(beta_results=beta_results, model_statistics=model_statistics, beta_selected_initial=beta_selected_initial,
        alpha_estimated=alpha_estimated, lambda_estimated=lambda_estimated,
-       index_estimated=index_estimated, link_estimated=link_estimated, link_bspline_estimated=link_bspline_estimated)
+       link_bspline_estimated=link_bspline_estimated, link_ci=link_ci)
 }
 
