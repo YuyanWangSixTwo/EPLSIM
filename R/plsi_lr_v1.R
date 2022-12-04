@@ -104,6 +104,6 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
   ### output
   list(beta_results=beta_results, model_statistics=model_statistics, beta_selected_initial=beta_selected_initial,
        alpha_estimated=alpha_estimated, lambda_estimated=lambda_estimated,
-       link_bspline_estimated=link_bspline_estimated, link_ci=link_ci)
+       index_estimated = index_estimated, link_bspline_estimated=link_bspline_estimated, link_ci=link_ci)
 }
 

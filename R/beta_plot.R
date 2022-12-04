@@ -25,5 +25,6 @@ beta_plot <- function(beta_est){
           panel.background = element_blank(),
           axis.line = element_line(colour = "black"),
           axis.text = element_text(colour = "black", size = rel(1.0))) +
-    scale_fill_manual(values=c("#12ffac", "#ff8112"))
+    scale_fill_manual(values=c("#12ffac", "#ff8112")) +
+    geom_hline(yintercept=0, linetype="dashed")
 }

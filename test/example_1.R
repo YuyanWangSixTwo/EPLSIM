@@ -5,9 +5,9 @@ require("ggplot2")
 require("corrplot")
 require("ciTools")
 
-# load("D:/github/EPLSIM/data/nhanes.rda")
+load("D:/github/EPLSIM/data/nhanes.rda")
 # load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")
-load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
+# load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
 ### example 1: nahanes data
 dat=nhanes
 names(dat)
@@ -67,9 +67,7 @@ beta_est <- model_1$beta_results
 beta_plot(beta_est=beta_est)
 
 ### link function plot
-index <- model_1$index_estimated
-link <- model_1$link_estimated
-link_plot(index=index, link=link, cut=cut)
+link_plot(link_ci=model_1$link_ci, cut=0.01)
 
 
 
