@@ -69,5 +69,10 @@ beta_plot(beta_est=beta_est)
 ### link function plot
 link_plot(link_ci=model_1$link_ci, cut=0.01)
 
+### quantile overall prediction plot
+quantile_overall_plot(fit=model_1, data=dat)
+
+### quantile main effect plot
+
 
 
