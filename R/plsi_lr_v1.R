@@ -83,19 +83,16 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
 
   ### get link function estimate
   index_estimated <- as.vector(x %*% as.vector(beta_est))
-  link_bspline_estimated = ns(index_estimated, df = spline_num, intercept = TRUE)
-  x_new_est = as.matrix(link_bspline_estimated)
-  m1 = glm(y~-1+x_new_est+z)
-  y_new = y - as.vector(z %*% as.vector(m1$coefficients[(spline_num+1):(spline_num+z_length)]))
-  m2 = glm(y_new~-1+x_new_est)
-  lambda_estimated <- m2$coefficients
-  dat_link <- as.data.frame(cbind(y_new,x_new_est))
+  newdat <- cbind(index_estimated,dat[,c(Y,Z)])
+  m1 <- glm(y ~ ns(index_estimated, df = spline_num)+z, data = newdat)
+  y_new = y - as.vector(z %*% as.vector(m1$coefficients[(spline_num+2):(spline_num+1+z_length)]))
+  m2 <- glm(y_new ~ ns(index_estimated, df = spline_num))
+  lambda_estimated <- as.data.frame(summary(m2)$coefficients)
+  dat_link <- as.data.frame(cbind(index_estimated,y_new))
   link_ci <- add_ci(dat_link, m2, alpha = 0.05, names = c("lwr", "upr"))
-  link_ci$index_est <- index_estimated
-  link_ci <- link_ci[,c("index_est","y_new","pred","lwr","upr")]
 
   ### for partial linear coefficients
-  alpha_estimated <- as.data.frame(summary(m1)$coefficients)[(spline_num+1):(spline_num+z_length),]
+  alpha_estimated <- as.data.frame(summary(m1)$coefficients)[(spline_num+2):(spline_num+1+z_length),]
   alpha_estimated$lower <- alpha_estimated$Estimate + qnorm(0.025)*alpha_estimated$`Std. Error`
   alpha_estimated$upper <- alpha_estimated$Estimate + qnorm(0.975)*alpha_estimated$`Std. Error`
   alpha_estimated$pvalue <- ifelse(alpha_estimated$`Pr(>|t|)`<0.0001, "<.0001",

@@ -12,27 +12,22 @@
 #' }
 quantile_main_plot <- function(fit, data, exp_name){
   # fit = model_1; data = dat; exp_name=c("log.a7.a.Tocopherol")
-  exp_name=c("log.a13.PCB156")
   x_value_spe <- data[,exp_name]
+  out_value <- boxplot(x_value_spe, plot=FALSE)$out
   beta_spe <- fit$beta_results[exp_name,1]
   x_index_spe <- beta_spe*x_value_spe
-  summary(x_index_spe)
 
-  x_basis_spe <- as.matrix(ns(x_index_spe, df = fit$link_spline$rank, intercept = TRUE))
-  x_link_spe <- as.data.frame(cbind(x_value_spe,x_index_spe,x_basis_spe))
+  x_index_dat <- as.data.frame(cbind(x_value_spe,x_index_spe))
+  colnames(x_index_dat) <- c("x_value",'index_estimated')
 
   m2 <- fit$link_spline
-  x_link_ci <- add_ci(x_link_spe, m2, alpha = 0.05, names = c("lwr", "upr"))
-  x_link_ci <- x_link_ci[order(x_link_ci[,1]),]
+  pred_x_dat <- add_ci(x_index_dat, m2, alpha = 0.05, names = c("lwr", "upr"))
+  pred_x_dat <- pred_x_dat[order(pred_x_dat[,1]),]
+  pred_x_dat <- pred_x_dat[!(pred_x_dat$x_value %in% out_value),]
 
-  plot(x_link_ci[,c("x_value_spe")], x_link_ci[,c("pred")], type="l",lwd=2,
-       xlab=exp_name,ylab="g(index)", ylim = c(min(x_link_ci[,c("lwr")]-10),max(x_link_ci[,c("upr")]+10)))
-  lines(x_link_ci[,c("x_value_spe")], x_link_ci[,c("lwr")], type="l", lty=2)
-  lines(x_link_ci[,c("x_value_spe")], x_link_ci[,c("upr")], type="l", lty=2)
-
-
-
-
-
-
+  plot(pred_x_dat[,c("x_value")], pred_x_dat[,c("pred")], type="l",lwd=2,
+       xlab=exp_name,ylab="g(index)", ylim = c(min(pred_x_dat[,c("lwr")]-10),max(pred_x_dat[,c("upr")]+10)))
+  lines(pred_x_dat[,c("x_value")], pred_x_dat[,c("lwr")], type="l", lty=2)
+  lines(pred_x_dat[,c("x_value")], pred_x_dat[,c("upr")], type="l", lty=2)
+  axis(side=1,at=pred_x_dat[,1],labels=FALSE,NA,tck=0.016)
 }

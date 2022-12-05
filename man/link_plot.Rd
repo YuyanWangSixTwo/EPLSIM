@@ -4,12 +4,10 @@
 \alias{link_plot}
 \title{plot estimated single index link function}
 \usage{
-link_plot(index, link, cut)
+link_plot(link_ci, cut)
 }
 \arguments{
-\item{index}{A numeric vector of estimated single index}
-
-\item{link}{A numeric vector of link function value}
+\item{link_ci}{A data set of estimated index, link value, and CIs}
 
 \item{cut}{A numeric value of percentile cut in two tails of x-axis}
 }
