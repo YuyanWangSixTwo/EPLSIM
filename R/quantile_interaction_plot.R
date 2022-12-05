@@ -34,9 +34,9 @@ quantile_interaction_plot <- function(fit, data, exp_1, exp_2){
 
   x_2_index_dat <- as.data.frame(cbind(x_2_value,x_2_index))
   colnames(x_2_index_dat) <- c("x_2_value",'index_estimated')
-  x1_q1_index <- quantile(x_2_value,p=0.25)*beta_2;x_2_index_dat$index_q1=x_2_index_dat$index_estimated+x1_q1_index
-  x1_q2_index <- quantile(x_2_value,p=0.50)*beta_2;x_2_index_dat$index_q2=x_2_index_dat$index_estimated+x1_q2_index
-  x1_q3_index <- quantile(x_2_value,p=0.75)*beta_2;x_2_index_dat$index_q3=x_2_index_dat$index_estimated+x1_q3_index
+  x1_q1_index <- quantile(x_2_value,p=0.25)*beta_1;x_2_index_dat$index_q1=x_2_index_dat$index_estimated+x1_q1_index
+  x1_q2_index <- quantile(x_2_value,p=0.50)*beta_1;x_2_index_dat$index_q2=x_2_index_dat$index_estimated+x1_q2_index
+  x1_q3_index <- quantile(x_2_value,p=0.75)*beta_1;x_2_index_dat$index_q3=x_2_index_dat$index_estimated+x1_q3_index
 
   dat_temp=as.data.frame(x_2_index_dat[,c("index_q1")]);colnames(dat_temp)=c('index_estimated');pred_temp=add_ci(dat_temp,m2,alpha=0.05);x_2_index_dat$pred_q1=pred_temp$pred
   dat_temp=as.data.frame(x_2_index_dat[,c("index_q2")]);colnames(dat_temp)=c('index_estimated');pred_temp=add_ci(dat_temp,m2,alpha=0.05);x_2_index_dat$pred_q2=pred_temp$pred
