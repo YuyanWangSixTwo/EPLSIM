@@ -81,8 +81,8 @@ quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a10.PCB99"))
 # "log.a10.PCB99"             "log.a21.1.2.3.4.7.8.hxcdf" "log.a1.trans.b.carotene"
 # "log.a22.2.3.4.6.7.8.hxcdf"
 
-### quantile main effect plot
-
-
-
+### quantile interaction plot
+quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a7.a.Tocopherol", exp_2="log.a6.g.tocopherol")
+quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a22.2.3.4.6.7.8.hxcdf", exp_2="log.a20.3.3.4.4.5.pncb")
+quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a20.3.3.4.4.5.pncb", exp_2="log.a13.PCB156")
 
