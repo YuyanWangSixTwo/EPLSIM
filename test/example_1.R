@@ -86,6 +86,9 @@ quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a7.a.Tocopherol", 
 quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a22.2.3.4.6.7.8.hxcdf", exp_2="log.a20.3.3.4.4.5.pncb")
 quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a20.3.3.4.4.5.pncb", exp_2="log.a13.PCB156")
 quantile_interaction_plot(fit=model_1, data = dat, exp_2="log.a20.3.3.4.4.5.pncb", exp_1="log.a13.PCB156")
+dev.off()
+
+### quantile interquartile plot
 
 
 
