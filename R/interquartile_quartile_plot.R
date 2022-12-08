@@ -17,18 +17,23 @@ interquartile_quartile_plot <- function(fit, data, X){
   x <- as.matrix(data[,X_name])
 
   plot_temp <- as.data.frame(matrix(NA,3*length(X_name),6))
-  colnames(plot_temp) <- c("Exposrue","Other_fixed_quar","Est","lower","upper")
+  colnames(plot_temp) <- c("Exposrue","Other_fixed_quar","Est_75","Est_25","Est_diff")
   plot_temp$Exposrue <- rep(X_name,each=3)
-  plot_temp$Fixed_quar <- rep(c(0.25,0.50,0.75),length(X_name))
+  plot_temp$Other_fixed_quar <- rep(c(0.25,0.50,0.75),length(X_name))
+
+  x_rest <- as.matrix(data[,X_name[-i]])
+  beta_rest <- as.vector(beta_est_vec[-i])
+  x_rest_quartiles <- apply(x_rest, 2, quantile, probs = c(0.25,0.50,0.75))
+  x_rest_index <- as.vector(x_rest_quartiles %*% as.matrix(beta_rest))
+
+
+
+
+
 
   for (i in 1:length(X_name)) {
     x_temp <- as.matrix(data[,X_name[i]])
     x_index <- as.vector(x_temp*beta_est_vec[i])
-
-    x_rest <- as.matrix(data[,X_name[-i]])
-    beta_rest <- as.vector(beta_est_vec[-i])
-    x_rest_quartiles <- apply(x_rest, 2, quantile, probs = c(0.25,0.5,0.75))
-    x_rest_index <- as.vector(x_rest_quartiles %*% as.matrix(beta_rest))
 
     for (j in 1:3) {
       pre_temp <- as.data.frame(as.matrix(x_index+x_rest_index[j]))
