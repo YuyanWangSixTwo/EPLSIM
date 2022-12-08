@@ -66,9 +66,9 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
 
   ### get beta estimate
   beta_selected_initial <- initial_table[order_ob, 1:x_length]
-  m_optim <- optim(par=beta_selected_initial,fn=fn, gr=NULL, hessian=TRUE, control=list("fnscale"=-1,maxit=1000))
+  m_optim <- optim(par=beta_selected_initial, fn=fn, gr=NULL, hessian=TRUE, control=list("fnscale"=-1,maxit=1000))
   beta_BeforeNorm_est <- m_optim$par
-  beta_BeforeNorm_sigma <-sqrt(diag(solve(-m_optim$hessian)))
+  beta_BeforeNorm_sigma <- suppressWarnings(sqrt(diag(ginv(-m_optim$hessian)))) # ginv(diag(solve(-m_optim$hessian)))
   beta_est <- beta_BeforeNorm_est*sign(beta_BeforeNorm_est[1])/sqrt(sum(beta_BeforeNorm_est^2))
   beta_sigma <- beta_BeforeNorm_sigma/sqrt(sum(beta_BeforeNorm_est^2))
   beta_results <- as.data.frame(cbind(beta_est,beta_sigma))

@@ -2,8 +2,6 @@
 #'
 #' @param fit Fitted model from PLSI function 'plsi_lr_v1'
 #' @param data Original data set
-#' @param exp_1 exposure name hoping to check
-#' @param exp_2 exposure name hoping to check
 #'
 #' @return plot of main effect with other exposures at average level 0
 #' @export
@@ -11,10 +9,60 @@
 #' \dontrun{
 #' sum("a")
 #' }
-quantile_interaction_plot <- function(fit, data, X){
-  # fit = model_1; data = dat; exp_1="log.a7.a.Tocopherol"; exp_2="log.a6.g.tocopherol"
-  # exp_1="log.a20.3.3.4.4.5.pncb"; exp_2="log.a13.PCB156"
-  # exp_1="log.a13.PCB156"; exp_2="log.a20.3.3.4.4.5.pncb"
+interquartile_quartile_plot <- function(fit, data, X){
+  # fit = model_1; data = dat
+  m2 <- fit$link_spline
+  beta_est_vec <- as.vector(fit$beta_results[,1])
+  X_name <- rownames(fit$beta_results)
+  x <- as.matrix(data[,X_name])
+
+  plot_temp <- as.data.frame(matrix(NA,3*length(X_name),6))
+  colnames(plot_temp) <- c("Exposrue","Other_fixed_quar","Est","lower","upper")
+  plot_temp$Exposrue <- rep(X_name,each=3)
+  plot_temp$Fixed_quar <- rep(c(0.25,0.50,0.75),length(X_name))
+
+  for (i in 1:length(X_name)) {
+    x_temp <- as.matrix(data[,X_name[i]])
+    x_index <- as.vector(x_temp*beta_est_vec[i])
+
+    x_rest <- as.matrix(data[,X_name[-i]])
+    beta_rest <- as.vector(beta_est_vec[-i])
+    x_rest_quartiles <- apply(x_rest, 2, quantile, probs = c(0.25,0.5,0.75))
+    x_rest_index <- as.vector(x_rest_quartiles %*% as.matrix(beta_rest))
+
+    for (j in 1:3) {
+      pre_temp <- as.data.frame(as.matrix(x_index+x_rest_index[j]))
+      colnames(pre_temp) <- c("index_estimated")
+      pre_temp <- add_ci(pre_temp, m2, alpha = 0.05, names = c("lwr", "upr"))
+      eff_temp <- pre_temp
+
+      quantile(pre_temp$pred,0.75)-quantile(pre_temp$pred,0.25)
+      quantile(pre_temp$lwr,0.75)-quantile(pre_temp$lwr,0.25)
+      quantile(pre_temp$upr,0.75)-quantile(pre_temp$upr,0.25)
+
+      temp=pre_temp
+      temp$dev_1=temp$upr-temp$pred
+      temp$dev_2=temp$pred-temp$lwr
+
+
+
+    }
+
+
+
+    plot_temp[(3*(i-1)+1):(3*i),c("index_estimated")] <- x_rest_index+x_temp_index
+  }
+
+
+
+  pred_index_dat <- add_ci(plot_temp, m2, alpha = 0.05, names = c("lwr", "upr"))
+
+
+
+
+
+
+
   x_1_value <- data[,exp_1];beta_1 <- fit$beta_results[exp_1,1];x_1_index <- x_1_value*beta_1
   x_2_value <- data[,exp_2];beta_2 <- fit$beta_results[exp_2,1];x_2_index <- x_2_value*beta_2
 

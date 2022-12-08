@@ -2,6 +2,7 @@
 
 export(beta_plot)
 export(covariate_trans)
+export(interquartile_quartile_plot)
 export(link_plot)
 export(plsi_lr_v1)
 export(quantile_interaction_plot)

@@ -13,7 +13,7 @@
 quantile_main_plot <- function(fit, data, exp_name){
   # fit = model_1; data = dat; exp_name=c("log.a7.a.Tocopherol")
   x_value_spe <- data[,exp_name]
-  out_value <- boxplot(x_value_spe, plot=FALSE)$out
+  out_value <- boxplot(x_value_spe,range=10,plot=FALSE)$out
   beta_spe <- fit$beta_results[exp_name,1]
   x_index_spe <- beta_spe*x_value_spe
 

@@ -53,12 +53,12 @@ quantile_interaction_plot <- function(fit, data, exp_1, exp_2){
   lines(x_1_index_dat[,c("x_1_value")],x_1_index_dat[,c("pred_q2")],col=2)
   lines(x_1_index_dat[,c("x_1_value")],x_1_index_dat[,c("pred_q3")],col=3)
   axis(side=1,at=x_1_index_dat[,c("x_1_value")],labels=FALSE,NA,tck=0.016)
-  legend("bottomright",xpd=TRUE,bty="n",col=c(1,2,3),lty=1,cex=0.6,legend=c(paste("Q1 of ",exp_2,sep=""),paste("Q2 of ",exp_2,sep=""),paste("Q3 of ",exp_2,sep="")))
+  legend("topleft",xpd=TRUE,bty="n",col=c(1,2,3),lty=1,cex=0.6,legend=c(paste("Q1 of ",exp_2,sep=""),paste("Q2 of ",exp_2,sep=""),paste("Q3 of ",exp_2,sep="")))
 
   plot(x_2_index_dat[,c("x_2_value")],x_2_index_dat[,c("pred_q1")],col=1,
        type="l",xlab=exp_2,ylab="g(index)",ylim=c(ymin-10,ymax+10))
   lines(x_2_index_dat[,c("x_2_value")],x_2_index_dat[,c("pred_q2")],col=2)
   lines(x_2_index_dat[,c("x_2_value")],x_2_index_dat[,c("pred_q3")],col=3)
   axis(side=1,at=x_2_index_dat[,c("x_2_value")],labels=FALSE,NA,tck=0.016)
-  legend("bottomright",xpd=TRUE,bty="n",col=c(1,2,3),lty=1,cex=0.6,legend=c(paste("Q1 of ",exp_1,sep=""),paste("Q2 of ",exp_1,sep=""),paste("Q3 of ",exp_1,sep="")))
+  legend("topleft",xpd=TRUE,bty="n",col=c(1,2,3),lty=1,cex=0.6,legend=c(paste("Q1 of ",exp_1,sep=""),paste("Q2 of ",exp_1,sep=""),paste("Q3 of ",exp_1,sep="")))
 }

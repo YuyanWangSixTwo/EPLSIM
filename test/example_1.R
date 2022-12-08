@@ -4,6 +4,7 @@ require("splines")
 require("ggplot2")
 require("corrplot")
 require("ciTools")
+require("MASS")
 
 # load("D:/github/EPLSIM/data/nhanes.rda")
 # load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")
@@ -29,6 +30,18 @@ dat$RACE <- factor(dat$race,1:5,c("Non-Hispanic White","Non-Hispanic Black","Mex
 dat[ , paste("log.", X, sep = "")] = log(dat[, X])
 X = paste("log.", X, sep = "")
 dat[, X] = scale(dat[, X])
+
+##############################################################################################
+### delete records with outliers for all continuous variables
+nrow(dat)
+dat=dat[!(dat[,Y] %in% boxplot(dat[,Y],range=10,plot=FALSE)$out),]
+nrow(dat)
+for (i in 1:length(X)) {
+  # print(sum(dat[,X[i]] %in% boxplot(dat[,X[i]],range=5,plot=FALSE)$out))
+  dat=dat[!(dat[,X[i]] %in% boxplot(dat[,X[i]],range=10,plot=FALSE)$out),]
+}
+nrow(dat)
+##############################################################################################
 
 ### check exposure correlation
 cor_matrix = cor(dat[,X])
@@ -83,7 +96,7 @@ quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a10.PCB99"))
 
 ### quantile interaction plot
 quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a7.a.Tocopherol", exp_2="log.a6.g.tocopherol")
-quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a22.2.3.4.6.7.8.hxcdf", exp_2="log.a20.3.3.4.4.5.pncb")
+quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a7.a.Tocopherol", exp_2="log.a1.trans.b.carotene")
 quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a20.3.3.4.4.5.pncb", exp_2="log.a13.PCB156")
 quantile_interaction_plot(fit=model_1, data = dat, exp_2="log.a20.3.3.4.4.5.pncb", exp_1="log.a13.PCB156")
 dev.off()
