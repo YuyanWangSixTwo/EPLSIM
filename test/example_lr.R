@@ -6,9 +6,9 @@ require("corrplot")
 require("ciTools")
 require("MASS")
 
-load("D:/github/EPLSIM/data/nhanes.rda")
+# load("D:/github/EPLSIM/data/nhanes.rda")
 # load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")
-# load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
+load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
 ### example 1: nahanes data
 dat=nhanes
 names(dat)
