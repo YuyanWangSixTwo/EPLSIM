@@ -38,30 +38,30 @@ interquartile_interquartile_plot <- function(fit, data){
   pre_temp <- add_ci(pre_temp, m2, alpha = 0.05, names = c("lwr", "upr"))
   pre_temp$ci_diff <- pre_temp$upr-pre_temp$pred
 
-  cal_temp <- as.data.frame(matrix(NA,3*length(X_name),6))
-  colnames(cal_temp) <- c("Exposrue","Other_quartile","Diff_est","ci_diff","diff_lwr","diff_upr")
-  cal_temp$Exposrue <- rep(X_name,each=3)
-  cal_temp$Other_quartile <- rep(c('0.25','0.50','0.75'),length(X_name))
+  plot_temp <- as.data.frame(matrix(NA,3*length(X_name),6))
+  colnames(plot_temp) <- c("Exposrue","Other_quartile","Diff_est","ci_diff","diff_lwr","diff_upr")
+  plot_temp$Exposrue <- rep(X_name,each=3)
+  plot_temp$Other_quartile <- rep(c('0.25','0.50','0.75'),length(X_name))
 
   for (i in 1:length(X_name)) {
-    cal_temp[((i-1)*3+1):((i-1)*3+3),c("Diff_est")]=pre_temp[((i-1)*6+4):((i-1)*6+6),c("pred")]-pre_temp[((i-1)*6+1):((i-1)*6+3),c("pred")]
-    cal_temp[((i-1)*3+1):((i-1)*3+3),c("ci_diff")]=(pre_temp[((i-1)*6+1):((i-1)*6+3),c("ci_diff")]+pre_temp[((i-1)*6+4):((i-1)*6+6),c("ci_diff")])/2
-    cal_temp[((i-1)*3+1):((i-1)*3+3),c("diff_lwr")]=cal_temp[((i-1)*3+1):((i-1)*3+3),c("Diff_est")]-cal_temp[((i-1)*3+1):((i-1)*3+3),c("ci_diff")]
-    cal_temp[((i-1)*3+1):((i-1)*3+3),c("diff_upr")]=cal_temp[((i-1)*3+1):((i-1)*3+3),c("Diff_est")]+cal_temp[((i-1)*3+1):((i-1)*3+3),c("ci_diff")]
+    plot_temp[((i-1)*3+1):((i-1)*3+3),c("Diff_est")]=pre_temp[((i-1)*6+4):((i-1)*6+6),c("pred")]-pre_temp[((i-1)*6+1):((i-1)*6+3),c("pred")]
+    plot_temp[((i-1)*3+1):((i-1)*3+3),c("ci_diff")]=(pre_temp[((i-1)*6+1):((i-1)*6+3),c("ci_diff")]+pre_temp[((i-1)*6+4):((i-1)*6+6),c("ci_diff")])/2
+    plot_temp[((i-1)*3+1):((i-1)*3+3),c("diff_lwr")]=plot_temp[((i-1)*3+1):((i-1)*3+3),c("Diff_est")]-plot_temp[((i-1)*3+1):((i-1)*3+3),c("ci_diff")]
+    plot_temp[((i-1)*3+1):((i-1)*3+3),c("diff_upr")]=plot_temp[((i-1)*3+1):((i-1)*3+3),c("Diff_est")]+plot_temp[((i-1)*3+1):((i-1)*3+3),c("ci_diff")]
   }
 
-  plot_temp <- as.data.frame(matrix(NA,length(X_name),5))
-  colnames(plot_temp) <- c("Exposrue","Interq_est","ci_diff","diff_lwr","diff_upr")
-  plot_temp$Exposrue <- X_name
+  plot_temp_2 <- as.data.frame(matrix(NA,length(X_name),5))
+  colnames(plot_temp_2) <- c("Exposrue","Interq_est","ci_diff","diff_lwr","diff_upr")
+  plot_temp_2$Exposrue <- X_name
 
   for (i in 1:length(X_name)) {
-    plot_temp[i,c("Interq_est")]=cal_temp[(i-1)*3+3,c("Diff_est")]-cal_temp[(i-1)*3+1,c("Diff_est")]
-    plot_temp[i,c("ci_diff")]=(cal_temp[(i-1)*3+3,c("ci_diff")]+cal_temp[(i-1)*3+1,c("ci_diff")])/2
-    plot_temp[i,c("diff_lwr")]=plot_temp[i,c("Interq_est")]-plot_temp[i,c("ci_diff")]
-    plot_temp[i,c("diff_upr")]=plot_temp[i,c("Interq_est")]+plot_temp[i,c("ci_diff")]
+    plot_temp_2[i,c("Interq_est")]=plot_temp[(i-1)*3+3,c("Diff_est")]-plot_temp[(i-1)*3+1,c("Diff_est")]
+    plot_temp_2[i,c("ci_diff")]=(plot_temp[(i-1)*3+3,c("ci_diff")]+plot_temp[(i-1)*3+1,c("ci_diff")])/2
+    plot_temp_2[i,c("diff_lwr")]=plot_temp_2[i,c("Interq_est")]-plot_temp_2[i,c("ci_diff")]
+    plot_temp_2[i,c("diff_upr")]=plot_temp_2[i,c("Interq_est")]+plot_temp_2[i,c("ci_diff")]
   }
 
-  ggplot(data = plot_temp, aes(x = Exposrue, y = Interq_est, ymin = diff_lwr, ymax = diff_upr)) +
+  ggplot(data = plot_temp_2, aes(x = Exposrue, y = Interq_est, ymin = diff_lwr, ymax = diff_upr)) +
     geom_point(position = position_dodge(width = 0.5)) +
     geom_errorbar(position = position_dodge(width = 0.5), width = 0.1) +
     coord_flip() +
