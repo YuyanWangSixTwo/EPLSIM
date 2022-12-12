@@ -6,9 +6,9 @@ require("corrplot")
 require("ciTools")
 require("MASS")
 
-# load("D:/github/EPLSIM/data/nhanes.rda")
+load("D:/github/EPLSIM/data/nhanes.rda")
 # load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")
-load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
+# load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
 ### example 1: nahanes data
 dat=nhanes
 names(dat)
@@ -80,7 +80,7 @@ beta_est <- model_1$beta_results
 beta_plot(beta_est=beta_est)
 
 ### link function plot
-link_plot(link_ci=model_1$link_ci, cut=0.01)
+link_plot(link_ci=model_1$link_ci, cut=0.00)
 
 ### quantile overall prediction plot
 quantile_overall_plot(fit=model_1, data=dat)
@@ -101,9 +101,11 @@ quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a20.3.3.4.4.5.pncb
 quantile_interaction_plot(fit=model_1, data = dat, exp_2="log.a20.3.3.4.4.5.pncb", exp_1="log.a13.PCB156")
 dev.off()
 
-### quantile interquartile plot
+### interquartile quartile plot
+interquartile_quartile_plot(fit = model_1, data = dat)
 
-
+### interquartile of interquartile plot
+interquartile_interquartile_plot(fit = model_1, data = dat)
 
 
 
