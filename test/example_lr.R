@@ -105,7 +105,7 @@ dev.off()
 interquartile_quartile_plot(fit = model_1, data = dat)
 
 ### interquartile of interquartile plot
-interquartile_interquartile_plot(fit = model_1, data = dat)
+# interquartile_interquartile_plot(fit = model_1, data = dat)
 
 
 
