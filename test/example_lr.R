@@ -88,7 +88,7 @@ quantile_overall_plot(fit=model_1, data=dat)
 ### quantile main effect plot
 quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a7.a.Tocopherol"))
 quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a5.Retinol"))
-quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a10.PCB99"))
+quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a21.1.2.3.4.7.8.hxcdf"))
 # "log.a7.a.Tocopherol"       "log.a6.g.tocopherol"       "log.a5.Retinol"
 # "log.a20.3.3.4.4.5.pncb"    "log.a13.PCB156"            "log.a19.PCB206"
 # "log.a10.PCB99"             "log.a21.1.2.3.4.7.8.hxcdf" "log.a1.trans.b.carotene"
