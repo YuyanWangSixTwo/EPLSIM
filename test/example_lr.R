@@ -74,7 +74,7 @@ print(X)
 ##############################################################################################
 
 
-### check outliers and delete records with outliers
+### Step 0.2.1:check outliers and delete records with outliers
 ##############################################################################################
 nrow(dat)
 dat=dat[!(dat[,Y] %in% boxplot(dat[,Y],range=5,plot=FALSE)$out),]
