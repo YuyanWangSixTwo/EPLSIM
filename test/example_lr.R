@@ -54,6 +54,21 @@ X = c("log.a1.trans.b.carotene","log.a5.Retinol","log.a6.g.tocopherol","log.a7.a
     "log.a10.PCB99","log.a13.PCB156","log.a19.PCB206",
     "log.a20.3.3.4.4.5.pncb","log.a21.1.2.3.4.7.8.hxcdf","log.a22.2.3.4.6.7.8.hxcdf")
 
+dat$X1_trans.b.carotene=dat$a1.trans.b.carotene
+dat$X2_retinol=dat$log.a5.Retinol
+dat$X3_g.tocopherol=dat$log.a6.g.tocopherol
+dat$X4_a.tocopherol=dat$log.a7.a.Tocopherol
+dat$X5_PCB99=dat$log.a10.PCB99
+dat$X6_PCB156=dat$log.a13.PCB156
+dat$X7_PCB206=dat$log.a19.PCB206
+dat$X8_3.3.4.4.5.pncb=dat$log.a20.3.3.4.4.5.pncb
+dat$X9_1.2.3.4.7.8.hxcdf=dat$log.a21.1.2.3.4.7.8.hxcdf
+dat$X10_2.3.4.6.7.8.hxcdf=dat$log.a22.2.3.4.6.7.8.hxcdf
+
+X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
+      "X5_PCB99","X6_PCB156","X7_PCB206",
+      "X8_3.3.4.4.5.pncb","X9_1.2.3.4.7.8.hxcdf","X10_2.3.4.6.7.8.hxcdf")
+
 # X = c("log.a7.a.Tocopherol","log.a6.g.tocopherol","log.a3.Retinyl.palmitate","log.a5.Retinol",
 #       "log.a20.3.3.4.4.5.pncb","log.a17.PCB194","log.a22.2.3.4.6.7.8.hxcdf","log.a1.trans.b.carotene")
 
