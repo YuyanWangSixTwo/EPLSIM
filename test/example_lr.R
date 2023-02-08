@@ -6,9 +6,9 @@ require("corrplot")
 require("ciTools")
 require("MASS")
 
-# load("D:/github/EPLSIM/data/nhanes.rda")
+load("D:/github/EPLSIM/data/nhanes.rda")
 # load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")
-load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
+# load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
 ### example 1: nahanes data
 dat=nhanes
 names(dat)
@@ -73,8 +73,12 @@ X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
 #       "log.a20.3.3.4.4.5.pncb","log.a17.PCB194","log.a22.2.3.4.6.7.8.hxcdf","log.a1.trans.b.carotene")
 
 cor_matrix = cor(dat[,X])
+corrplot.mixed(cor_matrix, upper = "ellipse", lower = "number",
+               tl.pos = "lt", tl.col = "black")
 corrplot::corrplot(cor_matrix)
 cor_matrix_cut = cor_matrix>0.9
+corrplot.mixed(cor_matrix_cut, upper = "ellipse", lower = "number",
+               tl.pos = "lt", tl.col = "black")
 corrplot::corrplot(cor_matrix_cut)
 dev.off()
 
@@ -94,6 +98,8 @@ model_1 = plsi_lr_v1(data = dat, Y = Y, X = X, Z = Z, spline_num = 5, spline_deg
 beta_est <- model_1$beta_results
 beta_plot(beta_est=beta_est)
 
+alpha_est <- model_1$alpha_estimated
+
 ### link function plot
 link_plot(link_ci=model_1$link_ci, cut=0.00)
 
@@ -103,7 +109,7 @@ quantile_overall_plot(fit=model_1, data=dat)
 ### quantile main effect plot
 quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a7.a.Tocopherol"))
 quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a5.Retinol"))
-quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a21.1.2.3.4.7.8.hxcdf"))
+quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a10.PCB99"))
 # "log.a7.a.Tocopherol"       "log.a6.g.tocopherol"       "log.a5.Retinol"
 # "log.a20.3.3.4.4.5.pncb"    "log.a13.PCB156"            "log.a19.PCB206"
 # "log.a10.PCB99"             "log.a21.1.2.3.4.7.8.hxcdf" "log.a1.trans.b.carotene"
