@@ -68,7 +68,9 @@ corrplot.mixed(cor_matrix, upper = "ellipse", lower = "number",
 
 ### Step 0.1.5: reorder exposures to ensure sing index coefficient constraints
 ##############################################################################################
+print(X)
 X = re_order(X = X, Y = Y, data = dat)
+print(X)
 ##############################################################################################
 
 
