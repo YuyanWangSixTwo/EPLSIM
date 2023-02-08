@@ -26,7 +26,7 @@ quantile_main_plot <- function(fit, data, exp_name){
   pred_x_dat <- pred_x_dat[!(pred_x_dat$x_value %in% out_value),]
 
   plot(pred_x_dat[,c("x_value")], pred_x_dat[,c("pred")], type="l",lwd=2,
-       xlab=exp_name,ylab="g(index)", ylim = c(min(pred_x_dat[,c("lwr")]-10),max(pred_x_dat[,c("upr")]+10)))
+       xlab=exp_name,ylab="g(index)", ylim = c(min(pred_x_dat[,c("lwr")]-0.5),max(pred_x_dat[,c("upr")]+0.5)))
   lines(pred_x_dat[,c("x_value")], pred_x_dat[,c("lwr")], type="l", lty=2)
   lines(pred_x_dat[,c("x_value")], pred_x_dat[,c("upr")], type="l", lty=2)
   axis(side=1,at=pred_x_dat[,1],labels=FALSE,NA,tck=0.016)

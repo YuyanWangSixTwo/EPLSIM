@@ -6,9 +6,9 @@ require("corrplot")
 require("ciTools")
 require("MASS")
 
-# load("D:/github/EPLSIM/data/nhanes.rda")
+load("D:/github/EPLSIM/data/nhanes.rda")
 # load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")
-load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
+# load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
 
 #### Step 0: import dataset
 ##############################################################################################
@@ -74,7 +74,16 @@ print(X)
 ##############################################################################################
 
 
-### Step 0.2.1:check outliers and delete records with outliers
+### Step 0.2.1: check outcome distribution
+##############################################################################################
+hist(dat[,Y],main=Y,xlab=NA,ylab=NA)
+dat[ , paste("log.", Y, sep = "")] = log(dat[, Y])
+Y = paste("log.", Y, sep = "")
+dat[, Y] = scale(dat[, Y])
+hist(dat[,Y],main=Y,xlab=NA,ylab=NA)
+##############################################################################################
+
+### Step 0.2.2: check outliers and delete records with outliers
 ##############################################################################################
 nrow(dat)
 dat=dat[!(dat[,Y] %in% boxplot(dat[,Y],range=5,plot=FALSE)$out),]
@@ -87,10 +96,11 @@ nrow(dat)
 ##############################################################################################
 
 
-### preprocess the covariates; entralize the continuous covariates; factorize the categorical covariates
+### Step 0.3.1:preprocess the covariates; centralize the continuous covariates; factorize the categorical covariates
 ##############################################################################################
 dat$SEX <- factor(dat$sex,1:2,c('Male','Female'))
-dat$RACE <- factor(dat$race,1:5,c("Non-Hispanic White","Non-Hispanic Black","Mexican American","Other Race - Including Multi-Racial","Other Hispanic"))
+dat$RACE <- factor(dat$race,1:5,c("Non-Hispanic White","Non-Hispanic Black",
+                                  "Mexican American","Other Race - Including Multi-Racial","Other Hispanic"))
 dat$AGE <- dat$age - mean(dat$age)
 cov_m <- covariate_trans(Z_continuous = c("age"), Z_discrete = c("SEX", "RACE"), data = dat)
 Z <- cov_m[[1]]
@@ -98,15 +108,18 @@ dat <- cov_m[[2]]
 ##############################################################################################
 
 
-### PLSI linear regression model
+### Step 1: run PLSI linear model
 ##############################################################################################
-model_1 = plsi_lr_v1(data = dat, Y = Y, X = X, Z = Z, spline_num = 5, spline_degree = 3, initial_random_num = 5)
+spline_num = 5
+spline_degree = 3
+initial_random_num = 5
+model_1 = plsi_lr_v1(data = dat, Y = Y, X = X, Z = Z, spline_num, spline_degree, initial_random_num)
 ##############################################################################################
 
-
-
-### link function plot
+### Step 2.1: nonparametric link function
+##############################################################################################
 link_plot(link_ci=model_1$link_ci, cut=0.00)
+##############################################################################################
 
 
 ### beta plot
@@ -121,9 +134,13 @@ quantile_overall_plot(fit=model_1, data=dat)
 
 
 ### quantile main effect plot
-quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a7.a.Tocopherol"))
-quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a5.Retinol"))
-quantile_main_plot(fit=model_1, data = dat, exp_name=c("log.a10.PCB99"))
+quantile_main_plot(fit=model_1, data = dat, exp_name=c("X4_a.tocopherol"))
+quantile_main_plot(fit=model_1, data = dat, exp_name=c("X5_PCB99"))
+quantile_main_plot(fit=model_1, data = dat, exp_name=c("X10_2.3.4.6.7.8.hxcdf"))
+X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
+      "X5_PCB99","X6_PCB156","X7_PCB206",
+      "X8_3.3.4.4.5.pncb","X9_1.2.3.4.7.8.hxcdf","X10_2.3.4.6.7.8.hxcdf")
+
 # "log.a7.a.Tocopherol"       "log.a6.g.tocopherol"       "log.a5.Retinol"
 # "log.a20.3.3.4.4.5.pncb"    "log.a13.PCB156"            "log.a19.PCB206"
 # "log.a10.PCB99"             "log.a21.1.2.3.4.7.8.hxcdf" "log.a1.trans.b.carotene"
