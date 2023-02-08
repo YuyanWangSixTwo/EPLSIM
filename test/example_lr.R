@@ -59,7 +59,7 @@ X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
       "X8_3.3.4.4.5.pncb","X9_1.2.3.4.7.8.hxcdf","X10_2.3.4.6.7.8.hxcdf")
 ##############################################################################################
 
-#### check exposure correlation
+#### Step 0.1.4: check exposure correlation
 ##############################################################################################
 cor_matrix = cor(dat[,X])
 corrplot.mixed(cor_matrix, upper = "ellipse", lower = "number",
