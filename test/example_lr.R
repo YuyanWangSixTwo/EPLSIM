@@ -98,6 +98,7 @@ nrow(dat)
 
 ### Step 0.3.1:preprocess the covariates; centralize the continuous covariates; factorize the categorical covariates
 ##############################################################################################
+print(Z)
 dat$SEX <- factor(dat$sex,1:2,c('Male','Female'))
 dat$RACE <- factor(dat$race,1:5,c("Non-Hispanic White","Non-Hispanic Black",
                                   "Mexican American","Other Race - Including Multi-Racial","Other Hispanic"))
