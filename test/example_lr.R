@@ -98,7 +98,6 @@ nrow(dat)
 
 ### Step 0.3.1:preprocess the covariates; centralize the continuous covariates; factorize the categorical covariates
 ##############################################################################################
-print(Z)
 dat$SEX <- factor(dat$sex,1:2,c('Male','Female'))
 dat$RACE <- factor(dat$race,1:5,c("Non-Hispanic White","Non-Hispanic Black",
                                   "Mexican American","Other Race - Including Multi-Racial","Other Hispanic"))
@@ -144,7 +143,7 @@ quantile_overall_plot(fit=model_1, data=dat)
 
 ### Step 2.3.2: exposure main effect
 ##############################################################################################
-qquantile_main_plot(fit=model_1, data = dat, exp_name=c("X4_a.tocopherol"))
+quantile_main_plot(fit=model_1, data = dat, exp_name=c("X4_a.tocopherol"))
 quantile_main_plot(fit=model_1, data = dat, exp_name=c("X5_PCB99"))
 quantile_main_plot(fit=model_1, data = dat, exp_name=c("X10_2.3.4.6.7.8.hxcdf"))
 X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
@@ -159,8 +158,8 @@ X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
 
 ### Step 2.4.1: interaction effect
 ##############################################################################################
-quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a7.a.Tocopherol", exp_2="log.a6.g.tocopherol")
-quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a7.a.Tocopherol", exp_2="log.a1.trans.b.carotene")
+quantile_interaction_plot(fit=model_1, data = dat, exp_1="X4_a.tocopherol", exp_2="X3_g.tocopherol")
+quantile_interaction_plot(fit=model_1, data = dat, exp_1="X4_a.tocopherol", exp_2="X1_trans.b.carotene")
 ##############################################################################################
 
 ### Step 2.4.2: interaction effect, exchange exposure

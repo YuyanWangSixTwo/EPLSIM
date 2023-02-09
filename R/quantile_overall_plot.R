@@ -27,8 +27,8 @@ quantile_overall_plot <- function(fit, data){
   ggplot(pred_index_dat, aes(x=quants, y=pred)) +
     geom_errorbar(aes(ymin=lwr, ymax=upr), width=.01) +
     geom_point(size=2, shape=21, fill="white") +
-    ggtitle("Overall effect") +
-    labs(y = "Predicted outcome, g(index)", x = "Quantiles of Xs") +
+    ggtitle("Mixture overall effect") +
+    labs(y = "Predicted outcome", x = "Quantile levels of each exposure") +
     scale_x_continuous(breaks=seq(0.1,0.9,by=0.1))
 
   # list(pred_index_dat=pred_index_dat)

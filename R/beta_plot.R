@@ -20,7 +20,7 @@ beta_plot <- function(beta_est){
     geom_errorbar(aes(x = reorder(exp, -Estimate), ymin = Lower, ymax = Upper), colour="black", width=0.3, alpha=0.6) +
     geom_text(aes(label = format(round(Estimate, 3), nsmall = 3)), hjust = 1.0) +
     ggtitle("Relative effect in single index") +
-    labs(y = "Eelative effect (beta)", x = "Exposure") +
+    labs(y = paste("Relative effect ", "\u03B2" ,sep=""), x = "Exposure") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), legend.position = "none",
           panel.background = element_blank(),
           axis.line = element_line(colour = "black"),
