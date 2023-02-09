@@ -105,6 +105,7 @@ dat$AGE <- dat$age - mean(dat$age)
 cov_m <- covariate_trans(Z_continuous = c("age"), Z_discrete = c("SEX", "RACE"), data = dat)
 Z <- cov_m[[1]]
 dat <- cov_m[[2]]
+print(Z)
 ##############################################################################################
 
 
