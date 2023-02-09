@@ -50,12 +50,16 @@ interquartile_quartile_plot <- function(fit, data){
     plot_temp[((i-1)*3+1):((i-1)*3+3),c("diff_upr")]=plot_temp[((i-1)*3+1):((i-1)*3+3),c("Diff_est")]+plot_temp[((i-1)*3+1):((i-1)*3+3),c("ci_diff")]
   }
 
+  plot_temp$Exposrue=factor(plot_temp$Exposrue,levels=c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
+                            "X5_PCB99","X6_PCB156","X7_PCB206",
+                            "X8_3.3.4.4.5.pncb","X9_1.2.3.4.7.8.hxcdf","X10_2.3.4.6.7.8.hxcdf"))
+
   ggplot(data = plot_temp, aes(x = Exposrue, colour = Other_quartile, y = Diff_est, ymin = diff_lwr, ymax = diff_upr)) +
   # ggplot(data = plot_temp, aes(x = Exposrue, colour = Other_quartile, y = Diff_est)) +
     geom_point(position = position_dodge(width = 0.5)) +
     geom_errorbar(position = position_dodge(width = 0.5), width = 0.1) +
     coord_flip() +
     # facet_wrap(~Exposrue, ncol = 1, strip.position = "left") +
-    ylab("Estimate of interquartile effect") +
+    ylab("Difference of predicted outcome") +
     xlab("Exposure")
 }
