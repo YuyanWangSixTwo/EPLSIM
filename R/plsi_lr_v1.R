@@ -72,14 +72,15 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
   beta_est <- beta_BeforeNorm_est*sign(beta_BeforeNorm_est[1])/sqrt(sum(beta_BeforeNorm_est^2))
   beta_sigma <- beta_BeforeNorm_sigma/sqrt(sum(beta_BeforeNorm_est^2))
   beta_results <- as.data.frame(cbind(beta_est,beta_sigma))
-  beta_results$lower <- beta_results$beta_est + qnorm(0.025)*beta_results$beta_sigma
-  beta_results$upper <- beta_results$beta_est + qnorm(0.975)*beta_results$beta_sigma
+  colnames(beta_results) <- c("Estimate","Std.Error")
+  beta_results$`t value` <- beta_results$Estimate/beta_results$`Std.Error`
+  beta_results$`Pr(>|t|)` <- ifelse(2*pnorm(-abs(beta_results$`t value`))<0.0001, "<.0001",
+                                format(round(2*pnorm(-abs(beta_results$`t value`)),4), nsmall = 4))
+  beta_results$Lower <- beta_results$Estimate + qnorm(0.025)*beta_results$`Std.Error`
+  beta_results$Upper <- beta_results$Estimate + qnorm(0.975)*beta_results$`Std.Error`
 
-  beta_results$tvalue <- beta_results$beta_est/beta_results$beta_sigma
-  beta_results$pvalue <- ifelse(2*pnorm(-abs(beta_results$tvalue))<0.0001, "<.0001",
-                                format(round(2*pnorm(-abs(beta_results$tvalue)),4), nsmall = 4))
-  beta_results$contri_proportion <- format(round((beta_results$beta_est)^2, 3), nsmall = 3)
-  beta_results <- beta_results[order(beta_results$beta_est),]
+  beta_results$`Contribution proportion` <- format(round((beta_results$Estimate)^2, 3), nsmall = 3)
+  beta_results <- beta_results[order(beta_results$Estimate),]
 
   ### get link function estimate
   index_estimated <- as.vector(x %*% as.vector(beta_est))
@@ -93,9 +94,9 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
 
   ### for partial linear coefficients
   alpha_estimated <- as.data.frame(summary(m1)$coefficients)[(spline_num+2):(spline_num+1+z_length),]
-  alpha_estimated$lower <- alpha_estimated$Estimate + qnorm(0.025)*alpha_estimated$`Std. Error`
-  alpha_estimated$upper <- alpha_estimated$Estimate + qnorm(0.975)*alpha_estimated$`Std. Error`
-  alpha_estimated$pvalue <- ifelse(alpha_estimated$`Pr(>|t|)`<0.0001, "<.0001",
+  alpha_estimated$Lower <- alpha_estimated$Estimate + qnorm(0.025)*alpha_estimated$`Std. Error`
+  alpha_estimated$Upper <- alpha_estimated$Estimate + qnorm(0.975)*alpha_estimated$`Std. Error`
+  alpha_estimated$p_value <- ifelse(alpha_estimated$`Pr(>|t|)`<0.0001, "<.0001",
                                    format(round(alpha_estimated$`Pr(>|t|)`,4), nsmall = 4))
 
   ### output

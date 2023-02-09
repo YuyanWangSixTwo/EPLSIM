@@ -118,49 +118,61 @@ model_1 = plsi_lr_v1(data = dat, Y = Y, X = X, Z = Z, spline_num, spline_degree,
 
 ### Step 2.1: nonparametric link function
 ##############################################################################################
-link_plot(link_ci=model_1$link_ci, cut=0.00)
+link_plot(link_ci=model_1$link_ci)
 ##############################################################################################
 
 
-### beta plot
+### Step 2.2.1: estimated single index coefficients
+##############################################################################################
 beta_est <- model_1$beta_results
 beta_plot(beta_est=beta_est)
+##############################################################################################
 
+### Step 2.2.2: estimated partial linear covariates' coefficients
+##############################################################################################
 alpha_est <- model_1$alpha_estimated
+##############################################################################################
 
 
-### quantile overall prediction plot
+### Step 2.3.1: overall effect
+##############################################################################################
 quantile_overall_plot(fit=model_1, data=dat)
+##############################################################################################
 
 
-### quantile main effect plot
-quantile_main_plot(fit=model_1, data = dat, exp_name=c("X4_a.tocopherol"))
+### Step 2.3.2: exposure main effect
+##############################################################################################
+qquantile_main_plot(fit=model_1, data = dat, exp_name=c("X4_a.tocopherol"))
 quantile_main_plot(fit=model_1, data = dat, exp_name=c("X5_PCB99"))
 quantile_main_plot(fit=model_1, data = dat, exp_name=c("X10_2.3.4.6.7.8.hxcdf"))
 X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
       "X5_PCB99","X6_PCB156","X7_PCB206",
       "X8_3.3.4.4.5.pncb","X9_1.2.3.4.7.8.hxcdf","X10_2.3.4.6.7.8.hxcdf")
+##############################################################################################
 
 # "log.a7.a.Tocopherol"       "log.a6.g.tocopherol"       "log.a5.Retinol"
 # "log.a20.3.3.4.4.5.pncb"    "log.a13.PCB156"            "log.a19.PCB206"
 # "log.a10.PCB99"             "log.a21.1.2.3.4.7.8.hxcdf" "log.a1.trans.b.carotene"
 # "log.a22.2.3.4.6.7.8.hxcdf"
 
-### quantile interaction plot
+### Step 2.4.1: interaction effect
+##############################################################################################
 quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a7.a.Tocopherol", exp_2="log.a6.g.tocopherol")
 quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a7.a.Tocopherol", exp_2="log.a1.trans.b.carotene")
+##############################################################################################
+
+### Step 2.4.2: interaction effect, exchange exposure
+##############################################################################################
 quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a20.3.3.4.4.5.pncb", exp_2="log.a13.PCB156")
 quantile_interaction_plot(fit=model_1, data = dat, exp_2="log.a20.3.3.4.4.5.pncb", exp_1="log.a13.PCB156")
 dev.off()
+##############################################################################################
 
-### interquartile quartile plot
+### Step 2.5: interquartile quartile plot
+##############################################################################################
 interquartile_quartile_plot(fit = model_1, data = dat)
-
-
+##############################################################################################
 
 
 ### interquartile of interquartile plot
 # interquartile_interquartile_plot(fit = model_1, data = dat)
-
-
-
