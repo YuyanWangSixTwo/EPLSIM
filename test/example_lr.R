@@ -159,13 +159,17 @@ X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
 ### Step 2.4.1: interaction effect
 ##############################################################################################
 quantile_interaction_plot(fit=model_1, data = dat, exp_1="X4_a.tocopherol", exp_2="X3_g.tocopherol")
-quantile_interaction_plot(fit=model_1, data = dat, exp_1="X4_a.tocopherol", exp_2="X1_trans.b.carotene")
+##############################################################################################
+
+### Step 2.4.1: interaction effect
+##############################################################################################
+quantile_interaction_plot(fit=model_1, data = dat, exp_1="X4_a.tocopherol", exp_2="X10_2.3.4.6.7.8.hxcdf")
 ##############################################################################################
 
 ### Step 2.4.2: interaction effect, exchange exposure
 ##############################################################################################
-quantile_interaction_plot(fit=model_1, data = dat, exp_1="log.a20.3.3.4.4.5.pncb", exp_2="log.a13.PCB156")
-quantile_interaction_plot(fit=model_1, data = dat, exp_2="log.a20.3.3.4.4.5.pncb", exp_1="log.a13.PCB156")
+quantile_interaction_plot(fit=model_1, data = dat, exp_1="X8_3.3.4.4.5.pncb", exp_2="X6_PCB156")
+quantile_interaction_plot(fit=model_1, data = dat, exp_2="X8_3.3.4.4.5.pncb", exp_1="X6_PCB156")
 dev.off()
 ##############################################################################################
 
