@@ -16,7 +16,7 @@ covariate_trans <- function(Z_continuous, Z_discrete, data){
   Z_d = NULL
   for (j in 1:length(Z_discrete)) {
     ll = length(levels(data[,Z_discrete[j]]))
-    Z_new = paste(Z_discrete[j], ".", 1:(ll-1), sep = "")
+    Z_new = paste(Z_discrete[j], ".", levels(data[,Z_discrete[j]])[2:ll], sep = "")
     Z_d = c(Z_d, Z_new)
     for (k in 1:length(Z_new)) {
       data[,Z_new[k]] = ifelse(data[,Z_discrete[j]]==levels(data[,Z_discrete[j]])[k+1], 1, 0)
