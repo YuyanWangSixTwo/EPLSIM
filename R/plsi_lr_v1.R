@@ -96,7 +96,7 @@ plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_
   alpha_estimated <- as.data.frame(summary(m1)$coefficients)[(spline_num+2):(spline_num+1+z_length),]
   alpha_estimated$Lower <- alpha_estimated$Estimate + qnorm(0.025)*alpha_estimated$`Std. Error`
   alpha_estimated$Upper <- alpha_estimated$Estimate + qnorm(0.975)*alpha_estimated$`Std. Error`
-  alpha_estimated$p_value <- ifelse(alpha_estimated$`Pr(>|t|)`<0.0001, "<.0001",
+  alpha_estimated$`Pr(>|t|)` <- ifelse(alpha_estimated$`Pr(>|t|)`<0.0001, "<.0001",
                                    format(round(alpha_estimated$`Pr(>|t|)`,4), nsmall = 4))
 
   ### output
