@@ -1,10 +1,10 @@
-require("Rtools")
-require("PerformanceAnalytics")
-require("splines")
-require("ggplot2")
-require("corrplot")
-require("ciTools")
-require("MASS")
+# require("Rtools")
+# require("PerformanceAnalytics")
+# require("splines")
+# require("ggplot2")
+# require("corrplot")
+# require("ciTools")
+# require("MASS")
 
 ## Step 0: import dataset
 ##############################################################################################
