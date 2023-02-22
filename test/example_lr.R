@@ -6,11 +6,7 @@ require("corrplot")
 require("ciTools")
 require("MASS")
 
-load("D:/github/EPLSIM/data/nhanes.rda")
-# load("/Users/yuyanwang/Documents/GitHub/EPISIM/data/nhanes.rda")
-# load("C:/Users/WANGY40/github/EPLSIM/data/nhanes.rda")
-
-#### Step 0: import dataset
+## Step 0: import dataset
 ##############################################################################################
 dat=nhanes
 names(dat)
@@ -21,7 +17,7 @@ X = c("a1.trans.b.carotene","a5.Retinol","a6.g.tocopherol","a7.a.Tocopherol",
 Z <- c("age","sex","race")
 ##############################################################################################
 
-#### Step 0.1.1: check original exposure distribution
+## Step 0.1.1: check original exposure distribution
 ##############################################################################################
 par(mfrow=c(2,5))
 for (i in 1:length(X)) {
@@ -29,7 +25,7 @@ for (i in 1:length(X)) {
 }
 ##############################################################################################
 
-#### Step 0.1.2:check log-transformed exposure distribution
+## Step 0.1.2:check log-transformed exposure distribution
 ##############################################################################################
 for (i in 1:length(X)) {
   hist(log(dat[,X[i]]),main=paste("log(",X[i],")",sep=""),xlab=NA,ylab=NA)
@@ -37,7 +33,7 @@ for (i in 1:length(X)) {
 ##############################################################################################
 dev.off()
 
-#### Step 0.1.3:log-transform, standardize, and rename the exposure variables
+## Step 0.1.3: log-transform, standardize, and rename the exposure variables
 ##############################################################################################
 dat[ , paste("log.", X, sep = "")] = log(dat[, X])
 X = paste("log.", X, sep = "")
@@ -59,14 +55,14 @@ X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
       "X8_3.3.4.4.5.pncb","X9_1.2.3.4.7.8.hxcdf","X10_2.3.4.6.7.8.hxcdf")
 ##############################################################################################
 
-#### Step 0.1.4: check exposure correlation
+## Step 0.1.4: check exposure correlation
 ##############################################################################################
 cor_matrix = cor(dat[,X])
 corrplot.mixed(cor_matrix, upper = "ellipse", lower = "number",
                tl.pos = "lt", tl.col = "black")
 ##############################################################################################
 
-### Step 0.1.5: reorder exposures to ensure sing index coefficient constraints
+## Step 0.1.5: reorder exposures to ensure sing index coefficient constraints
 ##############################################################################################
 print(X)
 X = re_order(X = X, Y = Y, data = dat)
@@ -74,7 +70,7 @@ print(X)
 ##############################################################################################
 
 
-### Step 0.2.1: check outcome distribution
+## Step 0.2.1: check outcome distribution
 ##############################################################################################
 hist(dat[,Y],main=Y,xlab=NA,ylab=NA)
 dat[ , paste("log.", Y, sep = "")] = log(dat[, Y])
@@ -83,7 +79,7 @@ dat[, Y] = scale(dat[, Y])
 hist(dat[,Y],main=Y,xlab=NA,ylab=NA)
 ##############################################################################################
 
-### Step 0.2.2: check outliers and delete records with outliers
+## Step 0.2.2: check outliers and delete records with outliers
 ##############################################################################################
 nrow(dat)
 dat=dat[!(dat[,Y] %in% boxplot(dat[,Y],range=5,plot=FALSE)$out),]
@@ -96,7 +92,7 @@ nrow(dat)
 ##############################################################################################
 
 
-### Step 0.3.1:preprocess the covariates; centralize the continuous covariates; factorize the categorical covariates
+## Step 0.3.1:preprocess the covariates; centralize the continuous covariates; factorize the categorical covariates
 ##############################################################################################
 dat$SEX <- factor(dat$sex,1:2,c('Male','Female'))
 dat$RACE <- factor(dat$race,1:5,c("Non-Hispanic White","Non-Hispanic Black",
@@ -109,7 +105,7 @@ print(Z)
 ##############################################################################################
 
 
-### Step 1: run PLSI linear model
+## Step 1: run PLSI linear model
 ##############################################################################################
 spline_num = 5
 spline_degree = 3
@@ -117,31 +113,31 @@ initial_random_num = 5
 model_1 = plsi_lr_v1(data = dat, Y = Y, X = X, Z = Z, spline_num, spline_degree, initial_random_num)
 ##############################################################################################
 
-### Step 2.1: nonparametric link function
+## Step 2.1: nonparametric link function
 ##############################################################################################
 link_plot(link_ci=model_1$link_ci)
 ##############################################################################################
 
 
-### Step 2.2.1: estimated single index coefficients
+## Step 2.2.1: estimated single index coefficients
 ##############################################################################################
 beta_est <- model_1$beta_results
 beta_plot(beta_est=beta_est)
 ##############################################################################################
 
-### Step 2.2.2: estimated partial linear covariates' coefficients
+## Step 2.2.2: estimated partial linear covariates' coefficients
 ##############################################################################################
 alpha_est <- model_1$alpha_estimated
 ##############################################################################################
 
 
-### Step 2.3.1: overall effect
+## Step 2.3.1: overall effect
 ##############################################################################################
 quantile_overall_plot(fit=model_1, data=dat)
 ##############################################################################################
 
 
-### Step 2.3.2: exposure main effect
+## Step 2.3.2: exposure main effect
 ##############################################################################################
 quantile_main_plot(fit=model_1, data = dat, exp_name=c("X4_a.tocopherol"))
 quantile_main_plot(fit=model_1, data = dat, exp_name=c("X5_PCB99"))
@@ -151,33 +147,29 @@ X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
       "X8_3.3.4.4.5.pncb","X9_1.2.3.4.7.8.hxcdf","X10_2.3.4.6.7.8.hxcdf")
 ##############################################################################################
 
-# "log.a7.a.Tocopherol"       "log.a6.g.tocopherol"       "log.a5.Retinol"
-# "log.a20.3.3.4.4.5.pncb"    "log.a13.PCB156"            "log.a19.PCB206"
-# "log.a10.PCB99"             "log.a21.1.2.3.4.7.8.hxcdf" "log.a1.trans.b.carotene"
-# "log.a22.2.3.4.6.7.8.hxcdf"
 
-### Step 2.4.1: interaction effect
+## Step 2.4.1: interaction effect
 ##############################################################################################
 quantile_interaction_plot(fit=model_1, data = dat, exp_1="X4_a.tocopherol", exp_2="X3_g.tocopherol")
 ##############################################################################################
 
-### Step 2.4.1: interaction effect
+## Step 2.4.1: interaction effect
 ##############################################################################################
 quantile_interaction_plot(fit=model_1, data = dat, exp_1="X4_a.tocopherol", exp_2="X10_2.3.4.6.7.8.hxcdf")
 ##############################################################################################
 
-### Step 2.4.2: interaction effect, exchange exposure
+## Step 2.4.2: interaction effect, exchange exposure
 ##############################################################################################
 quantile_interaction_plot(fit=model_1, data = dat, exp_1="X8_3.3.4.4.5.pncb", exp_2="X6_PCB156")
 quantile_interaction_plot(fit=model_1, data = dat, exp_2="X8_3.3.4.4.5.pncb", exp_1="X6_PCB156")
 dev.off()
 ##############################################################################################
 
-### Step 2.5: interquartile quartile plot
+## Step 2.5: interquartile quartile plot
 ##############################################################################################
 interquartile_quartile_plot(fit = model_1, data = dat)
 ##############################################################################################
 
 
-### interquartile of interquartile plot
+## interquartile of interquartile plot
 # interquartile_interquartile_plot(fit = model_1, data = dat)
