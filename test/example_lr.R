@@ -9,72 +9,72 @@
 ## Step 0: import dataset
 ##############################################################################################
 data(nhanes)
-dat=nhanes
+dat = nhanes
 names(dat)
-Y <- "triglyceride"
-X = c("a1.trans.b.carotene","a5.Retinol","a6.g.tocopherol","a7.a.Tocopherol",
-      "a10.PCB99","a13.PCB156","a19.PCB206",
-      "a20.3.3.4.4.5.pncb","a21.1.2.3.4.7.8.hxcdf","a22.2.3.4.6.7.8.hxcdf")
-Z <- c("age","sex","race")
+Y_name <- "triglyceride"
+X_name <- c("a1.trans.b.carotene", "a5.Retinol", "a6.g.tocopherol", "a7.a.Tocopherol",
+      "a10.PCB99", "a13.PCB156", "a19.PCB206",
+      "a20.3.3.4.4.5.pncb", "a21.1.2.3.4.7.8.hxcdf", "a22.2.3.4.6.7.8.hxcdf")
+Z_name <- c("age", "sex",  "race")
 ##############################################################################################
 
 ## Step 0.1.1: check original exposure distribution
 ##############################################################################################
-par(mfrow=c(2,5))
-for (i in 1:length(X)) {
-  hist(dat[,X[i]],main=X[i],xlab=NA,ylab=NA)
+par(mfrow = c(2, 5))
+for (i in 1:length(X_name)) {
+  hist(dat[, X_name[i]], main = X_name[i], xlab = NA, ylab = NA)
 }
 ##############################################################################################
 
 ## Step 0.1.2:check log-transformed exposure distribution
 ##############################################################################################
-for (i in 1:length(X)) {
-  hist(log(dat[,X[i]]),main=paste("log(",X[i],")",sep=""),xlab=NA,ylab=NA)
+for (i in 1:length(X_name)) {
+  hist(log(dat[, X_name[i]]),main = paste("log(", X_name[i], ")", sep = ""), xlab = NA, ylab = NA)
 }
 ##############################################################################################
 dev.off()
 
 ## Step 0.1.3: log-transform, standardize, and rename the exposure variables
 ##############################################################################################
-dat[ , paste("log.", X, sep = "")] = log(dat[, X])
-X = paste("log.", X, sep = "")
-dat[, X] = scale(dat[, X])
+dat[ , paste("log.", X_name, sep = "")] = log(dat[, X_name])
+X_name = paste("log.", X_name, sep = "")
+dat[, X_name] = scale(dat[, X_name])
 
-dat$X1_trans.b.carotene=dat$a1.trans.b.carotene
-dat$X2_retinol=dat$log.a5.Retinol
-dat$X3_g.tocopherol=dat$log.a6.g.tocopherol
-dat$X4_a.tocopherol=dat$log.a7.a.Tocopherol
-dat$X5_PCB99=dat$log.a10.PCB99
-dat$X6_PCB156=dat$log.a13.PCB156
-dat$X7_PCB206=dat$log.a19.PCB206
-dat$X8_3.3.4.4.5.pncb=dat$log.a20.3.3.4.4.5.pncb
-dat$X9_1.2.3.4.7.8.hxcdf=dat$log.a21.1.2.3.4.7.8.hxcdf
-dat$X10_2.3.4.6.7.8.hxcdf=dat$log.a22.2.3.4.6.7.8.hxcdf
+dat$X1_trans.b.carotene = dat$a1.trans.b.carotene
+dat$X2_retinol = dat$log.a5.Retinol
+dat$X3_g.tocopherol = dat$log.a6.g.tocopherol
+dat$X4_a.tocopherol = dat$log.a7.a.Tocopherol
+dat$X5_PCB99 = dat$log.a10.PCB99
+dat$X6_PCB156 = dat$log.a13.PCB156
+dat$X7_PCB206 = dat$log.a19.PCB206
+dat$X8_3.3.4.4.5.pncb = dat$log.a20.3.3.4.4.5.pncb
+dat$X9_1.2.3.4.7.8.hxcdf = dat$log.a21.1.2.3.4.7.8.hxcdf
+dat$X10_2.3.4.6.7.8.hxcdf = dat$log.a22.2.3.4.6.7.8.hxcdf
 
-X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
-      "X5_PCB99","X6_PCB156","X7_PCB206",
-      "X8_3.3.4.4.5.pncb","X9_1.2.3.4.7.8.hxcdf","X10_2.3.4.6.7.8.hxcdf")
+X_name = c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
+      "X5_PCB99", "X6_PCB156", "X7_PCB206",
+      "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
 ##############################################################################################
 
 ## Step 0.1.4: check exposure correlation
 ##############################################################################################
-cor_matrix = cor(dat[,X])
+cor_matrix = cor(dat[,X_name])
 corrplot.mixed(cor_matrix, upper = "ellipse", lower = "number",
                tl.pos = "lt", tl.col = "black")
 ##############################################################################################
 
 ## Step 0.1.5: reorder exposures to ensure sing index coefficient constraints
 ##############################################################################################
-print(X)
-X = re_order(X = X, Y = Y, data = dat)
-print(X)
+print(X_name)
+X_name = re_order(X = X_name, Y = Y_name, data = dat)
+print(X_name)
 ##############################################################################################
 
 
 ## Step 0.2.1: check outcome distribution
 ##############################################################################################
-hist(dat[,Y],main=Y,xlab=NA,ylab=NA)
-dat[ , paste("log.", Y, sep = "")] = log(dat[, Y])
+hist(dat[, Y_name], main = Y_name, xlab = NA, ylab = NA)
+dat[ , paste("log.", , sep = "")] = log(dat[, Y])
 Y = paste("log.", Y, sep = "")
 dat[, Y] = scale(dat[, Y])
 hist(dat[,Y],main=Y,xlab=NA,ylab=NA)
