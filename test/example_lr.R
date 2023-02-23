@@ -74,10 +74,10 @@ print(X_name)
 ## Step 0.2.1: check outcome distribution
 ##############################################################################################
 hist(dat[, Y_name], main = Y_name, xlab = NA, ylab = NA)
-dat[ , paste("log.", , sep = "")] = log(dat[, Y])
-Y = paste("log.", Y, sep = "")
-dat[, Y] = scale(dat[, Y])
-hist(dat[,Y],main=Y,xlab=NA,ylab=NA)
+dat[ , paste("log.", Y_name, sep = "")] = log(dat[, Y])
+Y_name = paste("log.", Y_name, sep = "")
+dat[, Y_name] = scale(dat[, Y_name])
+hist(dat[, Y_name], main = Y_name, xlab = NA, ylab = NA)
 ##############################################################################################
 
 ## Step 0.2.2: check outliers and delete records with outliers
