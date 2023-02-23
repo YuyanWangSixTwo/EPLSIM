@@ -8,6 +8,7 @@
 
 ## Step 0: import dataset
 ##############################################################################################
+data(nhanes)
 dat=nhanes
 names(dat)
 Y <- "triglyceride"
