@@ -1,9 +1,9 @@
 #' version 1: partial linear single index linear regression for scalar outcome
 #'
 #' @param data A data set
-#' @param Y Character for scalar outcome
-#' @param X A character vector for exposures
-#' @param Z A character vector for covariates
+#' @param Y_name Character for scalar outcome
+#' @param X_name A character vector for exposures
+#' @param Z_name A character vector for covariates
 #' @param spline_num A number representing the degree of freedom of B-spline basis for link function
 #' @param spline_degree A number representing the degree of the piece-wise polynomial of B-spline basis for link function
 #' @param initial_random_num A number representing the number of random initials used in the function
@@ -14,11 +14,19 @@
 #' \dontrun{
 #' sum("a")
 #' }
-plsi_lr_v1 <- function(data, Y, X, Z, spline_num, spline_degree, initial_random_num)
+plsi_lr_v1 <- function(data, Y_name, X_name, Z_name, spline_num, spline_degree, initial_random_num)
 {
-  # data = dat; Y = Y; X = X; Z = Z ; spline_num = 5 ; spline_degree = 3 ; initial_random_num = 5
-  y = data[,Y]; x = as.matrix(data[,X]); z = as.matrix(data[,Z])
-  n = nrow(data); x_length = length(X); z_length = length(Z)
+  # data = dat; Y_name = Y_name; X_name = X_name; Z_name = Z_name ; spline_num = 5 ; spline_degree = 3 ; initial_random_num = 5
+
+  cor_linear = cor(data[ , c(Y_name, X_name)])
+  cor_linear = as.data.frame(cor_linear[-1, 1])
+  cor_linear$exposure = rownames(cor_linear)
+  re_order_vec = cor_linear[order(cor_linear[,1], decreasing = TRUE),2]
+  return(re_order_vec)
+
+
+  y = data[,Y_name]; x = as.matrix(data[,X_name]); z = as.matrix(data[,Z_name])
+  n = nrow(data); x_length = length(X_name); z_length = length(Z_name)
   m0 = glm(y~x+z, data = dat)
 
   ### initial tables
