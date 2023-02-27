@@ -1,4 +1,4 @@
-#' plot overall effect based on quantile of exposures
+#' plot mixture's overall effect based on quantile of exposures
 #'
 #' @param fit Fitted model from PLSI function 'plsi_lr_v1'
 #' @param data Original data set
@@ -9,12 +9,12 @@
 #' \dontrun{
 #' sum("a")
 #' }
-quantile_overall_plot <- function(fit, data){
+mixture.overall.plot <- function(fit, data){
   # fit = model_1; data = dat
-  beta_est_vec <- as.vector(fit$beta_results[,1])
-  X_name <- rownames(fit$beta_results)
-  x <- as.matrix(data[,X_name])
-  quants <- seq(0.1,0.9,by=0.05)
+  beta_est_vec <- as.vector(fit$si.coefficient[, 1])
+  X_name <- rownames(fit$si.coefficient)
+  x <- as.matrix(data[, X_name])
+  quants <- seq(0.1, 0.9, by = 0.05)
   x_quantiles <- apply(x, 2, quantile, probs = quants)
   index_quantile <- x_quantiles %*% beta_est_vec
 
