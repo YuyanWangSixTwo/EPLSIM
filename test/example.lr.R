@@ -134,9 +134,9 @@ mixture.overall.plot(model_1, dat)
 
 ## Step 2.3.2: exposure main effect plot
 ##############################################################################################
-exp.main.plot(model_1, dat, exp_name = c("X4_a.tocopherol"))
-exp.main.plot(model_1, dat, exp_name = c("X5_PCB99"))
-exp.main.plot(model_1, dat, exp_name = c("X10_2.3.4.6.7.8.hxcdf"))
+ExpVar.Main.plot(model_1, dat, exp_name = c("X4_a.tocopherol"))
+ExpVar.Main.plot(model_1, dat, exp_name = c("X5_PCB99"))
+ExpVar.Main.plot(model_1, dat, exp_name = c("X10_2.3.4.6.7.8.hxcdf"))
 X.name = c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
            "X5_PCB99", "X6_PCB156", "X7_PCB206",
            "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
@@ -145,18 +145,18 @@ X.name = c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocophe
 
 ## Step 2.4.1: interaction effect
 ##############################################################################################
-exp.interaction.plot(model_1, dat, "X4_a.tocopherol", "X3_g.tocopherol")
+ExpVar.Interaction.plot(model_1, dat, "X4_a.tocopherol", "X3_g.tocopherol")
 ##############################################################################################
 
 ## Step 2.4.1: interaction effect
 ##############################################################################################
-exp.interaction.plot(model_1, dat, "X4_a.tocopherol", "X10_2.3.4.6.7.8.hxcdf")
+ExpVar.Interaction.plot(model_1, dat, "X4_a.tocopherol", "X10_2.3.4.6.7.8.hxcdf")
 ##############################################################################################
 
 ## Step 2.4.2: interaction effect, exchange exposure
 ##############################################################################################
-exp.interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
-exp.interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
+ExpVar.Interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
+ExpVar.Interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
 ##############################################################################################
 
 ## Step 2.5: interquartile quartile plot

@@ -10,7 +10,7 @@
 #' \dontrun{
 #' sum("a")
 #' }
-exp.main.plot <- function(fit, data, exp_name){
+ExpVar.Main.plot <- function(fit, data, exp_name){
   # fit = model_1; data = dat; exp_name = c("X4_a.tocopherol")
   x_value_spe <- data[, exp_name]
   out_value <- boxplot(x_value_spe, range = 10, plot = FALSE)$out
