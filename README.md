@@ -1,2 +1,2 @@
 # EPLSIM
-Partial Linear Single Index Models for environmental mixture analysis
+Partial Linear Single Index Models for Environmental mixture analysis
