@@ -104,7 +104,7 @@ print(Z.name)
 spline.num = 5
 spline.degree = 3
 initial.random.num = 5
-model_1 = plsi.lr.v1(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name, spline.num, spline.degree, initial.random.num)
+model_1 <- plsi.lr.v1(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name, spline.num, spline.degree, initial.random.num)
 ##############################################################################################
 
 ## Step 2.1: plot single index function
@@ -126,7 +126,7 @@ model_1$confounder.coefficient
 ##############################################################################################
 
 
-## Step 2.3.1: mixutre overall effect plot
+## Step 2.3.1: mixture overall effect plot
 ##############################################################################################
 mixture.overall.plot(model_1, dat)
 ##############################################################################################
