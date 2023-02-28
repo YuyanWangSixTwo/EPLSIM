@@ -19,7 +19,7 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
   # data = dat; Y.name = Y.name; X.name = X.name; Z.name = Z.name ; spline.num = 5 ; spline.degree = 3 ; initial.random.num = 5
 
   # recorder the exposure
-  cor_linear <- cor(data[ , c(Y.name, X.name)])
+  cor_linear <- stats::cor(data[ , c(Y.name, X.name)])
   cor_linear <- as.data.frame(cor_linear[-1, 1])
   cor_linear$exposure <- rownames(cor_linear)
   X.name <- cor_linear[order(cor_linear[, 1], decreasing = TRUE), 2]
@@ -29,7 +29,7 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
 
   # get the length and linear model
   n <- nrow(data); x_length <- length(X.name); z_length <- length(Z.name)
-  m0 <- glm(y~x+z, data = dat)
+  m0 <- stats::glm(y~x+z, data = dat)
 
   # initial tables
   initial_table = as.data.frame(matrix(NA, nrow = (1 + initial.random.num), ncol = (x_length + 3)))
@@ -39,18 +39,18 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
   initial_table[1, 1:x_length] <- m0$coefficients[(1 + 1):(1 + x_length)]
   # random initials
   set.seed(2022)
-  initial_table[2:(1+initial.random.num), 1:x_length] = runif(initial.random.num*(x_length), -1, 1)
+  initial_table[2:(1+initial.random.num), 1:x_length] = stats::runif(initial.random.num*(x_length), -1, 1)
   for (i in 1:nrow(initial_table)) {
     initial_table[i, 1:x_length] <- initial_table[i, 1:x_length]*sign(initial_table[i, 1])/sqrt(sum(initial_table[i, 1:x_length]^2))
   }
 
   # objective function
   fn <- function(beta_0){
-    flush.console()
+    utils::flush.console()
     u0 <- as.matrix(x) %*% as.matrix(beta_0)
-    x_new <- as.matrix(ns(u0, df = spline.num, intercept = TRUE))
-    m1 <- glm(y ~ -1 + x_new + z)
-    Ln <- logLik(m1)
+    x_new <- as.matrix(splines::ns(u0, df = spline.num, intercept = TRUE))
+    m1 <- stats::glm(y ~ -1 + x_new + z)
+    Ln <- stats::logLik(m1)
     Ln
   }
 
@@ -58,7 +58,7 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
   initial_results_list <- list()
   for (i in 1:nrow(initial_table)) {
     beta_0 <- as.matrix(initial_table[i, 1:x_length])
-    m2_temp <- optim(par = beta_0, fn = fn, gr = NULL, hessian = TRUE, control = list("fnscale" = -1, maxit = 1000))
+    m2_temp <- stats::optim(par = beta_0, fn = fn, gr = NULL, hessian = TRUE, control = list("fnscale" = -1, maxit = 1000))
     initial_results_list <- c(initial_results_list, m2_temp)
     initial_table[i, c("-2 log L")] = -2 * m2_temp$value
     initial_table[i, c("AIC")] = -2 * m2_temp$value + 2 * (x_length + z_length + spline.num - 1)
@@ -73,7 +73,7 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
   model_statistics = initial_table[order_ob, c("-2 log L", "AIC", "BIC")]
   m_selected <- initial_results_list[(length_temp * (order_ob - 1) + 1):(length_temp * order_ob)]
   beta_BeforeNorm_est <- m_selected$par
-  beta_BeforeNorm_sigma <- suppressWarnings(sqrt(diag(ginv(-m_selected$hessian))))
+  beta_BeforeNorm_sigma <- suppressWarnings(sqrt(diag(MASS::ginv(-m_selected$hessian))))
 
   # get the single index coefficient estimation
   beta_est <- beta_BeforeNorm_est * sign(beta_BeforeNorm_est[1])/sqrt(sum(beta_BeforeNorm_est^2))
@@ -81,22 +81,22 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
   beta_results <- as.data.frame(cbind(t(beta_est), beta_sigma))
   colnames(beta_results) <- c("Estimate", "Std.Error")
   beta_results$`t value` <- beta_results$Estimate / beta_results$`Std.Error`
-  beta_results$`Pr(>|t|)` <- ifelse(2 * pnorm(-abs(beta_results$`t value`)) < 0.0001, "<.0001",
-                                format(round(2 * pnorm(-abs(beta_results$`t value`)), 4), nsmall = 4))
-  beta_results$Lower.95CI <- beta_results$Estimate + qnorm(0.025) * beta_results$`Std.Error`
-  beta_results$Upper.95CI <- beta_results$Estimate + qnorm(0.975) * beta_results$`Std.Error`
+  beta_results$`Pr(>|t|)` <- ifelse(2 * stats::pnorm(-abs(beta_results$`t value`)) < 0.0001, "<.0001",
+                                format(round(2 * stats::pnorm(-abs(beta_results$`t value`)), 4), nsmall = 4))
+  beta_results$Lower.95CI <- beta_results$Estimate + stats::qnorm(0.025) * beta_results$`Std.Error`
+  beta_results$Upper.95CI <- beta_results$Estimate + stats::qnorm(0.975) * beta_results$`Std.Error`
 
   beta_results$`Contribution proportion` <- format(round((beta_results$Estimate)^2, 3), nsmall = 3)
   beta_results <- beta_results[order(beta_results$Estimate, decreasing = T), ]
 
   # get sing index function estimation
   single_index_estimated <- as.vector(x %*% as.vector(beta_est))
-  m1 <- glm(y ~ ns(single_index_estimated, df = spline.num) + z)
+  m1 <- stats::glm(y ~ ns(single_index_estimated, df = spline.num) + z)
   y_single_index = y - as.vector(z %*% as.vector(m1$coefficients[(spline.num + 2):(spline.num + 1 + z_length)]))
   si_fun_coef_estimated <- as.data.frame(summary(m1)$coefficients)[2:(1 + spline.num), ]
   dat_si_fun <- as.data.frame(cbind(single_index_estimated, y_single_index))
-  m2 <- glm(y_single_index ~ ns(single_index_estimated, df = spline.num))
-  dat_si_fun_ci <- add_ci(dat_si_fun, m2, alpha = 0.05, names = c("lwr", "upr"))
+  m2 <- stats::glm(y_single_index ~ ns(single_index_estimated, df = spline.num))
+  dat_si_fun_ci <- ciTools::add_ci(dat_si_fun, m2, alpha = 0.05, names = c("lwr", "upr"))
 
   # partial linear coefficient estimation
   confounder_coef_estimated <- as.data.frame(summary(m1)$coefficients)[(spline.num + 2):(spline.num + 1 + z_length),]

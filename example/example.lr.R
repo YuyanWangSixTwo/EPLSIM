@@ -6,6 +6,11 @@
 # require("ciTools")
 # require("MASS")
 
+# Load raw data from .csv file
+# nhanes <- read.csv("data-raw/NHANES.csv")
+# Save the cleaned data in the required R package location
+# usethis::use_data(nhanes, overwrite = TRUE)
+
 ## Step 0: import dataset
 ##############################################################################################
 data(nhanes)
@@ -59,7 +64,7 @@ X.name = c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocophe
 ## Step 0.1.4: check exposure correlation
 ##############################################################################################
 cor_matrix = cor(dat[,X.name])
-corrplot.mixed(cor_matrix, upper = "ellipse", lower = "number",
+corrplot::corrplot.mixed(cor_matrix, upper = "ellipse", lower = "number",
                tl.pos = "lt", tl.col = "black")
 ##############################################################################################
 
@@ -134,9 +139,9 @@ mixture.overall.plot(model_1, dat)
 
 ## Step 2.3.2: exposure main effect plot
 ##############################################################################################
-ExpVar.Main.plot(model_1, dat, exp_name = c("X4_a.tocopherol"))
-ExpVar.Main.plot(model_1, dat, exp_name = c("X5_PCB99"))
-ExpVar.Main.plot(model_1, dat, exp_name = c("X10_2.3.4.6.7.8.hxcdf"))
+expvar.main.plot(model_1, dat, exp_name = c("X4_a.tocopherol"))
+expvar.main.plot(model_1, dat, exp_name = c("X5_PCB99"))
+expvar.main.plot(model_1, dat, exp_name = c("X10_2.3.4.6.7.8.hxcdf"))
 X.name = c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
            "X5_PCB99", "X6_PCB156", "X7_PCB206",
            "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
@@ -145,18 +150,18 @@ X.name = c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocophe
 
 ## Step 2.4.1: interaction effect
 ##############################################################################################
-ExpVar.Interaction.plot(model_1, dat, "X4_a.tocopherol", "X3_g.tocopherol")
+expvar.interaction.plot(model_1, dat, "X4_a.tocopherol", "X3_g.tocopherol")
 ##############################################################################################
 
 ## Step 2.4.1: interaction effect
 ##############################################################################################
-ExpVar.Interaction.plot(model_1, dat, "X4_a.tocopherol", "X10_2.3.4.6.7.8.hxcdf")
+expvar.interaction.plot(model_1, dat, "X4_a.tocopherol", "X10_2.3.4.6.7.8.hxcdf")
 ##############################################################################################
 
 ## Step 2.4.2: interaction effect, exchange exposure
 ##############################################################################################
-ExpVar.Interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
-ExpVar.Interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
+expvar.interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
+expvar.interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
 ##############################################################################################
 
 ## Step 2.5: interquartile quartile plot

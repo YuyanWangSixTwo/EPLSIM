@@ -5,7 +5,7 @@
 \alias{nhanes}
 \title{This is data to be included in my package}
 \format{
-An object of class \code{data.frame} with 800 rows and 28 columns.
+An object of class \code{data.frame} with 800 rows and 14 columns.
 }
 \usage{
 nhanes

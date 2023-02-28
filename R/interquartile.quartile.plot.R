@@ -31,11 +31,11 @@ interquartile.quartile.plot <- function(fit, data){
     x_rest_quartiles <- apply(x_rest, 2, quantile, probs = c(0.25, 0.50, 0.75))
     x_rest_index <- as.vector(x_rest_quartiles %*% as.matrix(beta_rest))
 
-    pre_temp[((i - 1)*6 + 1):((i - 1)*6 + 3), c("single_index_estimated")] = quantile(x_index, p = 0.25) + x_rest_index
-    pre_temp[((i - 1)*6 + 4):((i - 1)*6 + 6), c("single_index_estimated")] = quantile(x_index, p = 0.75) + x_rest_index
+    pre_temp[((i - 1)*6 + 1):((i - 1)*6 + 3), c("single_index_estimated")] = stats::quantile(x_index, p = 0.25) + x_rest_index
+    pre_temp[((i - 1)*6 + 4):((i - 1)*6 + 6), c("single_index_estimated")] = stats::quantile(x_index, p = 0.75) + x_rest_index
   }
 
-  pre_temp <- add_ci(pre_temp, m2, alpha = 0.05, names = c("lwr", "upr"))
+  pre_temp <- ciTools::add_ci(pre_temp, m2, alpha = 0.05, names = c("lwr", "upr"))
   pre_temp$ci_diff <- pre_temp$upr - pre_temp$pred
 
   plot_temp <- as.data.frame(matrix(NA, 3 * length(X_name), 6))
@@ -52,12 +52,12 @@ interquartile.quartile.plot <- function(fit, data){
 
   plot_temp$Exposrue = factor(plot_temp$Exposrue, levels = X_name)
 
-  ggplot(data = plot_temp, aes(x = Exposrue, colour = Other_quartile, y = Diff_est, ymin = diff_lwr, ymax = diff_upr)) +
+  ggplot2::ggplot(data = plot_temp, ggplot2::aes(x = Exposrue, colour = Other_quartile, y = Diff_est, ymin = diff_lwr, ymax = diff_upr)) +
   # ggplot(data = plot_temp, aes(x = Exposrue, colour = Other_quartile, y = Diff_est)) +
-    geom_point(position = position_dodge(width = 0.5)) +
-    geom_errorbar(position = position_dodge(width = 0.5), width = 0.1) +
-    coord_flip() +
+    ggplot2::geom_point(position = position_dodge(width = 0.5)) +
+    ggplot2::geom_errorbar(position = position_dodge(width = 0.5), width = 0.1) +
+    ggplot2::coord_flip() +
     # facet_wrap(~Exposrue, ncol = 1, strip.position = "left") +
-    ylab("Difference of predicted outcome") +
-    xlab("Exposure")
+    ggplot2::ylab("Difference of predicted outcome") +
+    ggplot2::xlab("Exposure")
 }
