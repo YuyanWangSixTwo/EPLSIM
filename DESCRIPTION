@@ -9,7 +9,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Depends: R (>= 2.10)
-Imports: splines, ggplot2, corrplot, MASS
+Imports: splines, ggplot2, corrplot, MASS, ciTools
 Suggests: PerformanceAnalytics
 LazyLoad: yes
 ByteCompile: yes

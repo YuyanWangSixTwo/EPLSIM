@@ -18,18 +18,16 @@ mixture.overall.plot <- function(fit, data){
   x_quantiles <- apply(x, 2, quantile, probs = quants)
   index_quantile <- x_quantiles %*% beta_est_vec
 
-  index_dat <- as.data.frame(cbind(quants,index_quantile))
-  colnames(index_dat) <- c("quants",'index_estimated')
+  index_dat <- as.data.frame(cbind(quants, index_quantile))
+  colnames(index_dat) <- c("quants", 'single_index_estimated')
 
-  m2 <- fit$link_spline
+  m2 <- fit$si.fun.model
   pred_index_dat <- add_ci(index_dat, m2, alpha = 0.05, names = c("lwr", "upr"))
 
-  ggplot(pred_index_dat, aes(x=quants, y=pred)) +
-    geom_errorbar(aes(ymin=lwr, ymax=upr), width=.01) +
-    geom_point(size=2, shape=21, fill="white") +
+  ggplot(pred_index_dat, aes(x = quants, y = pred)) +
+    geom_errorbar(aes(ymin = lwr, ymax = upr), width = .01) +
+    geom_point(size = 2, shape = 21, fill = "white") +
     ggtitle("Mixture overall effect") +
-    labs(y = "Predicted outcome", x = "Quantile levels of each exposure") +
-    scale_x_continuous(breaks=seq(0.1,0.9,by=0.1))
-
-  # list(pred_index_dat=pred_index_dat)
+    labs(y = "Predicted outcome", x = "Quantile levels") +
+    scale_x_continuous(breaks = seq(0.1, 0.9, by =  0.1))
 }

@@ -32,8 +32,7 @@ for (i in 1:length(X.name)) {
   hist(log(dat[, X.name[i]]),main = paste("log(", X.name[i], ")", sep = ""), xlab = NA, ylab = NA)
 }
 ##############################################################################################
-
-dev.off()
+par(mfrow = c(1, 1))
 
 ## Step 0.1.3: log-transform, standardize, and rename the exposure variables
 ##############################################################################################
@@ -127,45 +126,40 @@ model_1$confounder.coefficient
 ##############################################################################################
 
 
-## Step 2.3.1: overall effect
+## Step 2.3.1: mixutre overall effect plot
 ##############################################################################################
-mixture.overall.plot(fit=model_1, data = dat)
+mixture.overall.plot(model_1, dat)
 ##############################################################################################
 
 
-## Step 2.3.2: exposure main effect
+## Step 2.3.2: exposure main effect plot
 ##############################################################################################
-quantile_main_plot(fit=model_1, data = dat, exp_name=c("X4_a.tocopherol"))
-quantile_main_plot(fit=model_1, data = dat, exp_name=c("X5_PCB99"))
-quantile_main_plot(fit=model_1, data = dat, exp_name=c("X10_2.3.4.6.7.8.hxcdf"))
-X = c("X1_trans.b.carotene","X2_retinol","X3_g.tocopherol","X4_a.tocopherol",
-      "X5_PCB99","X6_PCB156","X7_PCB206",
-      "X8_3.3.4.4.5.pncb","X9_1.2.3.4.7.8.hxcdf","X10_2.3.4.6.7.8.hxcdf")
+exp.main.plot(model_1, dat, exp_name = c("X4_a.tocopherol"))
+exp.main.plot(model_1, dat, exp_name = c("X5_PCB99"))
+exp.main.plot(model_1, dat, exp_name = c("X10_2.3.4.6.7.8.hxcdf"))
+X.name = c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
+           "X5_PCB99", "X6_PCB156", "X7_PCB206",
+           "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
 ##############################################################################################
 
 
 ## Step 2.4.1: interaction effect
 ##############################################################################################
-quantile_interaction_plot(fit=model_1, data = dat, exp_1="X4_a.tocopherol", exp_2="X3_g.tocopherol")
+exp.interaction.plot(model_1, dat, exp_1 = "X4_a.tocopherol", exp_2 = "X3_g.tocopherol")
 ##############################################################################################
 
 ## Step 2.4.1: interaction effect
 ##############################################################################################
-quantile_interaction_plot(fit=model_1, data = dat, exp_1="X4_a.tocopherol", exp_2="X10_2.3.4.6.7.8.hxcdf")
+exp.interaction.plot(model_1, dat, exp_1 = "X4_a.tocopherol", exp_2 = "X10_2.3.4.6.7.8.hxcdf")
 ##############################################################################################
 
 ## Step 2.4.2: interaction effect, exchange exposure
 ##############################################################################################
-quantile_interaction_plot(fit=model_1, data = dat, exp_1="X8_3.3.4.4.5.pncb", exp_2="X6_PCB156")
-quantile_interaction_plot(fit=model_1, data = dat, exp_2="X8_3.3.4.4.5.pncb", exp_1="X6_PCB156")
-dev.off()
+exp.interaction.plot(model_1, dat, exp_1 = "X8_3.3.4.4.5.pncb", exp_2 = "X6_PCB156")
+exp.interaction.plot(model_1, dat, exp_2 = "X8_3.3.4.4.5.pncb", exp_1 = "X6_PCB156")
 ##############################################################################################
 
 ## Step 2.5: interquartile quartile plot
 ##############################################################################################
-interquartile_quartile_plot(fit = model_1, data = dat)
+interquartile.quartile.plot(model_1, dat)
 ##############################################################################################
-
-
-## interquartile of interquartile plot
-# interquartile_interquartile_plot(fit = model_1, data = dat)
