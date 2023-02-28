@@ -145,18 +145,18 @@ X.name = c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocophe
 
 ## Step 2.4.1: interaction effect
 ##############################################################################################
-exp.interaction.plot(model_1, dat, exp_1 = "X4_a.tocopherol", exp_2 = "X3_g.tocopherol")
+exp.interaction.plot(model_1, dat, "X4_a.tocopherol", "X3_g.tocopherol")
 ##############################################################################################
 
 ## Step 2.4.1: interaction effect
 ##############################################################################################
-exp.interaction.plot(model_1, dat, exp_1 = "X4_a.tocopherol", exp_2 = "X10_2.3.4.6.7.8.hxcdf")
+exp.interaction.plot(model_1, dat, "X4_a.tocopherol", "X10_2.3.4.6.7.8.hxcdf")
 ##############################################################################################
 
 ## Step 2.4.2: interaction effect, exchange exposure
 ##############################################################################################
-exp.interaction.plot(model_1, dat, exp_1 = "X8_3.3.4.4.5.pncb", exp_2 = "X6_PCB156")
-exp.interaction.plot(model_1, dat, exp_2 = "X8_3.3.4.4.5.pncb", exp_1 = "X6_PCB156")
+exp.interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
+exp.interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
 ##############################################################################################
 
 ## Step 2.5: interquartile quartile plot
