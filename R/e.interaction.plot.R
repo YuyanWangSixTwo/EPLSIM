@@ -11,7 +11,7 @@
 #' \dontrun{
 #' sum("a")
 #' }
-expvar.interaction.plot <- function(fit, data, exp_1, exp_2){
+e.interaction.plot <- function(fit, data, exp_1, exp_2){
   # fit = model_1; data = dat; exp_1 = "X4_a.tocopherol"; exp_2 = "X3_g.tocopherol"
   x_1_value <- data[, exp_1]; beta_1 <- fit$si.coefficient[exp_1, 1]; x_1_index <- x_1_value * beta_1
   x_2_value <- data[, exp_2]; beta_2 <- fit$si.coefficient[exp_2, 1]; x_2_index <- x_2_value * beta_2
