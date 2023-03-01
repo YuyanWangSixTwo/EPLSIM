@@ -91,11 +91,11 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
 
   # get sing index function estimation
   single_index_estimated <- as.vector(x %*% as.vector(beta_est))
-  m1 <- stats::glm(y ~ ns(single_index_estimated, df = spline.num) + z)
+  m1 <- stats::glm(y ~ splines::ns(single_index_estimated, df = spline.num) + z)
   y_single_index = y - as.vector(z %*% as.vector(m1$coefficients[(spline.num + 2):(spline.num + 1 + z_length)]))
   si_fun_coef_estimated <- as.data.frame(summary(m1)$coefficients)[2:(1 + spline.num), ]
   dat_si_fun <- as.data.frame(cbind(single_index_estimated, y_single_index))
-  m2 <- stats::glm(y_single_index ~ ns(single_index_estimated, df = spline.num))
+  m2 <- stats::glm(y_single_index ~ splines::ns(single_index_estimated, df = spline.num))
   dat_si_fun_ci <- ciTools::add_ci(dat_si_fun, m2, alpha = 0.05, names = c("lwr", "upr"))
 
   # partial linear coefficient estimation
