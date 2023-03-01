@@ -2,8 +2,8 @@ Package: EPLSIM
 Version: 0.1.0
 Author: Yuyan Wang [aut, cre], Mengling Liu [ctb]
 Maintainer: Yuyan Wang <yuyan.wang@nyumc.org>
-Title: Partial Linear Single Index Models for Environmental mixture analysis
-Description: This packacge includes a family of Partial Linear Single Index Models for Environmental mixture analyses (EPLSIM), which currently provides functions for scalar outcomes. The outputs of these functions include the single index function, single index coefficients, confounder coefficients, mixture overall effect, exposure main and interaction effects, and interquartile effects.  In the future, we will add functions for binary, ordinal, Poisson, survival, and longitudinal outcomes, as well as models for time-dependent exposures.
+Title: Partial Linear Single Index Models for Environmental Mixture Analysis
+Description: This package includes a family of Partial Linear Single Index Models for Environmental mixture analyses (EPLSIM), which currently provides functions for scalar outcomes. The outputs of these functions include the single index function, single index coefficients, partial linear coefficients, mixture overall effect, exposure main and interaction effects, and differences of quartile effects.  In the future, we will add functions for binary, ordinal, Poisson, survival, and longitudinal outcomes, as well as models for time-dependent exposures.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -13,7 +13,6 @@ Imports: splines, ggplot2, MASS, ciTools
 Suggests: 
     PerformanceAnalytics,
     testthat (>= 3.0.0)
-ExtraData: data/nhanes.rda
 LazyLoad: yes
 ByteCompile: yes
 Date: 2023-02-22

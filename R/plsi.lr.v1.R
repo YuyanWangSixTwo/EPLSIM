@@ -7,6 +7,7 @@
 #' @param spline.num A number representing the degree of freedom of B-spline basis for link function
 #' @param spline.degree A number representing the degree of the piece-wise polynomial of B-spline basis for link function
 #' @param initial.random.num A number representing the number of random initials used in the function
+#' @importFrom stats qnorm
 #'
 #' @return A list of model estimation and prediction results
 #' @export

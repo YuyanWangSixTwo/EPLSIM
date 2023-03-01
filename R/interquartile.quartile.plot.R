@@ -2,7 +2,7 @@
 #'
 #' @param fit Fitted model from PLSI function 'plsi.lr.v1'
 #' @param data Original data set
-#'
+#' @importFrom stats quantile
 #' @return plot of main interquartile effect of specific exposure based on quartile of other exposures
 #' @export
 #' @examples

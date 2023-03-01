@@ -1,6 +1,7 @@
 #' plot estimated single index coefficients
 #'
 #' @param si.coef.est A data set of single index coefficient estimations
+#' @importFrom stats reorder
 #'
 #' @return single index coefficient plot
 #' @export
