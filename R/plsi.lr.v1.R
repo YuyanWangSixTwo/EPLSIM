@@ -30,7 +30,7 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
 
   # get the length and linear model
   n <- nrow(data); x_length <- length(X.name); z_length <- length(Z.name)
-  m0 <- stats::glm(y~x+z, data = dat)
+  m0 <- stats::glm(y~x+z, data)
 
   # initial tables
   initial_table = as.data.frame(matrix(NA, nrow = (1 + initial.random.num), ncol = (x_length + 3)))
