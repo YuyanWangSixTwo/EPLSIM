@@ -59,7 +59,8 @@ interquartile.quartile.plot <- function(fit, data){
     ggplot2::coord_flip() +
     # facet_wrap(~Exposrue_Name, ncol = 1, strip.position = "left") +
     ggplot2::ylab("Difference of predicted outcome") +
-    ggplot2::xlab("Exposure")
+    ggplot2::xlab("Exposure") +
+    ggplot2::scale_color_manual(values = c("red", "blue", "green"), name = NULL)
 
   suppressWarnings(print(final_plot))
 }

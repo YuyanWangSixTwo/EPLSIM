@@ -37,7 +37,7 @@ for (i in 1:length(X.name)) {
   graphics::hist(log(dat[, X.name[i]]),main = paste("log(", X.name[i], ")", sep = ""), xlab = NA, ylab = NA)
 }
 ##############################################################################################
-# par(mfrow = c(1, 1))
+par(mfrow = c(1, 1))
 
 ## Step 0.1.3: log-transform, standardize, and rename the exposure variables
 ##############################################################################################
