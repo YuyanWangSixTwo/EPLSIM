@@ -63,22 +63,18 @@ X.name = c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocophe
 
 ## Step 0.1.4: check exposure correlation
 ##############################################################################################
-dev.off()
 cor_matrix = cor(dat[,X.name])
-corrplot::corrplot.mixed(cor_matrix, upper = "ellipse", lower = "number",
-               tl.pos = "lt", tl.col = "black")
+# corrplot::corrplot.mixed(cor_matrix, upper = "ellipse", lower = "number",tl.pos = "lt", tl.col = "black")
 ##############################################################################################
 
 
 ## Step 0.2.1: check outcome distribution
 ##############################################################################################
-dev.off()
-hist(dat[, Y.name], main = Y.name, xlab = NA, ylab = NA)
+# hist(dat[, Y.name], main = Y.name, xlab = NA, ylab = NA)
 dat[ , paste("log.", Y.name, sep = "")] = log(dat[, Y.name])
 Y.name = paste("log.", Y.name, sep = "")
 dat[, Y.name] = scale(dat[, Y.name])
-dev.off()
-hist(dat[, Y.name], main = Y.name, xlab = NA, ylab = NA)
+# hist(dat[, Y.name], main = Y.name, xlab = NA, ylab = NA)
 ##############################################################################################
 
 ## Step 0.2.2: check outliers and delete records with outliers
