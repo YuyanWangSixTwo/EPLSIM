@@ -2,7 +2,7 @@
 
 export(covariate.trans)
 export(e.interaction.plot)
-export(expvar.main.plot)
+export(e.main.plot)
 export(interquartile.quartile.plot)
 export(mixture.overall.plot)
 export(plsi.lr.v1)
