@@ -25,7 +25,7 @@ mixture.overall.plot <- function(fit, data){
   pred_index_dat <- ciTools::add_ci(index_dat, m2, alpha = 0.05, names = c("lwr", "upr"))
 
   ggplot2::ggplot(pred_index_dat, ggplot2::aes(x = quants, y = pred)) +
-    ggplot2::geom_errorbar(aes(ymin = lwr, ymax = upr), width = .01) +
+    ggplot2::geom_errorbar(ggplot2::aes(ymin = lwr, ymax = upr), width = .01) +
     ggplot2::geom_point(size = 2, shape = 21, fill = "white") +
     ggplot2::ggtitle("Mixture overall effect") +
     ggplot2::labs(y = "Predicted outcome", x = "Quantile levels") +

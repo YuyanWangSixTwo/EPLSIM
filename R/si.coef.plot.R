@@ -21,10 +21,10 @@ si.coef.plot <- function(si.coef.est){
     ggplot2::geom_text(ggplot2::aes(label = format(round(Estimate, 3), nsmall = 3)), hjust = 1.0) +
     ggplot2::ggtitle("Relative effect in single index") +
     ggplot2::labs(y = paste("Relative effect ", "\u03B2" ,sep = ""), x = "Exposure") +
-    ggplot2::theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "none",
-          panel.background = element_blank(),
-          axis.line = element_line(colour = "black"),
-          axis.text = element_text(colour = "black", size = rel(1.0))) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "none",
+          panel.background = ggplot2::element_blank(),
+          axis.line = ggplot2::element_line(colour = "black"),
+          axis.text = ggplot2::element_text(colour = "black", size = ggplot2::rel(1.0))) +
     ggplot2::scale_fill_manual(values = c("#12ffac", "#ff8112")) +
     ggplot2::geom_hline(yintercept = 0, linetype = "dashed")
 }

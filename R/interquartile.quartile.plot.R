@@ -54,8 +54,8 @@ interquartile.quartile.plot <- function(fit, data){
 
   ggplot2::ggplot(data = plot_temp, ggplot2::aes(x = Exposrue, colour = Other_quartile, y = Diff_est, ymin = diff_lwr, ymax = diff_upr)) +
   # ggplot(data = plot_temp, aes(x = Exposrue, colour = Other_quartile, y = Diff_est)) +
-    ggplot2::geom_point(position = position_dodge(width = 0.5)) +
-    ggplot2::geom_errorbar(position = position_dodge(width = 0.5), width = 0.1) +
+    ggplot2::geom_point(position = ggplot2::position_dodge(width = 0.5)) +
+    ggplot2::geom_errorbar(position = ggplot2::position_dodge(width = 0.5), width = 0.1) +
     ggplot2::coord_flip() +
     # facet_wrap(~Exposrue, ncol = 1, strip.position = "left") +
     ggplot2::ylab("Difference of predicted outcome") +
