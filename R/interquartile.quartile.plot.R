@@ -52,7 +52,7 @@ interquartile.quartile.plot <- function(fit, data){
 
   plot_temp$Exposrue_Name = factor(plot_temp$Exposrue_Name, levels = X_name)
 
-  ggplot2::ggplot(data = plot_temp, ggplot2::aes(x = plot_temp$Exposrue_Name, colour = plot_temp$Other_quartile, y = plot_temp$Diff_est, ymin = plot_temp$Diff_lwr, ymax = plot_temp$Diff_upr)) +
+  final_plot <- ggplot2::ggplot(data = plot_temp, ggplot2::aes(x = plot_temp$Exposrue_Name, colour = plot_temp$Other_quartile, y = plot_temp$Diff_est, ymin = plot_temp$Diff_lwr, ymax = plot_temp$Diff_upr)) +
   # ggplot(data = plot_temp, aes(x = Exposrue_Name, colour = Other_quartile, y = Diff_est)) +
     ggplot2::geom_point(position = ggplot2::position_dodge(width = 0.5)) +
     ggplot2::geom_errorbar(position = ggplot2::position_dodge(width = 0.5), width = 0.1) +
@@ -60,4 +60,6 @@ interquartile.quartile.plot <- function(fit, data){
     # facet_wrap(~Exposrue_Name, ncol = 1, strip.position = "left") +
     ggplot2::ylab("Difference of predicted outcome") +
     ggplot2::xlab("Exposure")
+
+  suppressWarnings(print(final_plot))
 }
