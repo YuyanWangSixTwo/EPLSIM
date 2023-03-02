@@ -1,0 +1,21 @@
+---
+title: "An Introduction to EPLSIM Package"
+author: 'Yuyan Wang, Mengling Liu'
+date: '`r Sys.Date()`'
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{An Introduction to EPLSIM Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(EPLSIM)
+```

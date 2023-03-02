@@ -1,9 +1,13 @@
 Package: EPLSIM
-Version: 0.1.0
-Author: Yuyan Wang [aut, cre], Mengling Liu [ctb]
-Maintainer: Yuyan Wang <yuyan.wang@nyumc.org>
+Type: Package
 Title: Partial Linear Single Index Models for Environmental Mixture Analysis
-Description: Partial Linear Single Index Models for Environmental mixture analyses, which currently provides functions for scalar outcomes. The outputs of these functions include the single index function, single index coefficients, partial linear coefficients, mixture overall effect, exposure main and interaction effects, and differences of quartile effects.  In the future, we will add functions for binary, ordinal, Poisson, survival, and longitudinal outcomes, as well as models for time-dependent exposures.
+Version: 0.1.0
+Date: 2023-03-02
+Authors@R: c(person("Yuyan", "Wang", role = c("aut", "cre","cph"),
+                      email = "yuyan.wang@nyumc.org"),
+                       person("Mengling", "Liu", role = "aut") )
+Maintainer: Yuyan Wang <yuyan.wang@nyumc.org>
+Description: Partial Linear Single Index Models for Environmental mixture analyses, which currently provides functions for scalar outcomes. The outputs of these functions include the single index function, single index coefficients, partial linear coefficients, mixture overall effect, exposure main and interaction effects, and differences of quartile effects. In the future, we will add functions for binary, ordinal, Poisson, survival, and longitudinal outcomes, as well as models for time-dependent exposures. See Wang et al (2020) <doi:10.1186/s12940-020-00644-4> for an overview. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -11,11 +15,10 @@ RoxygenNote: 7.2.0
 Depends: R (>= 2.10)
 Imports: splines, ggplot2, MASS, ciTools
 Suggests: 
+    knitr,
     PerformanceAnalytics,
+    rmarkdown,
     testthat (>= 3.0.0)
-LazyLoad: yes
-ByteCompile: yes
-Date: 2023-02-22
-Config/testthat/edition: 3
-LazyData: true
 URL: https://github.com/YuyanWangSixTwo/EPLSIM 
+VignetteBuilder: knitr
+LazyData: true

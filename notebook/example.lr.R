@@ -94,12 +94,11 @@ nrow(dat)
 ## Step 0.3.1:preprocess the confounders; centralize the continuous confounders; factorize the categorical confounders
 ##############################################################################################
 dat$SEX <- factor(dat$sex,1:2,c('Male','Female'))
-dat$RACE <- factor(dat$race,1:5,c("Non-Hispanic White","Non-Hispanic Black",
-                                  "Mexican American","Other Race - Including Multi-Racial","Other Hispanic"))
-dat$AGE <- dat$age - mean(dat$age)
-cov_m <- covariate.trans(Z_continuous = c("AGE"), Z_discrete = c("SEX", "RACE"), data = dat)
-Z.name <- cov_m[[1]]
-dat <- cov_m[[2]]
+dat$RACE <- factor(dat$race,1:5,c("NH-White", "NH-Black", "MexicanAmerican", "OtherRace", "Hispanic"))
+dat$AGE <- dat$age
+cov_m <- confounder.trans(Z_continuous = c("AGE"), Z_discrete = c("SEX", "RACE"), data = dat)
+Z.name <- cov_m$New.Name
+dat <- cov_m$Updated.data
 print(Z.name)
 ##############################################################################################
 
