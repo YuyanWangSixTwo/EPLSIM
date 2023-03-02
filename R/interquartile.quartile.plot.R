@@ -41,7 +41,7 @@ interquartile.quartile.plot <- function(fit, data){
   plot_temp <- as.data.frame(matrix(NA, 3 * length(X_name), 6))
   colnames(plot_temp) <- c("Exposrue_Name", "Other_quartile", "Diff_est", "ci_diff", "Diff_lwr", "Diff_upr")
   plot_temp$Exposrue_Name <- rep(X_name, each = 3)
-  plot_temp$Other_quartile <- rep(c('0.25', '0.50', '0.75'), length(X_name))
+  plot_temp$Other_quartile <- rep(c('Q1', 'Q2', 'Q3'), length(X_name))
 
   for (i in 1:length(X_name)) {
     plot_temp[((i-1)*3+1):((i-1)*3+3),c("Diff_est")]=pre_temp[((i-1)*6+4):((i-1)*6+6),c("pred")]-pre_temp[((i-1)*6+1):((i-1)*6+3),c("pred")]
