@@ -8,13 +8,13 @@
 #' @param spline.degree A number representing the degree of the piece-wise polynomial of B-spline basis for link function
 #' @param initial.random.num A number representing the number of random initials used in the function
 #' @importFrom stats qnorm
-#'
 #' @return A list of model estimation and prediction results
+#'
+#' @example vignettes/example.plsi.lr.v1.R
+#' @keywords plsi.lr
+#' @author Yuyan Wang
 #' @export
-#' @examples
-#' \dontrun{
-#' sum("a")
-#' }
+#'
 plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, initial.random.num)
 {
   # data = dat; Y.name = Y.name; X.name = X.name; Z.name = Z.name ; spline.num = 5 ; spline.degree = 3 ; initial.random.num = 5
