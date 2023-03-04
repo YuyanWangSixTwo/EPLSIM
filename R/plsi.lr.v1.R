@@ -10,7 +10,6 @@
 #' @importFrom stats qnorm
 #' @return A list of model estimation and prediction results
 #'
-#' @example vignettes/example.plsi.lr.v1.R
 #' @keywords plsi.lr
 #' @author Yuyan Wang
 #' @export

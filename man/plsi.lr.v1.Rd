@@ -35,8 +35,7 @@ A list of model estimation and prediction results
 \description{
 Partial linear single index linear regression for scalar outcome
 }
-\examples{
-\dontrun{
-sum("a")
+\author{
+Yuyan Wang
 }
-}
+\keyword{plsi.lr}
