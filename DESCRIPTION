@@ -20,5 +20,6 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 URL: https://github.com/YuyanWangSixTwo/EPLSIM 
+BugReports: https://github.com/YuyanWangSixTwo/EPLSIM/issues
 VignetteBuilder: knitr
 LazyData: true
