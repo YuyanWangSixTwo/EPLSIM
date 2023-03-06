@@ -61,7 +61,7 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
   initial_results_list <- list()
   for (i in 1:nrow(initial_table)) {
     beta_0 <- as.matrix(initial_table[i, 1:x_length])
-    m2_temp <- stats::optim(par = beta_0, fn = fn, gr = NULL, hessian = TRUE, control = list("fnscale" = -1, maxit = 100))
+    m2_temp <- stats::optim(par = beta_0, fn = fn, method = "L-BFGS-B", hessian = TRUE, control = list("fnscale" = -1))
     initial_results_list <- c(initial_results_list, m2_temp)
     initial_table[i, c("-2 log L")] = -2 * m2_temp$value
     initial_table[i, c("AIC")] = -2 * m2_temp$value + 2 * (x_length + z_length + spline.num - 1)
