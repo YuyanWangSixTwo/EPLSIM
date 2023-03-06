@@ -1,14 +1,14 @@
 #' plot estimated single index coefficients
 #'
-#' @param si.coef.est A data set of single index coefficient estimations
+#' @param si.coef.est A data set of estimated single index coefficients
 #' @importFrom stats reorder
-#'
 #' @return single index coefficient plot
+#'
+#' @example vignettes/example.si.coef.plot.R
+#' @keywords single.index.coefficients
+#' @author Yuyan Wang
 #' @export
-#' @examples
-#' \dontrun{
-#' sum("a")
-#' }
+#'
 si.coef.plot <- function(si.coef.est){
   beta_plot = si.coef.est
   beta_plot$exp = rownames(beta_plot)

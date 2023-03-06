@@ -1,14 +1,15 @@
 #' plot interquartile effect of specific exposure based on quartile of other exposures
 #'
-#' @param fit Fitted model from PLSI function 'plsi.lr.v1'
+#' @param fit Fitted model from function 'plsi.lr.v1'
 #' @param data Original data set
 #' @importFrom stats quantile
-#' @return plot of main interquartile effect of specific exposure based on quartile of other exposures
+#' @return plot of main interquartile effect of exposure based on quartile of other exposures
+#'
+#' @example vignettes/example.interquartile.quartile.plot.R
+#' @keywords interquartile.quartile.effect
+#' @author Yuyan Wang
 #' @export
-#' @examples
-#' \dontrun{
-#' sum("a")
-#' }
+#'
 interquartile.quartile.plot <- function(fit, data){
   # fit = model_1; data = dat
   m2 <- fit$si.fun.model

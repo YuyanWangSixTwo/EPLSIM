@@ -1,16 +1,17 @@
 #' plot interaction effect of two exposures
 #'
-#' @param fit Fitted model from PLSI function 'plsi.lr.v1'
+#' @param fit Fitted model from function 'plsi.lr.v1'
 #' @param data Original data set
 #' @param exp_1 exposure name hoping to be checked
 #' @param exp_2 exposure name hoping to be checked
+#' @importFrom graphics par
+#' @return plot of interaction effect of two exposures with others at average level
 #'
-#' @return plot of interaction effect of two exposures with others at average level 0
+#' @example vignettes/example.e.interaction.plot.R
+#' @keywords exposures.interaction.effect
+#' @author Yuyan Wang
 #' @export
-#' @examples
-#' \dontrun{
-#' sum("a")
-#' }
+#'
 e.interaction.plot <- function(fit, data, exp_1, exp_2){
   # fit = model_1; data = dat; exp_1 = "X4_a.tocopherol"; exp_2 = "X3_g.tocopherol"
   x_1_value <- data[, exp_1]; beta_1 <- fit$si.coefficient[exp_1, 1]; x_1_index <- x_1_value * beta_1
@@ -45,7 +46,8 @@ e.interaction.plot <- function(fit, data, exp_1, exp_2){
   ymin = min(min(x_1_index_dat[, c("pred_q1", "pred_q2", "pred_q3")]), min(x_2_index_dat[, c("pred_q1", "pred_q2", "pred_q3")]))
   ymax = max(max(x_1_index_dat[, c("pred_q1", "pred_q2", "pred_q3")]), max(x_2_index_dat[, c("pred_q1", "pred_q2", "pred_q3")]))
 
-  graphics::par(mfrow = c(1, 2))
+  opar <- par(mfrow = c(1, 2))
+  on.exit(par(opar))
   plot(x_1_index_dat[, c("x_1_value")], x_1_index_dat[, c("pred_q1")], col = 1,
        type = "l", xlab = exp_1, ylab = "Predictied outcome", ylim = c(ymin - 0.5, ymax + 0.5))
   graphics::lines(x_1_index_dat[, c("x_1_value")], x_1_index_dat[, c("pred_q2")], col = 2)
@@ -61,6 +63,4 @@ e.interaction.plot <- function(fit, data, exp_1, exp_2){
   graphics::axis(side = 1, at = x_2_index_dat[, c("x_2_value")], labels = FALSE, NA, tck = 0.016)
   graphics::legend("topleft", xpd = TRUE, bty = "n", col = c(1, 2, 3), lty = 1, cex = 0.6,
                    legend = c(paste("Q1 of ", exp_1, sep = ""), paste("Q2 of ", exp_1, sep = ""), paste("Q3 of ", exp_1, sep = "")))
-
-  graphics::par(mfrow = c(1, 1))
 }

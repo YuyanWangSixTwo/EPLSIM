@@ -10,13 +10,15 @@
 #' @importFrom stats qnorm
 #' @return A list of model estimation and prediction results
 #'
+#' @example vignettes/example.plsi.lr.v1.R
 #' @keywords plsi.lr
 #' @author Yuyan Wang
 #' @export
 #'
 plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, initial.random.num)
 {
-  # data = dat; Y.name = Y.name; X.name = X.name; Z.name = Z.name ; spline.num = 5 ; spline.degree = 3 ; initial.random.num = 5
+  # data = dat; Y.name = Y.name; X.name = X.name; Z.name = Z.name
+  # spline.num = 5 ; spline.degree = 3 ; initial.random.num = 5
 
   # recorder the exposure
   cor_linear <- stats::cor(data[ , c(Y.name, X.name)])
@@ -38,7 +40,8 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
   # initial from linear regression
   initial_table[1, 1:x_length] <- m0$coefficients[(1 + 1):(1 + x_length)]
   # random initials
-  set.seed(2022)
+  # set.seed(2022)
+  # set.seed()
   initial_table[2:(1+initial.random.num), 1:x_length] = stats::runif(initial.random.num*(x_length), -1, 1)
   for (i in 1:nrow(initial_table)) {
     initial_table[i, 1:x_length] <- initial_table[i, 1:x_length]*sign(initial_table[i, 1])/sqrt(sum(initial_table[i, 1:x_length]^2))
@@ -106,11 +109,11 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
                                    format(round(confounder_coef_estimated$`Pr(>|t|)`, 4), nsmall = 4))
 
   # output
-  list(original.data = list(y = y, x = x, z = z),
+  return(list(original.data = list(y = y, x = x, z = z),
        original.par = list(spline.num = spline.num, spline.degree = spline.degree, initial.random.num = initial.random.num),
        si.coefficient = beta_results, model.statistics = model_statistics,
        intial.table = initial_table,
        all.intial.results = initial_results_list,
        confounder.coefficient = confounder_coef_estimated, si.fun.bs.coef = si_fun_coef_estimated,
-       si.fun = dat_si_fun_ci, si.fun.model = m2)
+       si.fun = dat_si_fun_ci, si.fun.model = m2))
 }

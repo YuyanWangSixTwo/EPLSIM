@@ -1,14 +1,14 @@
 #' plot mixture's overall effect based on quantile of exposures
 #'
-#' @param fit Fitted model from PLSI function 'plsi_lr_v1'
+#' @param fit Fitted model from function 'plsi.lr.v1'
 #' @param data Original data set
+#' @return plot of predicted outcomes based on quantile of exposures
 #'
-#' @return plot of predicted outcome based on quantile of exposures
+#' @example vignettes/example.mixture.overall.plot.R
+#' @keywords mixture.effect
+#' @author Yuyan Wang
 #' @export
-#' @examples
-#' \dontrun{
-#' sum("a")
-#' }
+#'
 mixture.overall.plot <- function(fit, data){
   # fit = model_1; data = dat
   beta_est_vec <- as.vector(fit$si.coefficient[, 1])

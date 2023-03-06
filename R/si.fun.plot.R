@@ -1,14 +1,14 @@
 #' plot estimated single index function
 #'
-#' @param si.ci A data set of estimated index, link value, and CIs
+#' @param si.ci A data set of estimated index and corresponding single index values
 #' @importFrom graphics lines axis
-#'
 #' @return Single index function plot
+#'
+#' @example vignettes/example.si.fun.plot.R
+#' @keywords single.index.function
+#' @author Yuyan Wang
 #' @export
-#' @examples
-#' \dontrun{
-#' sum("a")
-#' }
+#'
 si.fun.plot <- function(si.ci){
   # si.ci <- model_1$si.fun
   # cut <- 0.02

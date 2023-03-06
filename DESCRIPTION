@@ -3,9 +3,8 @@ Type: Package
 Title: Partial Linear Single Index Models for Environmental Mixture Analysis
 Version: 0.1.0
 Date: 2023-03-02
-Authors@R: c(person("Yuyan", "Wang", role = c("aut", "cre","cph"),
-                      email = "yuyan.wang@nyumc.org"),
-                       person("Mengling", "Liu", role = "aut") )
+Authors@R: c(person("Yuyan", "Wang", role = c("aut", "cre","cph"), email = "yuyan.wang@nyumc.org"),
+             person("Mengling", "Liu", role = c("aut", "ctb") ))
 Maintainer: Yuyan Wang <yuyan.wang@nyumc.org>
 Description: Partial Linear Single Index Models for Environmental mixture analyses, which currently provides functions for scalar outcomes. The outputs of these functions include the single index function, single index coefficients, partial linear coefficients, mixture overall effect, exposure main and interaction effects, and differences of quartile effects. In the future, we will add functions for binary, ordinal, Poisson, survival, and longitudinal outcomes, as well as models for time-dependent exposures. See Wang et al (2020) <doi:10.1186/s12940-020-00644-4> for an overview. 
 License: MIT + file LICENSE

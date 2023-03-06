@@ -1,15 +1,15 @@
 #' plot single exposure's main effect
 #'
-#' @param fit Fitted model from PLSI function 'plsi.lr.v1'
+#' @param fit Fitted model from function 'plsi.lr.v1'
 #' @param data Original data set
 #' @param exp_name exposure name hoping to be plotted
+#' @return plot of exposure's main effect with other exposures at average level 0
 #'
-#' @return plot of main effect with other exposures at average level 0
+#' @example vignettes/example.e.main.plot.R
+#' @keywords exposure.main.effect
+#' @author Yuyan Wang
 #' @export
-#' @examples
-#' \dontrun{
-#' sum("a")
-#' }
+#'
 e.main.plot <- function(fit, data, exp_name){
   # fit = model_1; data = dat; exp_name = c("X4_a.tocopherol")
   x_value_spe <- data[, exp_name]
