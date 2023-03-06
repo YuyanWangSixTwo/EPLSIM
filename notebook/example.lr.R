@@ -57,7 +57,7 @@ e.interaction.plot(model_1, dat, "X4_a.tocopherol", "X10_2.3.4.6.7.8.hxcdf")
 ## Step 2.4.2: interaction effect, exchange exposure
 ##############################################################################################
 e.interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
-e.interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
+e.interaction.plot(model_1, dat, "X6_PCB156", "X8_3.3.4.4.5.pncb")
 ##############################################################################################
 
 ## Step 2.5: interquartile quartile plot

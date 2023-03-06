@@ -34,7 +34,7 @@ Z.name <- c("age", "sex", "race")
 # set levels and make the reference level first for categorical confounders
 dat.cov$sex <- factor(dat.cov$sex, 1:2, c('Male', 'Female'))
 dat.cov$race <- factor(dat.cov$race,1:5,c("NH-White", "NH-Black",
-                                          "MexicanAmerican", "OtherRace", "Hispanic"))
+                                        "MexicanAmerican", "OtherRace", "Hispanic"))
 
 # transform the confounder vector and check
 cov_m <- confounder.trans(Z_continuous = c("age"), Z_discrete = c("sex", "race"), data = dat.cov)
