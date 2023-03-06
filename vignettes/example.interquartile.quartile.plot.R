@@ -1,4 +1,4 @@
-# example to interquartile effect of specific exposure based on quartile of other exposures
+# example to interquartile effect based on quartile of other exposures
 
 # specify variable names and parameters
 data(nhanes.new)

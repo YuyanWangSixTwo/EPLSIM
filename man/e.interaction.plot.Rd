@@ -22,17 +22,18 @@ plot of interaction effect of two exposures with others at average level
 plot interaction effect of two exposures
 }
 \examples{
+\donttest{
 # example to plot interaction effect of two exposures
-
-# specify variable names and parameters
 data(nhanes.new)
 dat <- nhanes.new
+
+# specify variable names and parameters
 Y.name <- "log.triglyceride"
 X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
             "X5_PCB99", "X6_PCB156", "X7_PCB206",
             "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
 Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
-            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
+           "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
 spline.num = 5
 spline.degree = 3
 initial.random.num = 1
@@ -49,6 +50,7 @@ e.interaction.plot(model_1, dat, "X4_a.tocopherol", "X10_2.3.4.6.7.8.hxcdf")
 # exchange exposures' names
 e.interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
 e.interaction.plot(model_1, dat, "X6_PCB156", "X8_3.3.4.4.5.pncb")
+}
 }
 \author{
 Yuyan Wang

@@ -10,7 +10,32 @@
 #' @importFrom stats qnorm
 #' @return A list of model estimation and prediction results
 #'
-#' @example vignettes/example.plsi.lr.v1.R
+#' @examples
+#' \donttest{
+#' # example to run the function
+#' data(nhanes.new)
+#' dat <- nhanes.new
+#'
+#' # specify variable names
+#' Y.name <- "log.triglyceride"
+#' X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
+#'             "X5_PCB99", "X6_PCB156", "X7_PCB206",
+#'             "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
+#' Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
+#'            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
+#'
+#' # specify spline degree of freedom
+#' spline.num = 5
+#' # specify spline degree
+#' spline.degree = 3
+#' # specify number of random initials for estimation
+#' initial.random.num = 1
+#'
+#' # run the model
+#' set.seed(2023)
+#' model_1 <- plsi.lr.v1(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
+#'                       spline.num, spline.degree, initial.random.num)
+#' }
 #' @keywords plsi.lr
 #' @author Yuyan Wang
 #' @export
@@ -61,7 +86,7 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, 
   initial_results_list <- list()
   for (i in 1:nrow(initial_table)) {
     beta_0 <- as.matrix(initial_table[i, 1:x_length])
-    m2_temp <- stats::optim(par = beta_0, fn = fn, method = "L-BFGS-B", hessian = TRUE, control = list("fnscale" = -1))
+    m2_temp <- stats::optim(par = beta_0, fn = fn, method = "L-BFGS-B", hessian = TRUE, control = list("fnscale" = -1, maxit = 100))
     initial_results_list <- c(initial_results_list, m2_temp)
     initial_table[i, c("-2 log L")] = -2 * m2_temp$value
     initial_table[i, c("AIC")] = -2 * m2_temp$value + 2 * (x_length + z_length + spline.num - 1)
