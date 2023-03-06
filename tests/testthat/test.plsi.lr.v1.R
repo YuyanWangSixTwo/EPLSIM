@@ -12,7 +12,7 @@ test_that('Output of plsi.lr.v1', {
               "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
   spline.num = 5
   spline.degree = 3
-  initial.random.num = 1
+  initial.random.num = 1 # only for test, set any number
   set.seed(2023)
   model_1 <- plsi.lr.v1(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
                         spline.num, spline.degree, initial.random.num)

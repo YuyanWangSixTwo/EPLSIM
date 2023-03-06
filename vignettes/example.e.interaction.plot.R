@@ -11,7 +11,7 @@ Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
             "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
 spline.num = 5
 spline.degree = 3
-initial.random.num = 1
+initial.random.num = 1  # only for test, set any number
 
 # run PLSI linear regression
 set.seed(2023)
