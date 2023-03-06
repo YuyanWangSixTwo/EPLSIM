@@ -20,7 +20,7 @@ Transformed confounder vector and data set ready for further analysis.
 Transformation for confounder vector Z
 }
 \examples{
-# example to centralize the continuous confounders and
+# example to normalize the continuous confounders and
 # make dummy variables for categorical confoduners
 dat.cov <- data.frame(
   age = c(1.5, 2.3, 3.1, 4.8, 5.2),
@@ -34,7 +34,7 @@ Z.name <- c("age", "sex", "race")
 # set levels and make the reference level first for categorical confounders
 dat.cov$sex <- factor(dat.cov$sex, 1:2, c('Male', 'Female'))
 dat.cov$race <- factor(dat.cov$race,1:5,c("NH-White", "NH-Black",
-                                          "MexicanAmerican", "OtherRace", "Hispanic"))
+                                        "MexicanAmerican", "OtherRace", "Hispanic"))
 
 # transform the confounder vector and check
 cov_m <- confounder.trans(Z_continuous = c("age"), Z_discrete = c("sex", "race"), data = dat.cov)
