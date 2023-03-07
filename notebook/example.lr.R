@@ -7,7 +7,7 @@ X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocoph
             "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
 Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black", "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
 
-## Step 1: run PLSI linear model
+## Step 1: run PLSI linear regression
 ##############################################################################################
 spline.num = 5
 spline.degree = 3
