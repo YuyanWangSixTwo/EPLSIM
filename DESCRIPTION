@@ -3,7 +3,7 @@ Type: Package
 Title: Partial Linear Single Index Models for Environmental Mixture Analysis
 Version: 0.1.0
 Date: 2023-03-02
-Authors@R: c(person("Yuyan", "Wang", role = c("aut", "cre", "ctb", "cph"), 
+Authors@R: c(person("Yuyan", "Wang", role = c("aut", "cre"), 
              email = "yuyan.wang@nyumc.org", comment = c(ORCID = "0000-0003-3747-0762")),
              person("Mengling", "Liu", role = c("aut", "ctb") ))
 Maintainer: Yuyan Wang <yuyan.wang@nyumc.org>
