@@ -1,6 +1,6 @@
 #' Partial linear single index linear regression for scalar outcome
 #'
-#' @param data A data set
+#' @param data A data set including all needed variables
 #' @param Y.name Variable name for scalar outcome
 #' @param X.name Variable name vector for exposures
 #' @param Z.name Variable name vector for confounders
@@ -40,8 +40,7 @@
 #' @author Yuyan Wang
 #' @export
 #'
-plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, initial.random.num)
-{
+plsi.lr.v1 <- function(data, Y.name, X.name, Z.name, spline.num, spline.degree, initial.random.num) {
   # data = dat; Y.name = Y.name; X.name = X.name; Z.name = Z.name
   # spline.num = 5 ; spline.degree = 3 ; initial.random.num = 5
 
