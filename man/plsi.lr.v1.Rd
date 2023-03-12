@@ -15,7 +15,7 @@ plsi.lr.v1(
 )
 }
 \arguments{
-\item{data}{A data set}
+\item{data}{A data set including all needed variables}
 
 \item{Y.name}{Variable name for scalar outcome}
 
