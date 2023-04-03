@@ -30,7 +30,9 @@
 #' # plot interquartile quartile
 #' interquartile.quartile.plot(model_1, dat)
 #' }
-#' @keywords interquartile.quartile.effect
+#' @keywords partial linear single index
+#' @keywords interquartile quartile effect
+#' @keywords interaction
 #' @author Yuyan Wang
 #' @export
 #'

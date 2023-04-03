@@ -29,7 +29,8 @@
 #' # plot single index function
 #' si.fun.plot(model_1$si.fun)
 #' }
-#' @keywords single.index.function
+#' @keywords partial linear single index
+#' @keywords single index function
 #' @author Yuyan Wang
 #' @export
 #'

@@ -32,7 +32,9 @@
 #' e.main.plot(model_1, dat, exp_name = c("X5_PCB99"))
 #' e.main.plot(model_1, dat, exp_name = c("X10_2.3.4.6.7.8.hxcdf"))
 #' }
-#' @keywords exposure.main.effect
+#' @keywords partial linear single index
+#' @keywords one exposure
+#' @keywords main effect
 #' @author Yuyan Wang
 #' @export
 #'

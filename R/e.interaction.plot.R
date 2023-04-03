@@ -37,7 +37,9 @@
 #' e.interaction.plot(model_1, dat, "X8_3.3.4.4.5.pncb", "X6_PCB156")
 #' e.interaction.plot(model_1, dat, "X6_PCB156", "X8_3.3.4.4.5.pncb")
 #' }
-#' @keywords exposures.interaction.effect
+#' @keywords partial linear single index
+#' @keywords two exposures
+#' @keywords interaction effect
 #' @author Yuyan Wang
 #' @export
 #'

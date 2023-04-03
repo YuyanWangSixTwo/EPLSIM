@@ -29,7 +29,8 @@
 #' # plot mixture overall effect
 #' mixture.overall.plot(model_1, dat)
 #' }
-#' @keywords mixture.effect
+#' @keywords partial linear single index
+#' @keywords mixture overall effect
 #' @author Yuyan Wang
 #' @export
 #'

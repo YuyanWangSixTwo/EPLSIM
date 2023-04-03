@@ -36,7 +36,8 @@
 #' model_1 <- plsi.lr.v1(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
 #'                       spline.num, spline.degree, initial.random.num)
 #' }
-#' @keywords plsi.lr
+#' @keywords partial linear single index
+#' @keywords linear regression
 #' @author Yuyan Wang
 #' @export
 #'

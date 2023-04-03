@@ -32,7 +32,8 @@
 #' # check estimated single index coefficients
 #' model_1$si.coefficient
 #' }
-#' @keywords single.index.coefficients
+#' @keywords partial linear single index
+#' @keywords single index coefficients
 #' @author Yuyan Wang
 #' @export
 #'
