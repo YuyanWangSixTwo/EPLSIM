@@ -47,4 +47,8 @@ model_1$si.coefficient
 \author{
 Yuyan Wang
 }
-\keyword{single.index.coefficients}
+\keyword{coefficients}
+\keyword{index}
+\keyword{linear}
+\keyword{partial}
+\keyword{single}

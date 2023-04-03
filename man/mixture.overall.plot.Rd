@@ -46,4 +46,10 @@ mixture.overall.plot(model_1, dat)
 \author{
 Yuyan Wang
 }
-\keyword{mixture.effect}
+\keyword{effect}
+\keyword{index}
+\keyword{linear}
+\keyword{mixture}
+\keyword{overall}
+\keyword{partial}
+\keyword{single}

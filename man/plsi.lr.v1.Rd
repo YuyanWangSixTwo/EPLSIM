@@ -65,4 +65,8 @@ model_1 <- plsi.lr.v1(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.n
 \author{
 Yuyan Wang
 }
-\keyword{plsi.lr}
+\keyword{index}
+\keyword{linear}
+\keyword{partial}
+\keyword{regression}
+\keyword{single}

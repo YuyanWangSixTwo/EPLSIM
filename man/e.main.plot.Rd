@@ -50,4 +50,11 @@ e.main.plot(model_1, dat, exp_name = c("X10_2.3.4.6.7.8.hxcdf"))
 \author{
 Yuyan Wang
 }
-\keyword{exposure.main.effect}
+\keyword{effect}
+\keyword{exposure}
+\keyword{index}
+\keyword{linear}
+\keyword{main}
+\keyword{one}
+\keyword{partial}
+\keyword{single}

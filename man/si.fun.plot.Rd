@@ -44,4 +44,8 @@ si.fun.plot(model_1$si.fun)
 \author{
 Yuyan Wang
 }
-\keyword{single.index.function}
+\keyword{function}
+\keyword{index}
+\keyword{linear}
+\keyword{partial}
+\keyword{single}

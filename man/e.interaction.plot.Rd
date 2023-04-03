@@ -55,4 +55,11 @@ e.interaction.plot(model_1, dat, "X6_PCB156", "X8_3.3.4.4.5.pncb")
 \author{
 Yuyan Wang
 }
-\keyword{exposures.interaction.effect}
+\keyword{effect}
+\keyword{exposures}
+\keyword{index}
+\keyword{interaction}
+\keyword{linear}
+\keyword{partial}
+\keyword{single}
+\keyword{two}

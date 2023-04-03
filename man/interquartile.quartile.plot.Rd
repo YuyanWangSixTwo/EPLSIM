@@ -46,4 +46,11 @@ interquartile.quartile.plot(model_1, dat)
 \author{
 Yuyan Wang
 }
-\keyword{interquartile.quartile.effect}
+\keyword{effect}
+\keyword{index}
+\keyword{interaction}
+\keyword{interquartile}
+\keyword{linear}
+\keyword{partial}
+\keyword{quartile}
+\keyword{single}
