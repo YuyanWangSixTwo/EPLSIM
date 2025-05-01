@@ -43,6 +43,7 @@ si.coef.plot <- function(si.coef.est){
   beta_plot$pos = (beta_plot$Estimate>=0)
   beta_plot = beta_plot[order(beta_plot$Estimate), ]
 
+  beta_plot <- beta_plot[order(beta_plot$Estimate, decreasing = T), ]
   final_plot <- ggplot2::ggplot(beta_plot, ggplot2::aes(x = reorder(exp, -beta_plot$Estimate), y = beta_plot$Estimate, fill = beta_plot$pos)) +
     ggplot2::geom_col(position = "identity", width = 0.6) +
     ggplot2::geom_bar(stat = "identity", width = 0.6) +
