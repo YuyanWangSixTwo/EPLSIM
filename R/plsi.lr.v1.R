@@ -116,7 +116,7 @@ plsi.lr.v1 <- function(data, Y.name, X.name, Z.name,
   beta_results$Upper.95CI <- beta_results$Estimate + stats::qnorm(0.975) * beta_results$`Std.Error`
 
   beta_results$`Contribution proportion` <- format(round((beta_results$Estimate)^2, 3), nsmall = 3)
-  beta_results <- beta_results[order(beta_results$Estimate, decreasing = T), ]
+  # beta_results <- beta_results[order(beta_results$Estimate, decreasing = T), ]
 
   # get sing index function estimation
   single_index_estimated <- as.vector(x %*% as.vector(beta_est))
