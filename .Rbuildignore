@@ -2,3 +2,5 @@ Makefile
 ^.*\.Rproj$
 ^\.Rproj\.user$
 notebook*
+^CRAN-SUBMISSION$
+^cran-comments\.md$

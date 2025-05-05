@@ -39,7 +39,7 @@ si.fun.plot <- function(si.ci){
   # cut <- 0.02
   si.ci <- si.ci[order(si.ci[, 1]), ]
   plot(si.ci[, c("single_index_estimated")], si.ci[, c("pred")], type="l", lwd = 2,
-       xlab = "Single index: u", ylab = paste('\u03A8', "(u)", sep = ""),
+       xlab = "Single index: u", ylab = "g(u)",
        ylim = c(min(si.ci[, c("lwr")] - 0.5), max(si.ci[, c("upr")] + 0.5)))
   graphics::lines(si.ci[, c("single_index_estimated")], si.ci[, c("lwr")], type = "l", lty = 2)
   graphics::lines(si.ci[, c("single_index_estimated")], si.ci[, c("upr")], type = "l", lty = 2)
