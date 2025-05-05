@@ -7,9 +7,6 @@
 \format{
 An object of class \code{data.frame} with 800 rows and 14 columns.
 }
-\source{
-\url{https://www.cdc.gov/nchs/nhanes/about/index.html}
-}
 \usage{
 nhanes
 }

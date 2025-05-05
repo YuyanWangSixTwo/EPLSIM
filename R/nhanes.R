@@ -20,5 +20,4 @@
 #'   \item{race}{subject race}
 #' }
 #' @author Yuyan Wang \email{yuyan.wang@@nyumc.org}
-#' @source \url{https://www.cdc.gov/nchs/nhanes/about/index.html}
 "nhanes"
