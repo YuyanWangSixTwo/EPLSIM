@@ -1,34 +1,66 @@
 #' plot interquartile effect of specific exposure based on quartile of other exposures
 #'
-#' @param fit Fitted model from function 'plsi.lr.v1'
+#' @param fit Fitted model from \code{plsi.lr.auto()}, \code{plsi.logistic.auto()},
+#'   or \code{plsi.log.auto()}
 #' @param data Original data set
+#' @param type Which outcome scale to plot. \code{"linear"} (default) plots the
+#'   difference in predicted (continuous) outcome, for a \code{fit} from
+#'   \code{plsi.lr.auto()}. \code{"logistic"} plots the difference in predicted
+#'   probability, for a \code{fit} from \code{plsi.logistic.auto()}. \code{"log"}
+#'   plots the difference in predicted count, for a \code{fit} from
+#'   \code{plsi.log.auto()}.
 #' @importFrom stats quantile
 #' @return plot of main interquartile effect of exposure based on quartile of other exposures
 #'
 #' @examples
 #' \donttest{
-#' # example to interquartile effect based on quartile of other exposures
+#' # example to interquartile effect based on quartile of other exposures -- continuous outcome
 #' data(nhanes.new)
-#' dat <- nhanes.new
+#' data <- nhanes.new
 #'
-#' # specify variable names and parameters
 #' Y.name <- "log.triglyceride"
 #' X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
 #'             "X5_PCB99", "X6_PCB156", "X7_PCB206",
 #'             "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
 #' Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
 #'            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
-#' spline.num = 5
-#' spline.degree = 3
-#' initial.random.num = 1
 #'
-#' # run PLSI linear regression
-#' set.seed(2023)
-#' model_1 <- plsi.lr.v1(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
-#'                       spline.num, spline.degree, initial.random.num)
+#' k <- 10
+#' bs <- "cr"
+#' initial.random.num <- 1
+#' seed = 2026
 #'
-#' # plot interquartile quartile
-#' interquartile.quartile.plot(model_1, dat)
+#' model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
+#'                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
+#'
+#' # plot interquartile quartile -- difference in predicted (continuous) outcome
+#' interquartile.quartile.plot(model_lr_auto, data, type = "linear")
+#'
+#' # example to interquartile effect based on quartile of other exposures -- binary outcome
+#' data$high.triglyceride <- as.numeric(
+#'   data$log.triglyceride > stats::quantile(data$log.triglyceride, 2 / 3)
+#' )
+#' model_logistic_auto <- plsi.logistic.auto(data = data, Y.name = "high.triglyceride",
+#'                       X.name = X.name, Z.name = Z.name,
+#'                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
+#'
+#' # plot interquartile quartile -- difference in predicted probability
+#' interquartile.quartile.plot(model_logistic_auto, data, type = "logistic")
+#'
+#' # example to interquartile effect based on quartile of other exposures -- count outcome
+#' set.seed(2026)
+#' beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
+#' beta_true <- beta_true / sqrt(sum(beta_true^2))
+#' x_std <- scale(data[, X.name])
+#' single_index_true <- as.vector(x_std %*% beta_true)
+#' log_rate <- 0.3 + 0.4 * sin(single_index_true) + 0.05 * data$AGE.c
+#' data$n.events <- stats::rpois(nrow(data), lambda = exp(log_rate))
+#' model_log_auto <- plsi.log.auto(data = data, Y.name = "n.events", X.name = X.name,
+#'                       Z.name = Z.name, family = "nb", k = k, bs = bs,
+#'                       initial.random.num = initial.random.num, seed = seed)
+#'
+#' # plot interquartile quartile -- difference in predicted count
+#' interquartile.quartile.plot(model_log_auto, data, type = "log")
 #' }
 #' @keywords partial linear single index
 #' @keywords interquartile quartile effect
@@ -36,8 +68,12 @@
 #' @author Yuyan Wang
 #' @export
 #'
-interquartile.quartile.plot <- function(fit, data){
-  # fit = model_1; data = dat
+interquartile.quartile.plot <- function(fit, data, type = c("linear", "logistic", "log")){
+  # fit = model_lr_auto; data = data; type = "linear"
+  # fit = model_logistic_auto; data = data; type = "logistic"
+  # fit = model_log_auto; data = data; type = "log"
+  type <- match.arg(type)
+
   m2 <- fit$si.fun.model
   beta_est_vec <- as.vector(fit$si.coefficient[, 1])
   X_name <- rownames(fit$si.coefficient)
@@ -62,8 +98,41 @@ interquartile.quartile.plot <- function(fit, data){
     pre_temp[((i - 1)*6 + 4):((i - 1)*6 + 6), c("single_index_estimated")] = stats::quantile(x_index, p = 0.75) + x_rest_index
   }
 
-  pre_temp <- ciTools::add_ci(pre_temp, m2, alpha = 0.05, names = c("lwr", "upr"))
-  pre_temp$ci_diff <- pre_temp$upr - pre_temp$pred
+  # predict.gam(se.fit=TRUE) directly, instead of ciTools::add_ci(), since
+  # ciTools does not support "gam" objects from mgcv. For type = "logistic"/
+  # "log", si.fun.model has an offset(confounder_offset) term, so newdata
+  # needs that column too; offset = 0 is the confounder-adjusted reference
+  # curve, consistent with how si.fun/e.main.plot()/e.interaction.plot()
+  # predict from this same model.
+  nd <- data.frame(single_index_estimated = pre_temp$single_index_estimated)
+  if (type %in% c("logistic", "log")) nd$confounder_offset <- 0
+  p <- stats::predict(m2, newdata = nd, type = "link", se.fit = TRUE)
+
+  if (type == "linear") {
+    pre_temp$pred <- as.numeric(p$fit)
+    pre_temp$ci_diff <- stats::qnorm(0.975) * as.numeric(p$se.fit)
+  } else if (type == "logistic") {
+    # Difference of predicted *probability* is what's actually meaningful for
+    # a binary outcome (a difference on the logit scale doesn't translate
+    # linearly into a probability difference). Back-transform the fit via
+    # plogis(), and propagate the SE to the probability scale via the delta
+    # method: se_prob ~= p(1-p) * se_logit. This keeps the same "average the
+    # two half-widths" CI convention the rest of this function already uses,
+    # just on the probability scale instead of the link scale.
+    fit_link <- as.numeric(p$fit); se_link <- as.numeric(p$se.fit)
+    pre_temp$pred <- stats::plogis(fit_link)
+    pre_temp$ci_diff <- stats::qnorm(0.975) * (pre_temp$pred * (1 - pre_temp$pred) * se_link)
+  } else {
+    # Difference of predicted *count* is what's actually meaningful for a
+    # count outcome (a difference on the log scale is a log rate ratio, not a
+    # count difference). Back-transform the fit via exp(), and propagate the
+    # SE to the count scale via the delta method: se_count ~= count * se_log
+    # (since d(exp(x))/dx = exp(x)). Same "average the two half-widths" CI
+    # convention as the other two branches, just on the count scale.
+    fit_link <- as.numeric(p$fit); se_link <- as.numeric(p$se.fit)
+    pre_temp$pred <- exp(fit_link)
+    pre_temp$ci_diff <- stats::qnorm(0.975) * (pre_temp$pred * se_link)
+  }
 
   plot_temp <- as.data.frame(matrix(NA, 3 * length(X_name), 6))
   colnames(plot_temp) <- c("Exposrue_Name", "Other_quartile", "Diff_est", "ci_diff", "Diff_lwr", "Diff_upr")
@@ -79,15 +148,24 @@ interquartile.quartile.plot <- function(fit, data){
 
   plot_temp$Exposrue_Name = factor(plot_temp$Exposrue_Name, levels = X_name)
 
+  ylab_txt <- switch(type,
+                     linear = "Difference of predicted outcome",
+                     logistic = "Difference of predicted probability",
+                     log = "Difference of predicted count")
+
   final_plot <- ggplot2::ggplot(data = plot_temp, ggplot2::aes(x = plot_temp$Exposrue_Name, colour = plot_temp$Other_quartile, y = plot_temp$Diff_est, ymin = plot_temp$Diff_lwr, ymax = plot_temp$Diff_upr)) +
-  # ggplot(data = plot_temp, aes(x = Exposrue_Name, colour = Other_quartile, y = Diff_est)) +
+    # ggplot(data = plot_temp, aes(x = Exposrue_Name, colour = Other_quartile, y = Diff_est)) +
     ggplot2::geom_point(position = ggplot2::position_dodge(width = 0.5)) +
     ggplot2::geom_errorbar(position = ggplot2::position_dodge(width = 0.5), width = 0.1) +
     ggplot2::coord_flip() +
     # facet_wrap(~Exposrue_Name, ncol = 1, strip.position = "left") +
-    ggplot2::ylab("Difference of predicted outcome") +
+    ggplot2::ylab(ylab_txt) +
     ggplot2::xlab("Exposure") +
     ggplot2::scale_color_manual(values = c("red", "blue", "green"), name = NULL)
+
+  if (type %in% c("logistic", "log")) {
+    final_plot <- final_plot + ggplot2::geom_hline(yintercept = 0, linetype = "dashed")
+  }
 
   suppressWarnings(print(final_plot))
 }
