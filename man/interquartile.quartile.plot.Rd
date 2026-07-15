@@ -4,12 +4,20 @@
 \alias{interquartile.quartile.plot}
 \title{plot interquartile effect of specific exposure based on quartile of other exposures}
 \usage{
-interquartile.quartile.plot(fit, data)
+interquartile.quartile.plot(fit, data, type = c("linear", "logistic", "log"))
 }
 \arguments{
-\item{fit}{Fitted model from function 'plsi.lr.v1'}
+\item{fit}{Fitted model from \code{plsi.lr.auto()}, \code{plsi.logistic.auto()},
+or \code{plsi.log.auto()}}
 
 \item{data}{Original data set}
+
+\item{type}{Which outcome scale to plot. \code{"linear"} (default) plots the
+difference in predicted (continuous) outcome, for a \code{fit} from
+\code{plsi.lr.auto()}. \code{"logistic"} plots the difference in predicted
+probability, for a \code{fit} from \code{plsi.logistic.auto()}. \code{"log"}
+plots the difference in predicted count, for a \code{fit} from
+\code{plsi.log.auto()}.}
 }
 \value{
 plot of main interquartile effect of exposure based on quartile of other exposures
@@ -19,28 +27,53 @@ plot interquartile effect of specific exposure based on quartile of other exposu
 }
 \examples{
 \donttest{
-# example to interquartile effect based on quartile of other exposures
+# example to interquartile effect based on quartile of other exposures -- continuous outcome
 data(nhanes.new)
-dat <- nhanes.new
+data <- nhanes.new
 
-# specify variable names and parameters
 Y.name <- "log.triglyceride"
 X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
             "X5_PCB99", "X6_PCB156", "X7_PCB206",
             "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
 Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
-spline.num = 5
-spline.degree = 3
-initial.random.num = 1
 
-# run PLSI linear regression
-set.seed(2023)
-model_1 <- plsi.lr.v1(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
-                      spline.num, spline.degree, initial.random.num)
+k <- 10
+bs <- "cr"
+initial.random.num <- 1
+seed = 2026
 
-# plot interquartile quartile
-interquartile.quartile.plot(model_1, dat)
+model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
+                      k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
+
+# plot interquartile quartile -- difference in predicted (continuous) outcome
+interquartile.quartile.plot(model_lr_auto, data, type = "linear")
+
+# example to interquartile effect based on quartile of other exposures -- binary outcome
+data$high.triglyceride <- as.numeric(
+  data$log.triglyceride > stats::quantile(data$log.triglyceride, 2 / 3)
+)
+model_logistic_auto <- plsi.logistic.auto(data = data, Y.name = "high.triglyceride",
+                      X.name = X.name, Z.name = Z.name,
+                      k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
+
+# plot interquartile quartile -- difference in predicted probability
+interquartile.quartile.plot(model_logistic_auto, data, type = "logistic")
+
+# example to interquartile effect based on quartile of other exposures -- count outcome
+set.seed(2026)
+beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
+beta_true <- beta_true / sqrt(sum(beta_true^2))
+x_std <- scale(data[, X.name])
+single_index_true <- as.vector(x_std \%*\% beta_true)
+log_rate <- 0.3 + 0.4 * sin(single_index_true) + 0.05 * data$AGE.c
+data$n.events <- stats::rpois(nrow(data), lambda = exp(log_rate))
+model_log_auto <- plsi.log.auto(data = data, Y.name = "n.events", X.name = X.name,
+                      Z.name = Z.name, family = "nb", k = k, bs = bs,
+                      initial.random.num = initial.random.num, seed = seed)
+
+# plot interquartile quartile -- difference in predicted count
+interquartile.quartile.plot(model_log_auto, data, type = "log")
 }
 }
 \author{

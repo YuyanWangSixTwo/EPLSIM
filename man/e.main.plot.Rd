@@ -4,47 +4,93 @@
 \alias{e.main.plot}
 \title{plot single exposure's main effect}
 \usage{
-e.main.plot(fit, data, exp_name)
+e.main.plot(
+  fit,
+  data,
+  exp_name,
+  type = c("linear", "logistic", "log"),
+  outlier.range = 10
+)
 }
 \arguments{
-\item{fit}{Fitted model from function 'plsi.lr.v1'}
+\item{fit}{Fitted model from \code{plsi.lr.auto()}, \code{plsi.logistic.auto()},
+or \code{plsi.log.auto()}}
 
 \item{data}{Original data set}
 
 \item{exp_name}{exposure name hoping to be plotted}
+
+\item{type}{Which outcome scale to plot. \code{"linear"} (default) plots the
+predicted (continuous) outcome, for a \code{fit} from \code{plsi.lr.auto()}.
+\code{"logistic"} plots the predicted probability, for a \code{fit} from
+\code{plsi.logistic.auto()}. \code{"log"} plots the predicted count, for
+a \code{fit} from \code{plsi.log.auto()}.}
+
+\item{outlier.range}{\code{range} argument passed to \code{boxplot()} to
+identify and drop extreme values of the raw exposure before plotting.
+Default 10 (a permissive threshold; increase to drop fewer points, or set
+to \code{Inf} to keep all points).}
 }
 \value{
-plot of exposure's main effect with other exposures at average level 0
+plot of exposure's main effect with other exposures at their
+confounder-adjusted reference level. Invisibly returns the data frame
+used to build the plot.
 }
 \description{
 plot single exposure's main effect
 }
 \examples{
 \donttest{
-# example to plot some exposure's main effect
+# example to plot some exposure's main effect -- continuous outcome
 data(nhanes.new)
-dat <- nhanes.new
+data <- nhanes.new
 
-# specify variable names and parameters
 Y.name <- "log.triglyceride"
 X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
             "X5_PCB99", "X6_PCB156", "X7_PCB206",
             "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
 Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
-spline.num = 5
-spline.degree = 3
-initial.random.num = 1
 
-# run PLSI linear regression
-set.seed(2023)
-model_1 <- plsi.lr.v1(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
-                      spline.num, spline.degree, initial.random.num)
+k <- 10
+bs <- "cr"
+initial.random.num <- 1
+seed = 2026
 
-# plot some exposure's main effect
-e.main.plot(model_1, dat, exp_name = c("X4_a.tocopherol"))
-e.main.plot(model_1, dat, exp_name = c("X5_PCB99"))
-e.main.plot(model_1, dat, exp_name = c("X10_2.3.4.6.7.8.hxcdf"))
+model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
+                      k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
+
+# plot some exposure's main effect -- predicted (continuous) outcome
+e.main.plot(model_lr_auto, data, exp_name = c("X4_a.tocopherol"), type = "linear")
+e.main.plot(model_lr_auto, data, exp_name = c("X5_PCB99"), type = "linear")
+e.main.plot(model_lr_auto, data, exp_name = c("X10_2.3.4.6.7.8.hxcdf"), type = "linear")
+
+# example to plot some exposure's main effect -- binary outcome
+data$high.triglyceride <- as.numeric(
+  data$log.triglyceride > stats::quantile(data$log.triglyceride, 2 / 3)
+)
+model_logistic_auto <- plsi.logistic.auto(data = data, Y.name = "high.triglyceride",
+                      X.name = X.name, Z.name = Z.name,
+                      k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
+
+# plot some exposure's main effect -- predicted probability
+e.main.plot(model_logistic_auto, data, exp_name = c("X4_a.tocopherol"), type = "logistic")
+e.main.plot(model_logistic_auto, data, exp_name = c("X5_PCB99"), type = "logistic")
+
+# example to plot some exposure's main effect -- count outcome
+set.seed(2026)
+beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
+beta_true <- beta_true / sqrt(sum(beta_true^2))
+x_std <- scale(data[, X.name])
+single_index_true <- as.vector(x_std \%*\% beta_true)
+log_rate <- 0.3 + 0.4 * sin(single_index_true) + 0.05 * data$AGE.c
+data$n.events <- stats::rpois(nrow(data), lambda = exp(log_rate))
+model_log_auto <- plsi.log.auto(data = data, Y.name = "n.events", X.name = X.name,
+                      Z.name = Z.name, family = "nb", k = k, bs = bs,
+                      initial.random.num = initial.random.num, seed = seed)
+
+# plot some exposure's main effect -- predicted count
+e.main.plot(model_log_auto, data, exp_name = c("X4_a.tocopherol"), type = "log")
 }
 }
 \author{

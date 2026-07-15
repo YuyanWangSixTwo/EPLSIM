@@ -4,12 +4,19 @@
 \alias{mixture.overall.plot}
 \title{plot mixture's overall effect based on quantile of exposures}
 \usage{
-mixture.overall.plot(fit, data)
+mixture.overall.plot(fit, data, type = c("linear", "logistic", "log"))
 }
 \arguments{
-\item{fit}{Fitted model from function 'plsi.lr.v1'}
+\item{fit}{Fitted model from \code{plsi.lr.auto()}, \code{plsi.logistic.auto()},
+or \code{plsi.log.auto()}}
 
 \item{data}{Original data set}
+
+\item{type}{Which outcome scale to plot. \code{"linear"} (default) plots the
+predicted (continuous) outcome, for a \code{fit} from \code{plsi.lr.auto()}.
+\code{"logistic"} plots the predicted probability, for a \code{fit} from
+\code{plsi.logistic.auto()}. \code{"log"} plots the predicted count, for
+a \code{fit} from \code{plsi.log.auto()}.}
 }
 \value{
 plot of predicted outcomes based on quantile of exposures
@@ -19,28 +26,53 @@ plot mixture's overall effect based on quantile of exposures
 }
 \examples{
 \donttest{
-# example to plot mixture's overall effect
+# example to plot mixture's overall effect -- continuous outcome
 data(nhanes.new)
-dat <- nhanes.new
+data <- nhanes.new
 
-# specify variable names and parameters
 Y.name <- "log.triglyceride"
 X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
             "X5_PCB99", "X6_PCB156", "X7_PCB206",
             "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
 Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
-spline.num = 5
-spline.degree = 3
-initial.random.num = 1
 
-# run PLSI linear regression
-set.seed(2023)
-model_1 <- plsi.lr.v1(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
-                      spline.num, spline.degree, initial.random.num)
+k <- 10
+bs <- "cr"
+initial.random.num <- 1
+seed = 2026
 
-# plot mixture overall effect
-mixture.overall.plot(model_1, dat)
+model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
+                      k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
+
+# plot mixture overall effect -- predicted (continuous) outcome
+mixture.overall.plot(model_lr_auto, data, type = "linear")
+
+# example to plot mixture's overall effect -- binary outcome
+data$high.triglyceride <- as.numeric(
+  data$log.triglyceride > stats::quantile(data$log.triglyceride, 2 / 3)
+)
+model_logistic_auto <- plsi.logistic.auto(data = data, Y.name = "high.triglyceride",
+                      X.name = X.name, Z.name = Z.name,
+                      k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
+
+# plot mixture overall effect -- predicted probability
+mixture.overall.plot(model_logistic_auto, data, type = "logistic")
+
+# example to plot mixture's overall effect -- count outcome
+set.seed(2026)
+beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
+beta_true <- beta_true / sqrt(sum(beta_true^2))
+x_std <- scale(data[, X.name])
+single_index_true <- as.vector(x_std \%*\% beta_true)
+log_rate <- 0.3 + 0.4 * sin(single_index_true) + 0.05 * data$AGE.c
+data$n.events <- stats::rpois(nrow(data), lambda = exp(log_rate))
+model_log_auto <- plsi.log.auto(data = data, Y.name = "n.events", X.name = X.name,
+                      Z.name = Z.name, family = "nb", k = k, bs = bs,
+                      initial.random.num = initial.random.num, seed = seed)
+
+# plot mixture overall effect -- predicted count
+mixture.overall.plot(model_log_auto, data, type = "log")
 }
 }
 \author{
