@@ -50,15 +50,19 @@ test_that('plsi.lr.v2 si.fun has fit/lwr/upr columns for si.fun.plot compatibili
                   %in% colnames(model_v2$si.fun)))
 })
 
-test_that('plsi.lr.v2 handles initial.random.num = 0 without error', {
+test_that('plsi.lr.v2 rejects initial.random.num = 0 with an informative error', {
+  # v1's version of this edge case silently produced an invalid index
+  # sequence and could crash downstream; v2 fixes this by validating the
+  # input up front via stopifnot(initial.random.num >= 1), matching the
+  # pattern used by the *.auto() functions. The correct behavior here is a
+  # clear error, not a silent successful fit -- this test previously
+  # asserted the opposite (carried over from v1's buggy behavior) and was
+  # wrong.
   expect_error(
-    model_0 <- plsi.lr.v2(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
-                          spline.num, spline.degree, initial.random.num = 0, seed = 2023),
-    NA
+    plsi.lr.v2(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
+               spline.num, spline.degree, initial.random.num = 0, seed = 2023),
+    "initial.random.num"
   )
-  expect_true(is.list(model_0))
-  # only the "linear" initial should exist -- no random rows
-  expect_equal(nrow(model_0$initial.table), 1)
 })
 
 test_that('plsi.lr.v2 rejects missing columns and NAs with informative errors', {
