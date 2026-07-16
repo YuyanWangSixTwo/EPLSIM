@@ -48,43 +48,6 @@ model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.n
 
 # plot interquartile quartile -- difference in predicted (continuous) outcome
 interquartile.quartile.plot(model_lr_auto, data, type = "linear")
-
-# example to interquartile effect based on quartile of other exposures -- binary outcome
-# demo binary outcome (illustrative only -- nhanes.new has no native binary
-# variable). Simulated from a *true* single-index combination of the
-# exposures, run through a nonlinear logit link, plus a confounder effect,
-# and drawn as genuine Bernoulli noise (not a hard threshold on an existing
-# variable) -- a hard threshold produces near-perfect separation and
-# destabilizes the fit, whereas real classification uncertainty is both
-# more realistic and numerically well-behaved.
-set.seed(2026)
-beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
-beta_true <- beta_true / sqrt(sum(beta_true^2))
-x_std <- scale(data[, X.name])
-single_index_true <- as.vector(x_std \%*\% beta_true)
-log_odds <- -0.2 + 0.5 * sin(single_index_true) + 0.05 * data$AGE.c
-data$high.triglyceride <- stats::rbinom(nrow(data), size = 1, prob = stats::plogis(log_odds))
-model_logistic_auto <- plsi.logistic.auto(data = data, Y.name = "high.triglyceride",
-                      X.name = X.name, Z.name = Z.name,
-                      k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
-
-# plot interquartile quartile -- difference in predicted probability
-interquartile.quartile.plot(model_logistic_auto, data, type = "logistic")
-
-# example to interquartile effect based on quartile of other exposures -- count outcome
-set.seed(2026)
-beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
-beta_true <- beta_true / sqrt(sum(beta_true^2))
-x_std <- scale(data[, X.name])
-single_index_true <- as.vector(x_std \%*\% beta_true)
-log_rate <- 0.3 + 0.4 * sin(single_index_true) + 0.05 * data$AGE.c
-data$n.events <- stats::rpois(nrow(data), lambda = exp(log_rate))
-model_log_auto <- plsi.log.auto(data = data, Y.name = "n.events", X.name = X.name,
-                      Z.name = Z.name, family = "nb", k = k, bs = bs,
-                      initial.random.num = initial.random.num, seed = seed)
-
-# plot interquartile quartile -- difference in predicted count
-interquartile.quartile.plot(model_log_auto, data, type = "log")
 }
 }
 \author{
