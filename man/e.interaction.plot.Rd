@@ -29,7 +29,11 @@ predicted (continuous) outcome, for a \code{fit} from \code{plsi.lr.auto()}.
 a \code{fit} from \code{plsi.log.auto()}.}
 }
 \value{
-plot of interaction effect of two exposures with others at average level
+plot of interaction effect of two exposures with others at average
+level. Invisibly returns a list with elements \code{panel_1} and
+\code{panel_2}, the data frames underlying the left and right panels
+respectively (predicted values at each combination of \code{exp_1}/
+\code{exp_2} value and the other exposure's quantiles).
 }
 \description{
 plot interaction effect of two exposures

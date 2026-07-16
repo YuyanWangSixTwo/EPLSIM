@@ -12,8 +12,18 @@ k <- 5           # small k keeps the test fast; production use can go higher
 bs <- "cr"
 initial.random.num <- 1
 
-model_auto <- plsi.lr.auto(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
-                           k = k, bs = bs, initial.random.num = initial.random.num, seed = 2026)
+
+# k = 5 / initial.random.num = 1 are deliberately small to keep this test
+# file fast; at these settings the numerically-differentiated Hessian
+# occasionally isn't positive definite, which triggers plsi.lr.auto()'s
+# eigenvalue-flooring fallback (see plsi_lr_auto.R) and an accompanying
+# warning. That fallback is the intended, tested behavior -- not a
+# regression -- so it's suppressed here rather than left to print as
+# unexplained noise on every test run.
+model_auto <- suppressWarnings(
+  plsi.lr.auto(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
+               k = k, bs = bs, initial.random.num = initial.random.num, seed = 2026)
+)
 
 test_that('Output of plsi.lr.auto', {
   expect_true(is.list(model_auto))
@@ -55,8 +65,10 @@ test_that('plsi.lr.auto rejects missing mgcv gracefully is not testable here; in
 })
 
 test_that('plsi.lr.auto is reproducible given the same seed', {
-  model_auto_repeat <- plsi.lr.auto(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
-                                    k = k, bs = bs, initial.random.num = initial.random.num, seed = 2026)
+  model_auto_repeat <- suppressWarnings(
+    plsi.lr.auto(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
+                 k = k, bs = bs, initial.random.num = initial.random.num, seed = 2026)
+  )
   expect_equal(model_auto$si.coefficient$Estimate, model_auto_repeat$si.coefficient$Estimate,
                tolerance = 1e-6)
 })
