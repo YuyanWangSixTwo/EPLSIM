@@ -139,7 +139,10 @@ plsi.lr.v2 <- function(data, Y.name, X.name, Z.name,
   si_fun_coef_estimated <- as.data.frame(summary(m1)$coefficients)[2:(1 + spline.num), ]
   dat_si_fun <- as.data.frame(cbind(single_index_estimated, y_single_index))
   m2 <- stats::glm(y_single_index ~ splines::ns(single_index_estimated, df = spline.num))
-  dat_si_fun_ci <- ciTools::add_ci(dat_si_fun, m2, alpha = 0.05, names = c("lwr", "upr"))
+  # yhatName = "fit" (not ciTools' default "pred") keeps si.fun's column
+  # naming consistent with plsi.lr.auto()/plsi.logistic.auto()/plsi.log.auto(),
+  # which si.fun.plot(type = "linear") relies on.
+  dat_si_fun_ci <- ciTools::add_ci(dat_si_fun, m2, alpha = 0.05, names = c("lwr", "upr"), yhatName = "fit")
 
   confounder_coef_estimated <- as.data.frame(summary(m1)$coefficients)[(spline.num + 2):(spline.num + 1 + z_length), ]
   confounder_coef_estimated$Lower.95CI <- confounder_coef_estimated$Estimate + stats::qnorm(0.025) * confounder_coef_estimated$`Std. Error`

@@ -13,7 +13,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 2.10)
-Imports: splines, ggplot2, MASS, ciTools, mgcv
+Imports: splines, ggplot2, MASS, ciTools, mgcv, stats, graphics, utils
 Suggests: 
     rmarkdown,
     knitr,
