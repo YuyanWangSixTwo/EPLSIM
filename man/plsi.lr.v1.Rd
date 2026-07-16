@@ -36,7 +36,7 @@ A list of model estimation and prediction results
 Partial linear single index linear regression for scalar outcome
 }
 \examples{
-\donttest{
+\dontrun{
 # example to run the function
 data(nhanes.new)
 dat <- nhanes.new
