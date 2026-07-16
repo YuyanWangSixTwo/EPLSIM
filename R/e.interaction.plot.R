@@ -11,7 +11,11 @@
 #'   \code{plsi.logistic.auto()}. \code{"log"} plots the predicted count, for
 #'   a \code{fit} from \code{plsi.log.auto()}.
 #' @importFrom graphics par
-#' @return plot of interaction effect of two exposures with others at average level
+#' @return plot of interaction effect of two exposures with others at average
+#'   level. Invisibly returns a list with elements \code{panel_1} and
+#'   \code{panel_2}, the data frames underlying the left and right panels
+#'   respectively (predicted values at each combination of \code{exp_1}/
+#'   \code{exp_2} value and the other exposure's quantiles).
 #'
 #' @examples
 #' \donttest{
@@ -135,4 +139,10 @@ e.interaction.plot <- function(fit, data, exp_1, exp_2, type = c("linear", "logi
   graphics::axis(side = 1, at = x_2_index_dat[, c("x_2_value")], labels = FALSE, NA, tck = 0.016)
   graphics::legend("topleft", xpd = TRUE, bty = "n", col = c(1, 2, 3), lty = 1, cex = 0.6,
                    legend = c(paste("Q1 of ", exp_1, sep = ""), paste("Q2 of ", exp_1, sep = ""), paste("Q3 of ", exp_1, sep = "")))
+
+  # Invisibly return both panels' underlying data, matching e.main.plot()'s
+  # convention -- lets callers/tests verify the actual computed values
+  # rather than only the rendered plot (recordPlot() is not a reliable way
+  # to compare plot content on non-interactive/null devices).
+  invisible(list(panel_1 = x_1_index_dat, panel_2 = x_2_index_dat))
 }

@@ -12,8 +12,18 @@ k <- 5
 bs <- "cr"
 initial.random.num <- 1
 
-model_lr_auto <- plsi.lr.auto(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
-                              k = k, bs = bs, initial.random.num = initial.random.num, seed = 2026)
+
+# k = 5 / initial.random.num = 1 are deliberately small to keep this test
+# file fast; at these settings the numerically-differentiated Hessian
+# occasionally isn't positive definite, which triggers plsi.lr.auto()'s
+# eigenvalue-flooring fallback (see plsi_lr_auto.R) and an accompanying
+# warning. That fallback is the intended, tested behavior -- not a
+# regression -- so it's suppressed here rather than left to print as
+# unexplained noise on every test run.
+model_lr_auto <- suppressWarnings(
+  plsi.lr.auto(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
+               k = k, bs = bs, initial.random.num = initial.random.num, seed = 2026)
+)
 
 # Route all base + ggplot2 output to a null device so tests don't try to pop
 # up a plot window, then close it however the test exits.
@@ -56,21 +66,43 @@ test_that('e.interaction.plot runs without error and both panels differ', {
   )
 })
 
-test_that('e.interaction.plot is not symmetric under argument swap (regression test for the copy-paste quantile bug)', {
-  # exp_1/exp_2 swapped should NOT reduce to an identical pair of panels --
-  # this guards against the earlier bug where both panels secretly
-  # conditioned on exp_2's quantiles regardless of argument order.
-  r1 <- with_null_device({
+test_that('e.interaction.plot conditions each panel on the OTHER exposure (regression test for the copy-paste quantile bug)', {
+  # e.interaction.plot() now invisibly returns panel_1/panel_2's underlying
+  # data (see e_interaction_plot.R) -- check the actual computed values
+  # rather than comparing rendered plots. recordPlot() is not reliable for
+  # this: display-list recording is designed for interactive/screen
+  # devices, and returned identical() == TRUE for two genuinely different
+  # plots when tried on a pdf(NULL) device.
+  result <- with_null_device(
     e.interaction.plot(model_lr_auto, dat, "X4_a.tocopherol", "X3_g.tocopherol", type = "linear")
-    grDevices::recordPlot()
-  })
-  r2 <- with_null_device({
+  )
+
+  # panel_1 (x-axis = exp_1 = X4_a.tocopherol) must vary its lines by
+  # exp_2's (X3_g.tocopherol) quantiles, i.e. pred_q1/q2/q3 must actually
+  # differ from each other -- if the copy-paste bug were present, panel_1
+  # would instead condition on exp_1's own quantiles, which typically
+  # produces a different (but still non-degenerate) set of curves, so the
+  # more direct check is cross-referencing against a swapped call below.
+  expect_false(isTRUE(all.equal(result$panel_1$pred_q1, result$panel_1$pred_q2)))
+  expect_false(isTRUE(all.equal(result$panel_1$pred_q2, result$panel_1$pred_q3)))
+
+  # Swapping exp_1/exp_2 must swap which exposure's quantiles condition
+  # panel_1 -- this is the direct regression check for the original bug,
+  # where both panels secretly conditioned on exp_2's quantiles regardless
+  # of argument order.
+  swapped <- with_null_device(
     e.interaction.plot(model_lr_auto, dat, "X3_g.tocopherol", "X4_a.tocopherol", type = "linear")
-    grDevices::recordPlot()
-  })
-  # A loose structural check: recorded plots shouldn't be byte-identical,
-  # since the panel order and axis labels swap.
-  expect_false(identical(r1, r2))
+  )
+  # result$panel_1 varies X4_a.tocopherol conditioned on X3_g.tocopherol's
+  # quantiles; swapped$panel_2 varies X4_a.tocopherol (as exp_2 there)
+  # conditioned on X3_g.tocopherol's quantiles too -- these should match.
+  expect_equal(result$panel_1$pred_q1, swapped$panel_2$pred_q1, tolerance = 1e-8)
+  expect_equal(result$panel_1$pred_q2, swapped$panel_2$pred_q2, tolerance = 1e-8)
+  expect_equal(result$panel_1$pred_q3, swapped$panel_2$pred_q3, tolerance = 1e-8)
+  # And result$panel_1 should NOT match swapped$panel_1 (which now varies
+  # X3_g.tocopherol instead of X4_a.tocopherol) -- different x-axis
+  # variable entirely, so lengths/values won't align if the fix is correct.
+  expect_false(isTRUE(all.equal(result$panel_1$pred_q1, swapped$panel_1$pred_q1)))
 })
 
 test_that('interquartile.quartile.plot runs without error', {
