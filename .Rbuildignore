@@ -4,3 +4,4 @@ Makefile
 notebook*
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
+^\.github$
