@@ -1,5 +1,5 @@
 context('plsi.lr.v2 -  PLSI linear regression version 2')
-testthat::skip_on_cran()
+
 data(nhanes.new)
 dat <- nhanes.new
 Y.name <- "log.triglyceride"
@@ -12,6 +12,9 @@ spline.num <- 5
 spline.degree <- 3
 initial.random.num <- 1  # only for test, set any number
 
+# plsi.lr.v2() is fast (fixed-df spline, no gam()-in-optim() search), so
+# unlike the *.auto() test files, this fixture runs unconditionally -- no
+# NOT_CRAN gating needed here.
 model_v2 <- plsi.lr.v2(data = dat, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
                        spline.num, spline.degree, initial.random.num, seed = 2023)
 
