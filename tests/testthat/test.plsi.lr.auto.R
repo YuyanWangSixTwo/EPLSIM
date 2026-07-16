@@ -21,7 +21,14 @@ initial.random.num <- 1
 #
 # The actual fix has to gate the fixture itself with a plain if(), checked
 # BEFORE any testthat machinery is involved:
-not_on_cran <- identical(Sys.getenv("NOT_CRAN"), "true")
+on_cran <- function() {
+  env <- Sys.getenv("NOT_CRAN")
+  if (identical(env, "")) {
+    !interactive()
+  } else {
+    !isTRUE(as.logical(env))
+  }
+}
 
 if (not_on_cran) {
   # k = 5 / initial.random.num = 1 are deliberately small to keep this test
