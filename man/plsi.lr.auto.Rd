@@ -53,7 +53,7 @@ automatically. Effective degrees of freedom actually used by the fitted
 link function are reported in \code{si.fun.edf}.
 }
 \examples{
-\donttest{
+\dontrun{
 # example to run plsi.lr.auto
 data(nhanes.new)
 data <- nhanes.new

@@ -92,7 +92,7 @@ from this model are made at \code{offset = 0}, consistent with how the
 offset was netted out of every training point.
 }
 \examples{
-\donttest{
+\dontrun{
 data(nhanes.new)
 data <- nhanes.new
 

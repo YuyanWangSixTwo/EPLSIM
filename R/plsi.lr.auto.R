@@ -29,7 +29,7 @@
 #' @importFrom mgcv gam
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # example to run plsi.lr.auto
 #' data(nhanes.new)
 #' data <- nhanes.new

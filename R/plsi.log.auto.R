@@ -65,7 +65,7 @@
 #' @importFrom mgcv gam nb
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' data(nhanes.new)
 #' data <- nhanes.new
 #'

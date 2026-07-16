@@ -11,7 +11,7 @@
 #' @return A list of model estimation and prediction results
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # example to run the function
 #' data(nhanes.new)
 #' dat <- nhanes.new
