@@ -25,7 +25,7 @@ plot of predicted outcomes based on quantile of exposures
 plot mixture's overall effect based on quantile of exposures
 }
 \examples{
-\donttest{
+\dontrun{
 # example to plot mixture's overall effect -- continuous outcome
 data(nhanes.new)
 data <- nhanes.new

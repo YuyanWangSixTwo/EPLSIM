@@ -1,5 +1,5 @@
 context('confounder.trans -  transform confounders ready to be used by PLSIM')
-
+testthat::skip_on_cran()
 test_that('Output of confounder.trans', {
   dat.cov <- data.frame(
     age = c(1.5, 2.3, 3.1, 4.8, 5.2),

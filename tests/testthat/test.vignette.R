@@ -1,5 +1,5 @@
 context('vignette -  code chunks stay runnable against the current package')
-
+testthat::skip_on_cran()
 test_that('my-vignette.Rmd tangles and sources without error', {
   skip_on_cran()  # this runs every fitting function; slow, and CRAN's
   # examples/vignette build already exercises the package

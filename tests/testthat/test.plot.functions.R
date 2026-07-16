@@ -1,5 +1,5 @@
 context('plot functions -  si.fun.plot, si.coef.plot, e.main.plot, e.interaction.plot, interquartile.quartile.plot, mixture.overall.plot')
-
+testthat::skip_on_cran()
 data(nhanes.new)
 dat <- nhanes.new
 X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",

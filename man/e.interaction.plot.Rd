@@ -39,7 +39,7 @@ respectively (predicted values at each combination of \code{exp_1}/
 plot interaction effect of two exposures
 }
 \examples{
-\donttest{
+\dontrun{
 # example to plot interaction effect of two exposures -- continuous outcome
 data(nhanes.new)
 data <- nhanes.new

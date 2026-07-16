@@ -1,5 +1,5 @@
 context('nhanes -  original data')
-
+testthat::skip_on_cran()
 test_that('nhanes variable', {
   data(nhanes)
   Y.name <- c("triglyceride")

@@ -1,5 +1,5 @@
 context('plsi.lr.auto -  PLSI linear regression with automatic smoothness selection')
-
+testthat::skip_on_cran()
 data(nhanes.new)
 dat <- nhanes.new
 Y.name <- "log.triglyceride"

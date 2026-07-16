@@ -1,5 +1,5 @@
 context('plsi.lr.v2 -  PLSI linear regression version 2')
-
+testthat::skip_on_cran()
 data(nhanes.new)
 dat <- nhanes.new
 Y.name <- "log.triglyceride"

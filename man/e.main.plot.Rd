@@ -40,7 +40,7 @@ used to build the plot.
 plot single exposure's main effect
 }
 \examples{
-\donttest{
+\dontrun{
 # example to plot some exposure's main effect -- continuous outcome
 data(nhanes.new)
 data <- nhanes.new

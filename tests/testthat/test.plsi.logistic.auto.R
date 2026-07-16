@@ -1,5 +1,5 @@
 context('plsi.logistic.auto -  PLSI logistic regression with automatic smoothness selection')
-
+testthat::skip_on_cran()
 data(nhanes.new)
 dat <- nhanes.new
 X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",

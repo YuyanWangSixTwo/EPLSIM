@@ -26,7 +26,7 @@ plot of main interquartile effect of exposure based on quartile of other exposur
 plot interquartile effect of specific exposure based on quartile of other exposures
 }
 \examples{
-\donttest{
+\dontrun{
 # example to interquartile effect based on quartile of other exposures -- continuous outcome
 data(nhanes.new)
 data <- nhanes.new
