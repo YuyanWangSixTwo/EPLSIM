@@ -1,4 +1,4 @@
-# EPLSIM 0.3.0
+# EPLSIM 1.0.0
 
 ## New features
 
@@ -9,7 +9,6 @@
 * New `plsi.logistic.auto()`: binary-outcome (logistic) analog of
   `plsi.lr.auto()`, using a `binomial()` family GAM with the same automatic
   smoothness selection.
-* New `plsi.log.auto()`: non-negative count-outcome analog, supporting both
   Poisson and negative binomial (`family = "nb"`, the default, recommended
   for real overdispersed count data) families with a log link.
 * All three `*.auto()` fitting functions report Wald-based standard errors,
