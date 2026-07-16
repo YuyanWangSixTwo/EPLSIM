@@ -18,7 +18,7 @@
 #'   \code{exp_2} value and the other exposure's quantiles).
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # example to plot interaction effect of two exposures -- continuous outcome
 #' data(nhanes.new)
 #' data <- nhanes.new

@@ -18,7 +18,7 @@
 #'   used to build the plot.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # example to plot some exposure's main effect -- continuous outcome
 #' data(nhanes.new)
 #' data <- nhanes.new

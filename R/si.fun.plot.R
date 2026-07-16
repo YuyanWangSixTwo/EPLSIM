@@ -19,7 +19,7 @@
 #' @return Single index function plot
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # example to plot estimated single index function -- continuous outcome
 #' data(nhanes.new)
 #' data <- nhanes.new
