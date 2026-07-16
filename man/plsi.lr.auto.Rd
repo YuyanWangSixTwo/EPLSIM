@@ -77,10 +77,10 @@ model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.n
 \author{
 Yuyan Wang
 }
-\keyword{2}
+\keyword{automatic}
 \keyword{index}
 \keyword{linear}
 \keyword{partial}
-\keyword{regression,}
+\keyword{regression}
 \keyword{single}
-\keyword{version}
+\keyword{smoothness}

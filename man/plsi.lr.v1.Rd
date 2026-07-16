@@ -67,6 +67,7 @@ Yuyan Wang
 }
 \keyword{index}
 \keyword{linear}
+\keyword{models}
 \keyword{partial}
 \keyword{regression}
 \keyword{single}

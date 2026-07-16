@@ -65,10 +65,11 @@ model_lr_v2 <- plsi.lr.v2(data = data, Y.name = Y.name, X.name = X.name, Z.name 
 \author{
 Yuyan Wang
 }
-\keyword{2}
 \keyword{index}
 \keyword{linear}
+\keyword{models}
+\keyword{new}
 \keyword{partial}
-\keyword{regression,}
+\keyword{regression}
 \keyword{single}
 \keyword{version}

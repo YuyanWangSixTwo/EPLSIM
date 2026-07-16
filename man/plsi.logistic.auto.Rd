@@ -129,6 +129,6 @@ Yuyan Wang
 \keyword{linear}
 \keyword{logistic}
 \keyword{partial}
-\keyword{regression,}
+\keyword{regression}
 \keyword{single}
 \keyword{smoothness}

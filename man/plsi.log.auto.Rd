@@ -142,6 +142,6 @@ Yuyan Wang
 \keyword{log-linear}
 \keyword{outcome}
 \keyword{partial}
-\keyword{regression,}
+\keyword{regression}
 \keyword{single}
 \keyword{smoothness}
