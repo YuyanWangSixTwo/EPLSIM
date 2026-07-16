@@ -35,7 +35,8 @@
 #'                       spline.num, spline.degree, initial.random.num, seed = seed)
 #' }
 #' @keywords partial linear single index
-#' @keywords linear regression, version 2
+#' @keywords regression models
+#' @keywords new version
 #' @author Yuyan Wang
 #' @export
 plsi.lr.v2 <- function(data, Y.name, X.name, Z.name,

@@ -105,7 +105,8 @@
 #'                       initial.random.num = initial.random.num, seed = seed)
 #' }
 #' @keywords partial linear single index
-#' @keywords log-linear regression, automatic smoothness
+#' @keywords log-linear regression
+#' @keywords automatic smoothness
 #' @keywords count outcome
 #' @author Yuyan Wang
 #' @export

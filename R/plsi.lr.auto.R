@@ -50,7 +50,8 @@
 #'                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
 #' }
 #' @keywords partial linear single index
-#' @keywords linear regression, version 2
+#' @keywords linear regression
+#' @keywords automatic smoothness
 #' @author Yuyan Wang
 #' @export
 plsi.lr.auto <- function(data, Y.name, X.name, Z.name,

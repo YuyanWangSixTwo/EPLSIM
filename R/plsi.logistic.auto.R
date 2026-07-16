@@ -96,7 +96,8 @@
 #' }
 #'
 #' @keywords partial linear single index
-#' @keywords logistic regression, automatic smoothness
+#' @keywords logistic regression
+#' @keywords automatic smoothness
 #' @author Yuyan Wang
 #' @export
 plsi.logistic.auto <- function(data, Y.name, X.name, Z.name,

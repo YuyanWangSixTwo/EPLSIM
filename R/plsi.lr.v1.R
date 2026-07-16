@@ -37,7 +37,8 @@
 #'                       spline.num, spline.degree, initial.random.num)
 #' }
 #' @keywords partial linear single index
-#' @keywords linear regression
+#' @keywords regression
+#' @keywords models
 #' @author Yuyan Wang
 #' @export
 #'
