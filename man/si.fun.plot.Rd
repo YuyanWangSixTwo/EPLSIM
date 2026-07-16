@@ -22,7 +22,7 @@ the predicted outcome \code{g(u)} using the \code{fit}/\code{lwr}/\code{upr}
 columns, as returned for a continuous outcome. \code{"logistic"} plots
 the predicted probability using the \code{prob.fit}/\code{prob.lwr}/
 \code{prob.upr} columns returned by \code{plsi.logistic.auto()}, with the
-y-axis bounded to \link{0, 1}. \code{"log"} plots the predicted count using
+y-axis bounded between 0 and 1. \code{"log"} plots the predicted count using
 the \code{count.fit}/\code{count.lwr}/\code{count.upr} columns returned
 by \code{plsi.log.auto()}, with the y-axis bounded below at 0.}
 
@@ -61,9 +61,20 @@ model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.n
 si.fun.plot(model_lr_auto$si.fun, type = "linear")
 
 # example to plot estimated single index function -- binary outcome
-data$high.triglyceride <- as.numeric(
-  data$log.triglyceride > stats::quantile(data$log.triglyceride, 2 / 3)
-)
+# demo binary outcome (illustrative only -- nhanes.new has no native binary
+# variable). Simulated from a *true* single-index combination of the
+# exposures, run through a nonlinear logit link, plus a confounder effect,
+# and drawn as genuine Bernoulli noise (not a hard threshold on an existing
+# variable) -- a hard threshold produces near-perfect separation and
+# destabilizes the fit, whereas real classification uncertainty is both
+# more realistic and numerically well-behaved.
+set.seed(2026)
+beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
+beta_true <- beta_true / sqrt(sum(beta_true^2))
+x_std <- scale(data[, X.name])
+single_index_true <- as.vector(x_std \%*\% beta_true)
+log_odds <- -0.2 + 0.5 * sin(single_index_true) + 0.05 * data$AGE.c
+data$high.triglyceride <- stats::rbinom(nrow(data), size = 1, prob = stats::plogis(log_odds))
 model_logistic_auto <- plsi.logistic.auto(data = data, Y.name = "high.triglyceride",
                       X.name = X.name, Z.name = Z.name,
                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)

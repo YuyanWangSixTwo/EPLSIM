@@ -138,11 +138,27 @@ plsi.lr.auto <- function(data, Y.name, X.name, Z.name,
   hess <- stats::optimHess(par = beta_BeforeNorm, fn = fn, control = list(fnscale = -1))
   info_matrix <- -hess
 
-  eig <- eigen(info_matrix, symmetric = TRUE, only.values = TRUE)$values
-  if (any(eig <= 0)) {
+  eig_decomp <- eigen(info_matrix, symmetric = TRUE)
+  eig_vals <- eig_decomp$values
+  if (any(eig_vals <= 0)) {
     warning("Observed information matrix is not positive definite at the selected optimum ",
-            "(min eigenvalue = ", signif(min(eig), 3), "). Standard errors may be unreliable; ",
-            "consider increasing initial.random.num.")
+            "(min eigenvalue = ", signif(min(eig_vals), 3), "). Standard errors are computed from ",
+            "an eigenvalue-floored version of the information matrix and should be treated as ",
+            "conservative approximations; consider increasing initial.random.num for a more ",
+            "reliable optimum.")
+    # optimHess() differentiates fn(), which itself refits a penalized gam()
+    # (an inner iterative optimization) at every evaluation -- small
+    # discontinuities from that inner fit landing in slightly different places
+    # for nearby beta vectors can corrupt the finite-difference Hessian's
+    # eigenvalues even when the underlying likelihood surface is well-behaved.
+    # Floor tiny/negative eigenvalues to a small positive value (relative to
+    # the largest eigenvalue) so the matrix is positive definite and
+    # invertible, rather than silently producing NaN/nonsensical SEs from
+    # ginv() on an indefinite matrix -- this makes the affected SEs
+    # conservative (larger) rather than wrong.
+    floor_val <- max(eig_vals) * 1e-6
+    eig_vals <- pmax(eig_vals, floor_val)
+    info_matrix <- eig_decomp$vectors %*% diag(eig_vals, nrow = length(eig_vals)) %*% t(eig_decomp$vectors)
   }
 
   beta_BeforeNorm_sigma <- suppressWarnings(sqrt(diag(MASS::ginv(info_matrix))))

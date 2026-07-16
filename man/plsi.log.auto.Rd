@@ -50,22 +50,21 @@ environment. Default is 2026.}
 \value{
 A list of model estimation and prediction results, structured
 analogously to \code{plsi.logistic.auto()}'s output:
-\describe{
-\item{si.coefficient}{Single-index direction estimates (Wald z-tests,
-since inference here is normal-approximation based, not t-based).}
-\item{confounder.coefficient}{Confounder log-rate coefficients, plus
-rate ratios and their 95\\% CIs.}
-\item{si.fun}{The estimated single-index link function, on both the
-log scale (\code{fit}/\code{se}/\code{lwr}/\code{upr}) and the count
-scale (\code{count.fit}/\code{count.lwr}/\code{count.upr}, obtained
-by exponentiating the log-scale CI so it stays non-negative).}
-\item{si.fun.model}{A confounder-free \code{gam} of the count outcome
-on the single index alone (via a fixed offset for the confounder
+\itemize{
+\item \code{si.coefficient}: Single-index direction estimates (Wald z-tests,
+since inference here is normal-approximation based, not t-based).
+\item \code{confounder.coefficient}: Confounder log-rate coefficients, plus rate
+ratios and their 95\% CIs.
+\item \code{si.fun}: The estimated single-index link function, on both the log
+scale (\code{fit}/\code{se}/\code{lwr}/\code{upr}) and the count scale
+(\code{count.fit}/\code{count.lwr}/\code{count.upr}), obtained by exponentiating the
+log-scale CI so it stays non-negative.
+\item \code{si.fun.model}: A confounder-free \code{gam} of the count outcome on the
+single index alone (via a fixed offset for the confounder
 contribution) -- predict() from this needs only
-\code{single_index_estimated}, not the original confounders. See
-details.}
-\item{full.model}{The full fitted \code{gam} (smooth + confounders),
-kept for reference/diagnostics.}
+\code{single_index_estimated}, not the original confounders. See Details.
+\item \code{full.model}: The full fitted \code{gam} (smooth + confounders), kept for
+reference/diagnostics.
 }
 }
 \description{

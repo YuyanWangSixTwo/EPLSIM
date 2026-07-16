@@ -64,15 +64,27 @@ e.interaction.plot(model_lr_auto, data, "X8_3.3.4.4.5.pncb", "X6_PCB156", type =
 e.interaction.plot(model_lr_auto, data, "X6_PCB156", "X8_3.3.4.4.5.pncb", type = "linear")
 
 # example to plot interaction effect of two exposures -- binary outcome
-data$high.triglyceride <- as.numeric(
-  data$log.triglyceride > stats::quantile(data$log.triglyceride, 2 / 3)
-)
+# demo binary outcome (illustrative only -- nhanes.new has no native binary
+# variable). Simulated from a *true* single-index combination of the
+# exposures, run through a nonlinear logit link, plus a confounder effect,
+# and drawn as genuine Bernoulli noise (not a hard threshold on an existing
+# variable) -- a hard threshold produces near-perfect separation and
+# destabilizes the fit, whereas real classification uncertainty is both
+# more realistic and numerically well-behaved.
+set.seed(2026)
+beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
+beta_true <- beta_true / sqrt(sum(beta_true^2))
+x_std <- scale(data[, X.name])
+single_index_true <- as.vector(x_std \%*\% beta_true)
+log_odds <- -0.2 + 0.5 * sin(single_index_true) + 0.05 * data$AGE.c
+data$high.triglyceride <- stats::rbinom(nrow(data), size = 1, prob = stats::plogis(log_odds))
 model_logistic_auto <- plsi.logistic.auto(data = data, Y.name = "high.triglyceride",
                       X.name = X.name, Z.name = Z.name,
                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
 
 # plot two exposures' interaction effect -- predicted probability
-e.interaction.plot(model_logistic_auto, data, "X4_a.tocopherol", "X3_g.tocopherol", type = "logistic")
+e.interaction.plot(model_logistic_auto, data, "X4_a.tocopherol", "X3_g.tocopherol",
+                    type = "logistic")
 
 # example to plot interaction effect of two exposures -- count outcome
 set.seed(2026)

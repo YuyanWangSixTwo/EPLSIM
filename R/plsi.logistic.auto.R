@@ -24,24 +24,20 @@
 #'   seeding and use whatever RNG state is already active in the calling
 #'   environment. Default is 2026.
 #' @return A list of model estimation and prediction results, structured
-#'   analogously to \code{plsi.lr.auto()}'s output:
-#'   \describe{
-#'     \item{si.coefficient}{Single-index direction estimates (Wald z-tests,
-#'       since inference here is normal-approximation based, not t-based).}
-#'     \item{confounder.coefficient}{Confounder log-odds coefficients, plus
-#'       odds ratios and their 95\% CIs.}
-#'     \item{si.fun}{The estimated single-index link function, on both the
-#'       logit scale (\code{fit}/\code{se}/\code{lwr}/\code{upr}) and the
-#'       probability scale (\code{prob.fit}/\code{prob.lwr}/\code{prob.upr},
-#'       obtained by back-transforming the logit-scale CI so it stays in
-#'       [0, 1]).}
-#'     \item{si.fun.model}{A confounder-free \code{gam} of the logit-scale
-#'       residual on the single index alone -- predict() from this needs only
-#'       \code{single_index_estimated}, not the original confounders. See
-#'       details.}
-#'     \item{full.model}{The full fitted \code{gam} (smooth + confounders),
-#'       kept for reference/diagnostics.}
-#'   }
+#'   analogously to `plsi.lr.auto()`'s output:
+#'   - `si.coefficient`: Single-index direction estimates (Wald z-tests,
+#'     since inference here is normal-approximation based, not t-based).
+#'   - `confounder.coefficient`: Confounder log-odds coefficients, plus
+#'     odds ratios and their 95% CIs.
+#'   - `si.fun`: The estimated single-index link function, on both the
+#'     logit scale (`fit`/`se`/`lwr`/`upr`) and the probability scale
+#'     (`prob.fit`/`prob.lwr`/`prob.upr`), obtained by back-transforming the
+#'     logit-scale CI so it stays between 0 and 1.
+#'   - `si.fun.model`: A confounder-free `gam` of the logit-scale residual on
+#'     the single index alone -- predict() from this needs only
+#'     `single_index_estimated`, not the original confounders. See Details.
+#'   - `full.model`: The full fitted `gam` (smooth + confounders), kept for
+#'     reference/diagnostics.
 #'
 #' @details
 #' Because the outcome is binary, the "confounder-free" single-index model
@@ -66,17 +62,28 @@
 #' data(nhanes.new)
 #' data <- nhanes.new
 #'
-#' # demo binary outcome: upper-tertile triglycerides vs. not
-#' data$high.triglyceride <- as.numeric(
-#'   data$log.triglyceride > stats::quantile(data$log.triglyceride, 2 / 3)
-#' )
-#'
-#' Y.name <- "high.triglyceride"
 #' X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
 #'             "X5_PCB99", "X6_PCB156", "X7_PCB206",
 #'             "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
 #' Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
 #'            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
+#'
+#' # demo binary outcome (illustrative only -- nhanes.new has no native binary
+#' # variable). Simulated from a *true* single-index combination of the
+#' # exposures, run through a nonlinear logit link, plus a confounder effect,
+#' # and drawn as genuine Bernoulli noise (not a hard threshold on an existing
+#' # variable) -- a hard threshold produces near-perfect separation and
+#' # destabilizes the fit, whereas real classification uncertainty is both
+#' # more realistic and numerically well-behaved.
+#' set.seed(2026)
+#' beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
+#' beta_true <- beta_true / sqrt(sum(beta_true^2))
+#' x_std <- scale(data[, X.name])
+#' single_index_true <- as.vector(x_std %*% beta_true)
+#' log_odds <- -0.2 + 0.5 * sin(single_index_true) + 0.05 * data$AGE.c
+#' data$high.triglyceride <- stats::rbinom(nrow(data), size = 1, prob = stats::plogis(log_odds))
+#'
+#' Y.name <- "high.triglyceride"
 #'
 #' k <- 10
 #' bs <- "cr"
@@ -195,11 +202,27 @@ plsi.logistic.auto <- function(data, Y.name, X.name, Z.name,
   hess <- stats::optimHess(par = beta_BeforeNorm, fn = fn, control = list(fnscale = -1))
   info_matrix <- -hess
 
-  eig <- eigen(info_matrix, symmetric = TRUE, only.values = TRUE)$values
-  if (any(eig <= 0)) {
+  eig_decomp <- eigen(info_matrix, symmetric = TRUE)
+  eig_vals <- eig_decomp$values
+  if (any(eig_vals <= 0)) {
     warning("Observed information matrix is not positive definite at the selected optimum ",
-            "(min eigenvalue = ", signif(min(eig), 3), "). Standard errors may be unreliable; ",
-            "consider increasing initial.random.num.")
+            "(min eigenvalue = ", signif(min(eig_vals), 3), "). Standard errors are computed from ",
+            "an eigenvalue-floored version of the information matrix and should be treated as ",
+            "conservative approximations; consider increasing initial.random.num for a more ",
+            "reliable optimum.")
+    # optimHess() differentiates fn(), which itself refits a penalized gam()
+    # (an inner iterative optimization) at every evaluation -- small
+    # discontinuities from that inner fit landing in slightly different places
+    # for nearby beta vectors can corrupt the finite-difference Hessian's
+    # eigenvalues even when the underlying likelihood surface is well-behaved.
+    # Floor tiny/negative eigenvalues to a small positive value (relative to
+    # the largest eigenvalue) so the matrix is positive definite and
+    # invertible, rather than silently producing NaN/nonsensical SEs from
+    # ginv() on an indefinite matrix -- this makes the affected SEs
+    # conservative (larger) rather than wrong.
+    floor_val <- max(eig_vals) * 1e-6
+    eig_vals <- pmax(eig_vals, floor_val)
+    info_matrix <- eig_decomp$vectors %*% diag(eig_vals, nrow = length(eig_vals)) %*% t(eig_decomp$vectors)
   }
 
   beta_BeforeNorm_sigma <- suppressWarnings(sqrt(diag(MASS::ginv(info_matrix))))

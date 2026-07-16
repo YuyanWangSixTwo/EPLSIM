@@ -30,24 +30,21 @@
 #'   seeding and use whatever RNG state is already active in the calling
 #'   environment. Default is 2026.
 #' @return A list of model estimation and prediction results, structured
-#'   analogously to \code{plsi.logistic.auto()}'s output:
-#'   \describe{
-#'     \item{si.coefficient}{Single-index direction estimates (Wald z-tests,
-#'       since inference here is normal-approximation based, not t-based).}
-#'     \item{confounder.coefficient}{Confounder log-rate coefficients, plus
-#'       rate ratios and their 95\% CIs.}
-#'     \item{si.fun}{The estimated single-index link function, on both the
-#'       log scale (\code{fit}/\code{se}/\code{lwr}/\code{upr}) and the count
-#'       scale (\code{count.fit}/\code{count.lwr}/\code{count.upr}, obtained
-#'       by exponentiating the log-scale CI so it stays non-negative).}
-#'     \item{si.fun.model}{A confounder-free \code{gam} of the count outcome
-#'       on the single index alone (via a fixed offset for the confounder
-#'       contribution) -- predict() from this needs only
-#'       \code{single_index_estimated}, not the original confounders. See
-#'       details.}
-#'     \item{full.model}{The full fitted \code{gam} (smooth + confounders),
-#'       kept for reference/diagnostics.}
-#'   }
+#'   analogously to `plsi.logistic.auto()`'s output:
+#'   - `si.coefficient`: Single-index direction estimates (Wald z-tests,
+#'     since inference here is normal-approximation based, not t-based).
+#'   - `confounder.coefficient`: Confounder log-rate coefficients, plus rate
+#'     ratios and their 95% CIs.
+#'   - `si.fun`: The estimated single-index link function, on both the log
+#'     scale (`fit`/`se`/`lwr`/`upr`) and the count scale
+#'     (`count.fit`/`count.lwr`/`count.upr`), obtained by exponentiating the
+#'     log-scale CI so it stays non-negative.
+#'   - `si.fun.model`: A confounder-free `gam` of the count outcome on the
+#'     single index alone (via a fixed offset for the confounder
+#'     contribution) -- predict() from this needs only
+#'     `single_index_estimated`, not the original confounders. See Details.
+#'   - `full.model`: The full fitted `gam` (smooth + confounders), kept for
+#'     reference/diagnostics.
 #'
 #' @details
 #' As with \code{plsi.logistic.auto()}, the "confounder-free" single-index
@@ -216,11 +213,27 @@ plsi.log.auto <- function(data, Y.name, X.name, Z.name,
   hess <- stats::optimHess(par = beta_BeforeNorm, fn = fn, control = list(fnscale = -1))
   info_matrix <- -hess
 
-  eig <- eigen(info_matrix, symmetric = TRUE, only.values = TRUE)$values
-  if (any(eig <= 0)) {
+  eig_decomp <- eigen(info_matrix, symmetric = TRUE)
+  eig_vals <- eig_decomp$values
+  if (any(eig_vals <= 0)) {
     warning("Observed information matrix is not positive definite at the selected optimum ",
-            "(min eigenvalue = ", signif(min(eig), 3), "). Standard errors may be unreliable; ",
-            "consider increasing initial.random.num.")
+            "(min eigenvalue = ", signif(min(eig_vals), 3), "). Standard errors are computed from ",
+            "an eigenvalue-floored version of the information matrix and should be treated as ",
+            "conservative approximations; consider increasing initial.random.num for a more ",
+            "reliable optimum.")
+    # optimHess() differentiates fn(), which itself refits a penalized gam()
+    # (an inner iterative optimization) at every evaluation -- small
+    # discontinuities from that inner fit landing in slightly different places
+    # for nearby beta vectors can corrupt the finite-difference Hessian's
+    # eigenvalues even when the underlying likelihood surface is well-behaved.
+    # Floor tiny/negative eigenvalues to a small positive value (relative to
+    # the largest eigenvalue) so the matrix is positive definite and
+    # invertible, rather than silently producing NaN/nonsensical SEs from
+    # ginv() on an indefinite matrix -- this makes the affected SEs
+    # conservative (larger) rather than wrong.
+    floor_val <- max(eig_vals) * 1e-6
+    eig_vals <- pmax(eig_vals, floor_val)
+    info_matrix <- eig_decomp$vectors %*% diag(eig_vals, nrow = length(eig_vals)) %*% t(eig_decomp$vectors)
   }
 
   beta_BeforeNorm_sigma <- suppressWarnings(sqrt(diag(MASS::ginv(info_matrix))))

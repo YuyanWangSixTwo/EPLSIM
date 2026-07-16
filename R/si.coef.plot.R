@@ -32,9 +32,20 @@
 #' model_lr_auto$si.coefficient
 #'
 #' # example to plot estimated single index function -- binary outcome
-#' data$high.triglyceride <- as.numeric(
-#'   data$log.triglyceride > stats::quantile(data$log.triglyceride, 2 / 3)
-#' )
+#' # demo binary outcome (illustrative only -- nhanes.new has no native binary
+#' # variable). Simulated from a *true* single-index combination of the
+#' # exposures, run through a nonlinear logit link, plus a confounder effect,
+#' # and drawn as genuine Bernoulli noise (not a hard threshold on an existing
+#' # variable) -- a hard threshold produces near-perfect separation and
+#' # destabilizes the fit, whereas real classification uncertainty is both
+#' # more realistic and numerically well-behaved.
+#' set.seed(2026)
+#' beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
+#' beta_true <- beta_true / sqrt(sum(beta_true^2))
+#' x_std <- scale(data[, X.name])
+#' single_index_true <- as.vector(x_std %*% beta_true)
+#' log_odds <- -0.2 + 0.5 * sin(single_index_true) + 0.05 * data$AGE.c
+#' data$high.triglyceride <- stats::rbinom(nrow(data), size = 1, prob = stats::plogis(log_odds))
 #' model_logistic_auto <- plsi.logistic.auto(data = data, Y.name = "high.triglyceride",
 #'                       X.name = X.name, Z.name = Z.name,
 #'                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
@@ -83,9 +94,9 @@ si.coef.plot <- function(si.coef.est){
     ggplot2::ggtitle("") +
     ggplot2::labs(y = "Sing index coefficient", x = "Exposure") +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, hjust = 1), legend.position = "none",
-          panel.background = ggplot2::element_blank(),
-          axis.line = ggplot2::element_line(colour = "black"),
-          axis.text = ggplot2::element_text(colour = "black", size = ggplot2::rel(1.0))) +
+                   panel.background = ggplot2::element_blank(),
+                   axis.line = ggplot2::element_line(colour = "black"),
+                   axis.text = ggplot2::element_text(colour = "black", size = ggplot2::rel(1.0))) +
     ggplot2::scale_fill_manual(values = c("#12ffac", "#ff8112")) +
     ggplot2::geom_hline(yintercept = 0, linetype = "dashed")
 

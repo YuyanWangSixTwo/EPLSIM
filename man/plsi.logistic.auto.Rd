@@ -43,22 +43,20 @@ environment. Default is 2026.}
 \value{
 A list of model estimation and prediction results, structured
 analogously to \code{plsi.lr.auto()}'s output:
-\describe{
-\item{si.coefficient}{Single-index direction estimates (Wald z-tests,
-since inference here is normal-approximation based, not t-based).}
-\item{confounder.coefficient}{Confounder log-odds coefficients, plus
-odds ratios and their 95\\% CIs.}
-\item{si.fun}{The estimated single-index link function, on both the
-logit scale (\code{fit}/\code{se}/\code{lwr}/\code{upr}) and the
-probability scale (\code{prob.fit}/\code{prob.lwr}/\code{prob.upr},
-obtained by back-transforming the logit-scale CI so it stays in
-\link{0, 1}).}
-\item{si.fun.model}{A confounder-free \code{gam} of the logit-scale
-residual on the single index alone -- predict() from this needs only
-\code{single_index_estimated}, not the original confounders. See
-details.}
-\item{full.model}{The full fitted \code{gam} (smooth + confounders),
-kept for reference/diagnostics.}
+\itemize{
+\item \code{si.coefficient}: Single-index direction estimates (Wald z-tests,
+since inference here is normal-approximation based, not t-based).
+\item \code{confounder.coefficient}: Confounder log-odds coefficients, plus
+odds ratios and their 95\% CIs.
+\item \code{si.fun}: The estimated single-index link function, on both the
+logit scale (\code{fit}/\code{se}/\code{lwr}/\code{upr}) and the probability scale
+(\code{prob.fit}/\code{prob.lwr}/\code{prob.upr}), obtained by back-transforming the
+logit-scale CI so it stays between 0 and 1.
+\item \code{si.fun.model}: A confounder-free \code{gam} of the logit-scale residual on
+the single index alone -- predict() from this needs only
+\code{single_index_estimated}, not the original confounders. See Details.
+\item \code{full.model}: The full fitted \code{gam} (smooth + confounders), kept for
+reference/diagnostics.
 }
 }
 \description{
@@ -89,17 +87,28 @@ out of every training point.
 data(nhanes.new)
 data <- nhanes.new
 
-# demo binary outcome: upper-tertile triglycerides vs. not
-data$high.triglyceride <- as.numeric(
-  data$log.triglyceride > stats::quantile(data$log.triglyceride, 2 / 3)
-)
-
-Y.name <- "high.triglyceride"
 X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocopherol",
             "X5_PCB99", "X6_PCB156", "X7_PCB206",
             "X8_3.3.4.4.5.pncb", "X9_1.2.3.4.7.8.hxcdf", "X10_2.3.4.6.7.8.hxcdf")
 Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
+
+# demo binary outcome (illustrative only -- nhanes.new has no native binary
+# variable). Simulated from a *true* single-index combination of the
+# exposures, run through a nonlinear logit link, plus a confounder effect,
+# and drawn as genuine Bernoulli noise (not a hard threshold on an existing
+# variable) -- a hard threshold produces near-perfect separation and
+# destabilizes the fit, whereas real classification uncertainty is both
+# more realistic and numerically well-behaved.
+set.seed(2026)
+beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
+beta_true <- beta_true / sqrt(sum(beta_true^2))
+x_std <- scale(data[, X.name])
+single_index_true <- as.vector(x_std \%*\% beta_true)
+log_odds <- -0.2 + 0.5 * sin(single_index_true) + 0.05 * data$AGE.c
+data$high.triglyceride <- stats::rbinom(nrow(data), size = 1, prob = stats::plogis(log_odds))
+
+Y.name <- "high.triglyceride"
 
 k <- 10
 bs <- "cr"
