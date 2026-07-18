@@ -13,8 +13,7 @@
 #' @param X.name Variable name vector for exposures
 #' @param Z.name Variable name vector for confounders
 #' @param k Upper bound on basis dimension for the smooth link function
-#'   (analogous to \code{spline.num} in \code{plsi.lr.v2}, but not a fixed df —
-#'   REML penalizes down from this ceiling). Default 10.
+#'   (analogous to \code{spline.num} in \code{plsi.lr.v2}, but not a fixed df, REML penalizes down from this ceiling). Default 10.
 #' @param bs Smooth basis type passed to \code{mgcv::s()}; default \code{"cr"}
 #'   (cubic regression spline).
 #' @param initial.random.num Number of random initials for the single-index

@@ -39,7 +39,7 @@
 #'     (`count.fit`/`count.lwr`/`count.upr`), obtained by exponentiating the
 #'     log-scale CI so it stays non-negative.
 #'   - `si.fun.model`: A confounder-free `gam` of the count outcome on the
-#'     single index alone (via a fixed offset for confounder contribution) predict() from this needs only
+#'     single index alone (via a fixed offset for confounder contribution), predict() from this needs only
 #'     `single_index_estimated`, not the original confounders. See Details.
 #'   - `full.model`: The full fitted `gam` (smooth + confounders), kept for
 #'     reference/diagnostics.
@@ -73,20 +73,12 @@
 #' Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
 #'            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
 #'
-#' # demo count outcome (illustrative only -- nhanes.new has no native count
-#' # variable). Simulated from a *true* single-index combination of the
-#' # exposures, run through a nonlinear log-rate link, plus a confounder
-#' # effect -- so the example actually has an exposure-outcome relationship
-#' # for plsi.log.auto() to recover, rather than depending on the confounder
-#' # alone.
+#' # demo count outcome (illustrative only as nhanes.new has no native count variable). Simulated from a *true* single-index combination of the exposures, run through a nonlinear log-rate link, plus a confounder effect, so the example actually has an exposure-outcome relationship for plsi.log.auto() to recover, rather than depending on the confounder alone.
+#'
 #' set.seed(2026)
 #' beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
-#' beta_true <- beta_true / sqrt(sum(beta_true^2))         # unit norm, matching
-#'                                                          # the model's own
-#'                                                          # identifiability constraint
-#' x_std <- scale(data[, X.name])                          # standardize so the
-#'                                                          # demo index is on a
-#'                                                          # sane, comparable scale
+#' beta_true <- beta_true / sqrt(sum(beta_true^2)) # unit norm, matching the model's own identifiability constraint
+#' x_std <- scale(data[, X.name]) # standardize so the demo index is on a sane, comparable scale
 #' single_index_true <- as.vector(x_std %*% beta_true)
 #' log_rate <- 0.3 + 0.4 * sin(single_index_true) + 0.05 * data$AGE.c
 #' data$n.events <- stats::rpois(nrow(data), lambda = exp(log_rate))

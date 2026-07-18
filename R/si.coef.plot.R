@@ -1,12 +1,12 @@
-#' plot estimated single index coefficients
+#' Plot estimated single index coefficients frpm PLSIM
 #'
 #' @param si.coef.est A data set of estimated single index coefficients
 #' @importFrom stats reorder
-#' @return single index coefficient plot
+#' @return Single index coefficient plot
 #'
 #' @examples
 #' \dontrun{
-#' # example to plot estimated single index function -- continuous outcome
+#' # example to plot estimated single index function of continuous outcome
 #' data(nhanes.new)
 #' data <- nhanes.new
 #'

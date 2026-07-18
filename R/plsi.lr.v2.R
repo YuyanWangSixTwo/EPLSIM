@@ -1,4 +1,4 @@
-#' Partial linear single index linear regression for scalar outcome
+#' Partial linear single index linear regression for scalar outcome, second version
 #'
 #' @param data A data set including all needed variables
 #' @param Y.name Variable name for scalar outcome

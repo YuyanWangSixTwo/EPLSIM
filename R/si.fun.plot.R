@@ -1,7 +1,7 @@
-#' plot estimated single index function
+#' Plot estimated single index function
 #'
 #' @param si.ci A data set of estimated index and corresponding single index
-#'   values -- typically the \code{si.fun} element returned by
+#'   values, typically the \code{si.fun} element returned by
 #'   \code{plsi.lr.auto()}, \code{plsi.logistic.auto()}, or \code{plsi.log.auto()}
 #'   (or the analogous \code{plsi.lr.v2()} output for the linear case).
 #' @param type Which outcome scale to plot. \code{"linear"} (default) plots
@@ -20,7 +20,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' # example to plot estimated single index function -- continuous outcome
+#' # example to plot estimated single index function of continuous outcome
 #' data(nhanes.new)
 #' data <- nhanes.new
 #'
@@ -38,7 +38,7 @@
 #'
 #' model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
 #'                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
-#' # plot single index function -- predicted (continuous) outcome
+#' # plot single index function of predicted (continuous) outcome
 #' si.fun.plot(model_lr_auto$si.fun, type = "linear")
 #' }
 #' @keywords partial linear single index
