@@ -2,7 +2,7 @@
 % Please edit documentation in R/plsi.lr.v1.R
 \name{plsi.lr.v1}
 \alias{plsi.lr.v1}
-\title{Partial linear single index linear regression for scalar outcome}
+\title{Partial linear single index linear regression for scalar outcome, earliest version}
 \usage{
 plsi.lr.v1(
   data,
@@ -33,7 +33,7 @@ plsi.lr.v1(
 A list of model estimation and prediction results
 }
 \description{
-Partial linear single index linear regression for scalar outcome
+Partial linear single index linear regression for scalar outcome, earliest version
 }
 \examples{
 \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/confounder.trans.R
 \name{confounder.trans}
 \alias{confounder.trans}
-\title{Transformation for confounder vector Z}
+\title{Transformation for confounders vector Z before modeling}
 \usage{
 confounder.trans(Z_continuous, Z_discrete, data)
 }
@@ -17,11 +17,11 @@ confounder.trans(Z_continuous, Z_discrete, data)
 Transformed confounder vector and data set ready for further analysis.
 }
 \description{
-Transformation for confounder vector Z
+Transformation for confounders vector Z before modeling
 }
 \examples{
 # example to normalize the continuous confounders and
-# make dummy variables for categorical confoduners
+# make dummy variables for categorical confounders
 dat.cov <- data.frame(
   age = c(1.5, 2.3, 3.1, 4.8, 5.2),
   sex = c(1, 2, 1, 2, 2),

@@ -44,8 +44,7 @@ environment. Default is 2026.}
 A list of model estimation and prediction results, structured
 analogously to \code{plsi.lr.auto()}'s output:
 \itemize{
-\item \code{si.coefficient}: Single-index direction estimates (Wald z-tests,
-since inference here is normal-approximation based, not t-based).
+\item \code{si.coefficient}: Single-index direction estimates and inference.
 \item \code{confounder.coefficient}: Confounder log-odds coefficients, plus
 odds ratios and their 95\% CIs.
 \item \code{si.fun}: The estimated single-index link function, on both the
@@ -53,7 +52,7 @@ logit scale (\code{fit}/\code{se}/\code{lwr}/\code{upr}) and the probability sca
 (\code{prob.fit}/\code{prob.lwr}/\code{prob.upr}), obtained by back-transforming the
 logit-scale CI so it stays between 0 and 1.
 \item \code{si.fun.model}: A confounder-free \code{gam} of the logit-scale residual on
-the single index alone -- predict() from this needs only
+the single index alone, predict() from this needs only
 \code{single_index_estimated}, not the original confounders. See Details.
 \item \code{full.model}: The full fitted \code{gam} (smooth + confounders), kept for
 reference/diagnostics.
@@ -64,7 +63,7 @@ Binary-outcome analog of \code{plsi.lr.auto()}: same partial linear single
 index model, but with a logistic link. The link function is estimated with
 a penalized regression spline (\code{mgcv::gam}, \code{family = binomial()},
 REML smoothing-parameter selection), so there is no \code{spline.num} to
-hand-tune -- only an upper bound \code{k} on basis complexity, with REML
+hand-tune, only an upper bound \code{k} on basis complexity, with REML
 shrinking unneeded wiggliness toward a straight line on the logit scale.
 }
 \details{
@@ -72,7 +71,7 @@ Because the outcome is binary, the "confounder-free" single-index model
 cannot be built by subtracting confounder effects from \code{y} on the
 response scale the way \code{plsi.lr.auto()} does (probabilities aren't
 additive), and it cannot be built by residualizing the full model's own
-\emph{fitted} linear predictor either -- that would leave a value that is
+\emph{fitted} linear predictor either, that would leave a value that is
 already an exact smooth function of the single index, so refitting a smooth
 to it would just retrace the same curve with near-zero (and spuriously
 tiny) standard errors. Instead, the confounder contribution from the full
@@ -93,13 +92,8 @@ X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocoph
 Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
 
-# demo binary outcome (illustrative only -- nhanes.new has no native binary
-# variable). Simulated from a *true* single-index combination of the
-# exposures, run through a nonlinear logit link, plus a confounder effect,
-# and drawn as genuine Bernoulli noise (not a hard threshold on an existing
-# variable) -- a hard threshold produces near-perfect separation and
-# destabilizes the fit, whereas real classification uncertainty is both
-# more realistic and numerically well-behaved.
+# demo binary outcome (illustrative only as nhanes.new has no native binary variable). Simulated from a *true* single-index combination of the exposures, run through a nonlinear logit link, plus a confounder effect, and drawn as genuine Bernoulli noise (not a hard threshold on an existing variable), a hard threshold produces near-perfect separation and destabilizes the fit, whereas real classification uncertainty is both more realistic and numerically well-behaved.
+
 set.seed(2026)
 beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
 beta_true <- beta_true / sqrt(sum(beta_true^2))

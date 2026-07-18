@@ -3,7 +3,7 @@
 \docType{data}
 \name{nhanes.new}
 \alias{nhanes.new}
-\title{This is updated data from original data based on NHANES 2003–2004 survey}
+\title{This is an updated data from original data based on NHANES 2003–2004 survey}
 \format{
 An object of class \code{data.frame} with 789 rows and 17 columns.
 }

@@ -67,7 +67,12 @@
 #' Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
 #'            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
 #'
-#' # demo binary outcome (illustrative only as nhanes.new has no native binary variable). Simulated from a *true* single-index combination of the exposures, run through a nonlinear logit link, plus a confounder effect, and drawn as genuine Bernoulli noise (not a hard threshold on an existing variable), a hard threshold produces near-perfect separation and destabilizes the fit, whereas real classification uncertainty is both more realistic and numerically well-behaved.
+#' # demo binary outcome (illustrative only as nhanes.new has no native binary variable).
+#'  Simulated from a *true* single-index combination of the exposures, run through a
+#'  nonlinear logit link, plus a confounder effect, and drawn as genuine Bernoulli noise
+#'  (not a hard threshold on an existing variable), a hard threshold produces near-perfect
+#'  separation and destabilizes the fit, whereas real classification uncertainty is both
+#'  more realistic and numerically well-behaved.
 #'
 #' set.seed(2026)
 #' beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)

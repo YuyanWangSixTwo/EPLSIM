@@ -2,7 +2,7 @@
 % Please edit documentation in R/si.coef.plot.R
 \name{si.coef.plot}
 \alias{si.coef.plot}
-\title{plot estimated single index coefficients}
+\title{Plot estimated single index coefficients frpm PLSIM}
 \usage{
 si.coef.plot(si.coef.est)
 }
@@ -10,14 +10,14 @@ si.coef.plot(si.coef.est)
 \item{si.coef.est}{A data set of estimated single index coefficients}
 }
 \value{
-single index coefficient plot
+Single index coefficient plot
 }
 \description{
-plot estimated single index coefficients
+Plot estimated single index coefficients frpm PLSIM
 }
 \examples{
 \dontrun{
-# example to plot estimated single index function -- continuous outcome
+# example to plot estimated single index function of continuous outcome
 data(nhanes.new)
 data <- nhanes.new
 

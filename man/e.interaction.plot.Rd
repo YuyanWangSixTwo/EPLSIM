@@ -2,7 +2,7 @@
 % Please edit documentation in R/e.interaction.plot.R
 \name{e.interaction.plot}
 \alias{e.interaction.plot}
-\title{plot interaction effect of two exposures}
+\title{Plot interaction effect of two exposures from PLSIM}
 \usage{
 e.interaction.plot(
   fit,
@@ -18,9 +18,9 @@ or \code{plsi.log.auto()}}
 
 \item{data}{Original data set}
 
-\item{exp_1}{exposure name hoping to be checked}
+\item{exp_1}{Exposure 1 name}
 
-\item{exp_2}{exposure name hoping to be checked}
+\item{exp_2}{Exposure 2 name}
 
 \item{type}{Which outcome scale to plot. \code{"linear"} (default) plots the
 predicted (continuous) outcome, for a \code{fit} from \code{plsi.lr.auto()}.
@@ -29,18 +29,18 @@ predicted (continuous) outcome, for a \code{fit} from \code{plsi.lr.auto()}.
 a \code{fit} from \code{plsi.log.auto()}.}
 }
 \value{
-plot of interaction effect of two exposures with others at average
+Plot of interaction effect of two exposures with others at average
 level. Invisibly returns a list with elements \code{panel_1} and
 \code{panel_2}, the data frames underlying the left and right panels
 respectively (predicted values at each combination of \code{exp_1}/
 \code{exp_2} value and the other exposure's quantiles).
 }
 \description{
-plot interaction effect of two exposures
+Plot interaction effect of two exposures from PLSIM
 }
 \examples{
 \dontrun{
-# example to plot interaction effect of two exposures -- continuous outcome
+# example to plot interaction effect of two exposures of continuous outcome
 data(nhanes.new)
 data <- nhanes.new
 
@@ -59,7 +59,7 @@ seed = 2026
 model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
 
-# plot two exposures' interaction effect -- predicted (continuous) outcome
+# plot two exposures' interaction effect of predicted (continuous) outcome
 e.interaction.plot(model_lr_auto, data, "X4_a.tocopherol", "X3_g.tocopherol", type = "linear")
 e.interaction.plot(model_lr_auto, data, "X4_a.tocopherol", "X10_2.3.4.6.7.8.hxcdf", type = "linear")
 

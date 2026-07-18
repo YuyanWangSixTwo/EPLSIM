@@ -2,7 +2,7 @@
 % Please edit documentation in R/mixture.overall.plot.R
 \name{mixture.overall.plot}
 \alias{mixture.overall.plot}
-\title{plot mixture's overall effect based on quantile of exposures}
+\title{Plot mixture's overall effect based on quantile of exposures from PLSIM}
 \usage{
 mixture.overall.plot(fit, data, type = c("linear", "logistic", "log"))
 }
@@ -19,14 +19,14 @@ predicted (continuous) outcome, for a \code{fit} from \code{plsi.lr.auto()}.
 a \code{fit} from \code{plsi.log.auto()}.}
 }
 \value{
-plot of predicted outcomes based on quantile of exposures
+Plot of predicted outcomes based on quantile of exposures
 }
 \description{
-plot mixture's overall effect based on quantile of exposures
+Plot mixture's overall effect based on quantile of exposures from PLSIM
 }
 \examples{
 \dontrun{
-# example to plot mixture's overall effect -- continuous outcome
+# example to plot mixture's overall effect of continuous outcome
 data(nhanes.new)
 data <- nhanes.new
 
@@ -45,7 +45,7 @@ seed = 2026
 model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
 
-# plot mixture overall effect -- predicted (continuous) outcome
+# plot mixture overall effect of predicted (continuous) outcome
 mixture.overall.plot(model_lr_auto, data, type = "linear")
 }
 }

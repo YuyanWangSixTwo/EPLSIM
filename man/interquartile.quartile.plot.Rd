@@ -2,7 +2,7 @@
 % Please edit documentation in R/interquartile.quartile.plot.R
 \name{interquartile.quartile.plot}
 \alias{interquartile.quartile.plot}
-\title{plot interquartile effect of specific exposure based on quartile of other exposures}
+\title{Plot interquartile effect of specific exposure based on quartile of other exposures}
 \usage{
 interquartile.quartile.plot(fit, data, type = c("linear", "logistic", "log"))
 }
@@ -20,14 +20,14 @@ plots the difference in predicted count, for a \code{fit} from
 \code{plsi.log.auto()}.}
 }
 \value{
-plot of main interquartile effect of exposure based on quartile of other exposures
+Plot of main interquartile effect of exposure based on quartile of other exposures
 }
 \description{
-plot interquartile effect of specific exposure based on quartile of other exposures
+Plot interquartile effect of specific exposure based on quartile of other exposures
 }
 \examples{
 \dontrun{
-# example to interquartile effect based on quartile of other exposures -- continuous outcome
+# example to interquartile effect based on quartile of other exposures of continuous outcome
 data(nhanes.new)
 data <- nhanes.new
 
@@ -46,7 +46,7 @@ seed = 2026
 model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
 
-# plot interquartile quartile -- difference in predicted (continuous) outcome
+# plot interquartile quartile of difference in predicted (continuous) outcome
 interquartile.quartile.plot(model_lr_auto, data, type = "linear")
 }
 }

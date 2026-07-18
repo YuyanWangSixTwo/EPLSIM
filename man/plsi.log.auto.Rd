@@ -51,8 +51,7 @@ environment. Default is 2026.}
 A list of model estimation and prediction results, structured
 analogously to \code{plsi.logistic.auto()}'s output:
 \itemize{
-\item \code{si.coefficient}: Single-index direction estimates (Wald z-tests,
-since inference here is normal-approximation based, not t-based).
+\item \code{si.coefficient}: Single-index direction estimates and inference.
 \item \code{confounder.coefficient}: Confounder log-rate coefficients, plus rate
 ratios and their 95\% CIs.
 \item \code{si.fun}: The estimated single-index link function, on both the log
@@ -60,8 +59,7 @@ scale (\code{fit}/\code{se}/\code{lwr}/\code{upr}) and the count scale
 (\code{count.fit}/\code{count.lwr}/\code{count.upr}), obtained by exponentiating the
 log-scale CI so it stays non-negative.
 \item \code{si.fun.model}: A confounder-free \code{gam} of the count outcome on the
-single index alone (via a fixed offset for the confounder
-contribution) -- predict() from this needs only
+single index alone (via a fixed offset for confounder contribution), predict() from this needs only
 \code{single_index_estimated}, not the original confounders. See Details.
 \item \code{full.model}: The full fitted \code{gam} (smooth + confounders), kept for
 reference/diagnostics.
@@ -72,7 +70,7 @@ Count-outcome analog of \code{plsi.lr.auto()} / \code{plsi.logistic.auto()}:
 same partial linear single index model, but for non-negative count data via
 a log link. The link function is estimated with a penalized regression
 spline (\code{mgcv::gam}, REML smoothing-parameter selection), so there is
-no \code{spline.num} to hand-tune -- only an upper bound \code{k} on basis
+no \code{spline.num} to hand-tune, only an upper bound \code{k} on basis
 complexity, with REML shrinking unneeded wiggliness toward a straight line
 on the log scale.
 }
@@ -81,7 +79,7 @@ As with \code{plsi.logistic.auto()}, the "confounder-free" single-index
 model cannot be built by subtracting confounder effects from \code{y} on
 the response scale (counts aren't additive that way either), and it cannot
 be built by residualizing the full model's own \emph{fitted} linear
-predictor -- that would leave a value that is already an exact smooth
+predictor, that would leave a value that is already an exact smooth
 function of the single index, so refitting a smooth to it would just
 retrace the same curve with near-zero (and spuriously tiny) standard
 errors. Instead, the confounder contribution from the full model is fixed
@@ -102,20 +100,12 @@ X.name <- c("X1_trans.b.carotene", "X2_retinol", "X3_g.tocopherol", "X4_a.tocoph
 Z.name <- c("AGE.c", "SEX.Female", "RACE.NH.Black",
            "RACE.MexicanAmerican", "RACE.OtherRace", "RACE.Hispanic" )
 
-# demo count outcome (illustrative only -- nhanes.new has no native count
-# variable). Simulated from a *true* single-index combination of the
-# exposures, run through a nonlinear log-rate link, plus a confounder
-# effect -- so the example actually has an exposure-outcome relationship
-# for plsi.log.auto() to recover, rather than depending on the confounder
-# alone.
+# demo count outcome (illustrative only as nhanes.new has no native count variable). Simulated from a *true* single-index combination of the exposures, run through a nonlinear log-rate link, plus a confounder effect, so the example actually has an exposure-outcome relationship for plsi.log.auto() to recover, rather than depending on the confounder alone.
+
 set.seed(2026)
 beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
-beta_true <- beta_true / sqrt(sum(beta_true^2))         # unit norm, matching
-                                                         # the model's own
-                                                         # identifiability constraint
-x_std <- scale(data[, X.name])                          # standardize so the
-                                                         # demo index is on a
-                                                         # sane, comparable scale
+beta_true <- beta_true / sqrt(sum(beta_true^2)) # unit norm, matching the model's own identifiability constraint
+x_std <- scale(data[, X.name]) # standardize so the demo index is on a sane, comparable scale
 single_index_true <- as.vector(x_std \%*\% beta_true)
 log_rate <- 0.3 + 0.4 * sin(single_index_true) + 0.05 * data$AGE.c
 data$n.events <- stats::rpois(nrow(data), lambda = exp(log_rate))
