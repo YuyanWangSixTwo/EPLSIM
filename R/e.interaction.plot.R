@@ -1,17 +1,17 @@
-#' plot interaction effect of two exposures
+#' Plot interaction effect of two exposures from PLSIM
 #'
 #' @param fit Fitted model from \code{plsi.lr.auto()}, \code{plsi.logistic.auto()},
 #'   or \code{plsi.log.auto()}
 #' @param data Original data set
-#' @param exp_1 exposure name hoping to be checked
-#' @param exp_2 exposure name hoping to be checked
+#' @param exp_1 Exposure 1 name
+#' @param exp_2 Exposure 2 name
 #' @param type Which outcome scale to plot. \code{"linear"} (default) plots the
 #'   predicted (continuous) outcome, for a \code{fit} from \code{plsi.lr.auto()}.
 #'   \code{"logistic"} plots the predicted probability, for a \code{fit} from
 #'   \code{plsi.logistic.auto()}. \code{"log"} plots the predicted count, for
 #'   a \code{fit} from \code{plsi.log.auto()}.
 #' @importFrom graphics par
-#' @return plot of interaction effect of two exposures with others at average
+#' @return Plot of interaction effect of two exposures with others at average
 #'   level. Invisibly returns a list with elements \code{panel_1} and
 #'   \code{panel_2}, the data frames underlying the left and right panels
 #'   respectively (predicted values at each combination of \code{exp_1}/
@@ -19,7 +19,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' # example to plot interaction effect of two exposures -- continuous outcome
+#' # example to plot interaction effect of two exposures of continuous outcome
 #' data(nhanes.new)
 #' data <- nhanes.new
 #'
@@ -38,7 +38,7 @@
 #' model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
 #'                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
 #'
-#' # plot two exposures' interaction effect -- predicted (continuous) outcome
+#' # plot two exposures' interaction effect of predicted (continuous) outcome
 #' e.interaction.plot(model_lr_auto, data, "X4_a.tocopherol", "X3_g.tocopherol", type = "linear")
 #' e.interaction.plot(model_lr_auto, data, "X4_a.tocopherol", "X10_2.3.4.6.7.8.hxcdf", type = "linear")
 #'
@@ -141,7 +141,7 @@ e.interaction.plot <- function(fit, data, exp_1, exp_2, type = c("linear", "logi
                    legend = c(paste("Q1 of ", exp_1, sep = ""), paste("Q2 of ", exp_1, sep = ""), paste("Q3 of ", exp_1, sep = "")))
 
   # Invisibly return both panels' underlying data, matching e.main.plot()'s
-  # convention -- lets callers/tests verify the actual computed values
+  # convention, lets callers/tests verify the actual computed values
   # rather than only the rendered plot (recordPlot() is not a reliable way
   # to compare plot content on non-interactive/null devices).
   invisible(list(panel_1 = x_1_index_dat, panel_2 = x_2_index_dat))

@@ -1,9 +1,9 @@
-#' plot single exposure's main effect
+#' Plot single exposure's main effect from PLSIM
 #'
 #' @param fit Fitted model from \code{plsi.lr.auto()}, \code{plsi.logistic.auto()},
 #'   or \code{plsi.log.auto()}
 #' @param data Original data set
-#' @param exp_name exposure name hoping to be plotted
+#' @param exp_name Exposure name
 #' @param type Which outcome scale to plot. \code{"linear"} (default) plots the
 #'   predicted (continuous) outcome, for a \code{fit} from \code{plsi.lr.auto()}.
 #'   \code{"logistic"} plots the predicted probability, for a \code{fit} from
@@ -13,13 +13,13 @@
 #'   identify and drop extreme values of the raw exposure before plotting.
 #'   Default 10 (a permissive threshold; increase to drop fewer points, or set
 #'   to \code{Inf} to keep all points).
-#' @return plot of exposure's main effect with other exposures at their
+#' @return Plot of exposure's main effect with other exposures at their
 #'   confounder-adjusted reference level. Invisibly returns the data frame
 #'   used to build the plot.
 #'
 #' @examples
 #' \dontrun{
-#' # example to plot some exposure's main effect -- continuous outcome
+#' # example to plot some exposure's main effect of continuous outcome
 #' data(nhanes.new)
 #' data <- nhanes.new
 #'
@@ -38,7 +38,7 @@
 #' model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
 #'                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
 #'
-#' # plot some exposure's main effect -- predicted (continuous) outcome
+#' # plot some exposure's main effect of predicted (continuous) outcome
 #' e.main.plot(model_lr_auto, data, exp_name = c("X4_a.tocopherol"), type = "linear")
 #' e.main.plot(model_lr_auto, data, exp_name = c("X5_PCB99"), type = "linear")
 #' e.main.plot(model_lr_auto, data, exp_name = c("X10_2.3.4.6.7.8.hxcdf"), type = "linear")

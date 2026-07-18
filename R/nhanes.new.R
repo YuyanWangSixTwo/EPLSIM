@@ -1,4 +1,4 @@
-#' This is updated data from original data based on NHANES 2003–2004 survey
+#' This is an updated data from original data based on NHANES 2003–2004 survey
 #'
 #' A data set containing outcome triglyceride, re-named ten exposures,
 #'  and transformed confounders.

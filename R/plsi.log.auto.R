@@ -4,7 +4,7 @@
 #' same partial linear single index model, but for non-negative count data via
 #' a log link. The link function is estimated with a penalized regression
 #' spline (\code{mgcv::gam}, REML smoothing-parameter selection), so there is
-#' no \code{spline.num} to hand-tune -- only an upper bound \code{k} on basis
+#' no \code{spline.num} to hand-tune, only an upper bound \code{k} on basis
 #' complexity, with REML shrinking unneeded wiggliness toward a straight line
 #' on the log scale.
 #'
@@ -31,8 +31,7 @@
 #'   environment. Default is 2026.
 #' @return A list of model estimation and prediction results, structured
 #'   analogously to `plsi.logistic.auto()`'s output:
-#'   - `si.coefficient`: Single-index direction estimates (Wald z-tests,
-#'     since inference here is normal-approximation based, not t-based).
+#'   - `si.coefficient`: Single-index direction estimates and inference.
 #'   - `confounder.coefficient`: Confounder log-rate coefficients, plus rate
 #'     ratios and their 95% CIs.
 #'   - `si.fun`: The estimated single-index link function, on both the log
@@ -40,8 +39,7 @@
 #'     (`count.fit`/`count.lwr`/`count.upr`), obtained by exponentiating the
 #'     log-scale CI so it stays non-negative.
 #'   - `si.fun.model`: A confounder-free `gam` of the count outcome on the
-#'     single index alone (via a fixed offset for the confounder
-#'     contribution) -- predict() from this needs only
+#'     single index alone (via a fixed offset for confounder contribution) predict() from this needs only
 #'     `single_index_estimated`, not the original confounders. See Details.
 #'   - `full.model`: The full fitted `gam` (smooth + confounders), kept for
 #'     reference/diagnostics.
@@ -51,7 +49,7 @@
 #' model cannot be built by subtracting confounder effects from \code{y} on
 #' the response scale (counts aren't additive that way either), and it cannot
 #' be built by residualizing the full model's own \emph{fitted} linear
-#' predictor -- that would leave a value that is already an exact smooth
+#' predictor, that would leave a value that is already an exact smooth
 #' function of the single index, so refitting a smooth to it would just
 #' retrace the same curve with near-zero (and spuriously tiny) standard
 #' errors. Instead, the confounder contribution from the full model is fixed

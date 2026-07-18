@@ -1,4 +1,4 @@
-# example to plot interaction effect of two exposures -- continuous outcome
+# example to plot interaction effect of two exposures for continuous outcome
 data(nhanes.new)
 data <- nhanes.new
 #'
@@ -17,7 +17,7 @@ seed = 2026
 model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
 #'
-# plot two exposures' interaction effect -- predicted (continuous) outcome
+# plot two exposures' interaction effect on predicted (continuous) outcome
 e.interaction.plot(model_lr_auto, data, "X4_a.tocopherol", "X3_g.tocopherol", type = "linear")
 e.interaction.plot(model_lr_auto, data, "X4_a.tocopherol", "X10_2.3.4.6.7.8.hxcdf", type = "linear")
 #'

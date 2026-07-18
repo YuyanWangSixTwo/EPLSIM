@@ -1,4 +1,4 @@
-#' plot interquartile effect of specific exposure based on quartile of other exposures
+#' Plot interquartile effect of specific exposure based on quartile of other exposures
 #'
 #' @param fit Fitted model from \code{plsi.lr.auto()}, \code{plsi.logistic.auto()},
 #'   or \code{plsi.log.auto()}
@@ -10,11 +10,11 @@
 #'   plots the difference in predicted count, for a \code{fit} from
 #'   \code{plsi.log.auto()}.
 #' @importFrom stats quantile
-#' @return plot of main interquartile effect of exposure based on quartile of other exposures
+#' @return Plot of main interquartile effect of exposure based on quartile of other exposures
 #'
 #' @examples
 #' \dontrun{
-#' # example to interquartile effect based on quartile of other exposures -- continuous outcome
+#' # example to interquartile effect based on quartile of other exposures of continuous outcome
 #' data(nhanes.new)
 #' data <- nhanes.new
 #'
@@ -33,7 +33,7 @@
 #' model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
 #'                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
 #'
-#' # plot interquartile quartile -- difference in predicted (continuous) outcome
+#' # plot interquartile quartile of difference in predicted (continuous) outcome
 #' interquartile.quartile.plot(model_lr_auto, data, type = "linear")
 #' }
 #' @keywords partial linear single index

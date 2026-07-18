@@ -1,4 +1,4 @@
-#' plot mixture's overall effect based on quantile of exposures
+#' Plot mixture's overall effect based on quantile of exposures from PLSIM
 #'
 #' @param fit Fitted model from \code{plsi.lr.auto()}, \code{plsi.logistic.auto()},
 #'   or \code{plsi.log.auto()}
@@ -8,11 +8,11 @@
 #'   \code{"logistic"} plots the predicted probability, for a \code{fit} from
 #'   \code{plsi.logistic.auto()}. \code{"log"} plots the predicted count, for
 #'   a \code{fit} from \code{plsi.log.auto()}.
-#' @return plot of predicted outcomes based on quantile of exposures
+#' @return Plot of predicted outcomes based on quantile of exposures
 #'
 #' @examples
 #' \dontrun{
-#' # example to plot mixture's overall effect -- continuous outcome
+#' # example to plot mixture's overall effect of continuous outcome
 #' data(nhanes.new)
 #' data <- nhanes.new
 #'
@@ -31,7 +31,7 @@
 #' model_lr_auto <- plsi.lr.auto(data = data, Y.name = Y.name, X.name = X.name, Z.name = Z.name,
 #'                       k = k, bs = bs, initial.random.num = initial.random.num, seed = seed)
 #'
-#' # plot mixture overall effect -- predicted (continuous) outcome
+#' # plot mixture overall effect of predicted (continuous) outcome
 #' mixture.overall.plot(model_lr_auto, data, type = "linear")
 #' }
 #' @keywords partial linear single index

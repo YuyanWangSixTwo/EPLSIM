@@ -1,4 +1,4 @@
-#' Transformation for confounder vector Z
+#' Transformation for confounders vector Z before modeling
 #'
 #' @param Z_continuous A character name vector for continuous confounders
 #' @param Z_discrete A character name vector for discrete confounders
