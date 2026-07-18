@@ -1,4 +1,5 @@
-# example to normalize the continuous confounders and make dummy variables for categorical confounders
+# example to normalize the continuous confounders and
+# make dummy variables for categorical confounders
 dat.cov <- data.frame(
   age = c(1.5, 2.3, 3.1, 4.8, 5.2),
   sex = c(1, 2, 1, 2, 2),

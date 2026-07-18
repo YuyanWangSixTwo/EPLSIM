@@ -81,7 +81,8 @@
 #'
 #' set.seed(2026)
 #' beta_true <- c(0.30, -0.20, 0.10, 0.40, -0.30, 0.20, -0.10, 0.25, -0.15, 0.35)
-#' beta_true <- beta_true / sqrt(sum(beta_true^2)) # unit norm, matching the model's own identifiability constraint
+#' beta_true <- beta_true / sqrt(sum(beta_true^2)) # unit norm, matching the model's
+#' # own identifiability constraint
 #' x_std <- scale(data[, X.name]) # standardize so the demo index is on a sane, comparable scale
 #' single_index_true <- as.vector(x_std %*% beta_true)
 #' log_rate <- 0.3 + 0.4 * sin(single_index_true) + 0.05 * data$AGE.c

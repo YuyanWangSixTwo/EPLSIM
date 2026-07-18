@@ -25,7 +25,8 @@ plsi.lr.auto(
 \item{Z.name}{Variable name vector for confounders}
 
 \item{k}{Upper bound on basis dimension for the smooth link function
-(analogous to \code{spline.num} in \code{plsi.lr.v2}, but not a fixed df, REML penalizes down from this ceiling). Default 10.}
+(analogous to \code{spline.num} in \code{plsi.lr.v2}, but not a fixed df,
+REML penalizes down from this ceiling). Default 10.}
 
 \item{bs}{Smooth basis type passed to \code{mgcv::s()}; default \code{"cr"}
 (cubic regression spline).}
