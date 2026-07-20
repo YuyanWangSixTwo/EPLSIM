@@ -1,3 +1,9 @@
+# EPLSIM 1.0.1
+
+## Bug fixes
+* Corrected inaccurate descriptions in the DESCRIPTION and vignette files from the previous version.
+
+
 # EPLSIM 1.0.0
 
 ## New features
