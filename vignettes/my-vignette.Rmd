@@ -1,6 +1,6 @@
 ---
 title: "An Introduction to EPLSIM Package"
-author: 'Yuyan Wang, Mengling Liu'
+author: 'Yuyan Wang'
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
 vignette: >
@@ -32,12 +32,12 @@ visualizing the results.
 
 Two families of fitting functions are available:
 
-* **`plsi.lr.auto()`**, **`plsi.logistic.auto()`**, **`plsi.log.auto()`** —
+* **`plsi.lr.auto()`**, **`plsi.logistic.auto()`**, **`plsi.log.auto()`**:
   recommended for most users. These use `mgcv::gam()` with REML-based
   automatic smoothness selection for the link function, so you only need to
   supply an upper bound `k` on basis complexity rather than tune exact
   degrees of freedom.
-* **`plsi.lr.v2()`** — retained for cases where you want direct control over
+* **`plsi.lr.v2()`**: retained for cases where you want direct control over
   the link function's degrees of freedom (e.g. simulation studies calling
   the fitting function many times, or when you already know the right basis
   complexity from prior work). It uses a fixed-df natural cubic spline
@@ -124,8 +124,8 @@ guessing a lower value up front.
 
 ### Manual control: `plsi.lr.v2()`
 
-If you need a fixed-df spline instead — for example, running many fits in a
-simulation where `mgcv::gam()`'s per-call overhead adds up — `plsi.lr.v2()`
+If you need a fixed-df spline instead, for example, running many fits in a
+simulation where `mgcv::gam()`'s per-call overhead adds up, `plsi.lr.v2()`
 provides the same model with a `spline.num`/`spline.degree` natural cubic
 spline in place of the penalized smooth:
 
